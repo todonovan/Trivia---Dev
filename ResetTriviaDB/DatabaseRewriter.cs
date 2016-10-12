@@ -32,6 +32,19 @@ namespace ResetTriviaDB
 
             command = new SQLiteCommand(sql, dbConn);
             command.ExecuteNonQuery();
+
+            // Scorers
+
+            drop = "DROP TABLE IF EXISTS Scorers";
+            command = new SQLiteCommand(drop, dbConn);
+            command.ExecuteNonQuery();
+
+            Console.WriteLine("Scorers...");
+            sql = "CREATE TABLE \"Scorers\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \"team_id_list\" VARCHAR(125), \"created_at\" VARCHAR(125))";
+
+            command = new SQLiteCommand(sql, dbConn);
+            command.ExecuteNonQuery();
+
             /*
             // Questions
 
@@ -111,7 +124,6 @@ namespace ResetTriviaDB
             // Wrap up
 
             dbConn.Close();
-            dbConn.Dispose();
             command.Dispose();
 
             Console.WriteLine("\nDone! Any key to continue...");

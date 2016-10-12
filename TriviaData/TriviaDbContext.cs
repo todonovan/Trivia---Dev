@@ -8,7 +8,7 @@ using System.Configuration;
 
 namespace TriviaData
 {
-    public class TriviaDbContext
+    public sealed class TriviaDbContext : IDisposable
     {
         private SQLiteConnection _dbContext;
 
@@ -34,6 +34,10 @@ namespace TriviaData
         public void Close()
         {
             _dbContext.Close();
+        }
+
+        public void Dispose()
+        {
             _dbContext.Dispose();
         }
     }

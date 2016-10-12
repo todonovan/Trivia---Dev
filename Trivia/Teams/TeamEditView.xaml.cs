@@ -12,17 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TriviaData.Models;
+using TriviaData.Repos;
 using System.Data.SQLite;
 using System.Configuration;
 using TriviaData;
+using System.Windows.Interactivity;
+using Microsoft.Expression.Interactivity;
 
-namespace Trivia
+
+namespace Trivia.Teams
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TeamEditView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TeamEditView : UserControl
     {
-      
+           
+        public TeamEditView()
+        {
+            InitializeComponent();
+        }
     }
 }

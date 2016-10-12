@@ -45,10 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Round.cs" />
+    <Compile Include="Models\Scorer.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Repos\IPersonRepository.cs" />
+    <Compile Include="Repos\IScorerRepository.cs" />
     <Compile Include="Repos\ITeamRepository.cs" />
     <Compile Include="Repos\PersonRepository.cs" />
+    <Compile Include="Repos\ScorerRepository.cs" />
     <Compile Include="Repos\TeamRepository.cs" />
     <Compile Include="TriviaData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

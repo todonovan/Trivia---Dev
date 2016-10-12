@@ -11,14 +11,26 @@ namespace TriviaData.Repos
     public class PersonRepository : IPersonRepository
     {
         private SQLiteConnection _dbConn;
+
         public PersonRepository(SQLiteConnection dbConn)
         {
             _dbConn = dbConn;
         }
+
         public void Add()
         {
-            string dateString = DateTime.Now.ToString();
+            string dateString = DateTime.Now.Ticks.ToString();
             string sql = $"INSERT INTO People (full_name, address, created_at) VALUES (\'\', \'\', {dateString}";
+            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+        public void Add(Person person)
+        {
+            string dateString = DateTime.Now.Ticks.ToString();
+            string sql = $"INSERT INTO People (full_name, address, created_at) VALUES ({person.FullName}, {person.Address}, {dateString})";
             SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
             command.ExecuteNonQuery();
 
@@ -65,6 +77,27 @@ namespace TriviaData.Repos
 
             command.Dispose();
             return p;
+        }
+
+        public List<Person> GetAllPeople()
+        {
+            List<Person> peopleList = new List<Person>();
+            string sql = $"SELECT * FROM People";
+            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Person p = new Person();
+                p.Id = (long)reader["id"];
+                p.FullName = (string)reader["full_name"];
+                p.Address = (string)reader["address"];
+                p.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                peopleList.Add(p);
+            }
+
+            command.Dispose();
+            return peopleList;
         }
 
         public void Remove(Person person)

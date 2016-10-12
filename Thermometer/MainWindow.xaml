@@ -1,0 +1,20 @@
+﻿<Window x:Class="Thermometer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Thermometer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <ProgressBar Name="Thermo" HorizontalAlignment="Left" Height="40" Margin="80,140,0,0" VerticalAlignment="Top" Width="340" IsIndeterminate="False" Minimum="0" Maximum="10000" BorderBrush="#FF040404" MouseDoubleClick="Thermo_MouseDoubleClick" >
+            <ProgressBar.Foreground>
+                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                    <GradientStop Color="#FFD1A52F" Offset="0"/>
+                    <GradientStop Color="#FFFF0505" Offset="1"/>
+                </LinearGradientBrush>
+            </ProgressBar.Foreground>
+        </ProgressBar>
+
+    </Grid>
+</Window>

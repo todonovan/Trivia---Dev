@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Trivia"
+        xmlns:Teams="clr-namespace:Trivia.Teams"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="GPLC Trivia" Height="768" Width="1024"
+        WindowStyle="ThreeDBorderWindow"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     <Grid>
-        
+        <Teams:TeamListView />
     </Grid>
 </Window>

@@ -12,17 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Data.SQLite;
-using System.Configuration;
-using TriviaData;
 
-namespace Trivia
+namespace Thermometer
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-      
+        public MainWindow()
+        {
+            InitializeComponent();
+            
+        }
+
+        private void UpdateProgress()
+        {
+            Thermo.Value += 50;
+        }
+
+        private void Thermo_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UpdateProgress();
+        }
     }
 }

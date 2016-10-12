@@ -10,10 +10,12 @@ namespace TriviaData.Repos
     public interface IPersonRepository
     {
         void Add();
+        void Add(Person person);
         void Add(string fullName);
         void Remove(Person person);
         void Update(Person person);
         Person GetPersonById(long id);
         Person GetPersonByName(string fullName);
+        List<Person> GetAllPeople();
     }
 }

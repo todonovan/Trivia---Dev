@@ -12,5 +12,10 @@ namespace TriviaData.Models
         public string FullName { get; set; } //Last, First
         public string Address { get; set; }  //No formal structure provided
         public DateTime CreatedAt { get; set; }
+
+        public override string ToString()
+        {
+            return string.Join(", ", FullName.Split('_'));
+        }
     }
 }

@@ -13,5 +13,11 @@ namespace TriviaData.Models
         public long Year { get; set; }
         public List<Person> Members { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public override string ToString()
+        {
+            string members = string.Join(", ", Members);
+            return $"Name: {Name}, Members: {members}";
+        }
     }
 }
