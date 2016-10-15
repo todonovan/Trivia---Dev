@@ -18,9 +18,9 @@ namespace TriviaData.Repos
         void Update(Team team);
         Team GetTeamById(long id);
         Team GetTeamByIdNoPlayers(long id);
-        ObservableCollection<Team> GetAllTeams();
+        List<Team> GetAllTeams();
         Team GetTeamByName(string name);
-        ObservableCollection<Team> FindTeamsByYear(long year);
-        ObservableCollection<Team> FindTeamsByYearNoPlayers(long year);
+        List<Team> FindTeamsByYear(long year);
+        List<Team> FindTeamsByYearNoPlayers(long year);
     }
 }

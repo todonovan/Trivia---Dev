@@ -11,7 +11,46 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type Teams:TeamListViewModel}">
+            <Teams:TeamListView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type Teams:TeamAddViewModel}">
+            <Teams:TeamAddView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type Teams:TeamEditViewModel}">
+            <Teams:TeamEditView />
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        <Teams:TeamListView />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
+        <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding CurrentViewModel}" />
+        <Button x:Name="editTeamButton" Content="Edit Team"
+                Command="{Binding NavCommand}"
+                CommandParameter="teamEdit"
+                Grid.Column="1" Grid.Row="1" Margin="290,90,0,0"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
+        <Button x:Name="teamListButton" Content="List of Teams"
+                Command="{Binding NavCommand}"
+                CommandParameter="teamList"
+                Grid.Column="1" HorizontalAlignment="Left"
+                Margin="180,90,0,0" Grid.Row="1"
+                VerticalAlignment="Top" Width="75" />
+        <Button x:Name="addTeamButton" Content="Add Team"
+                Command="{Binding OnNav}"
+                CommandParameter="teamAdd"
+                Grid.Column="1" HorizontalAlignment="Left"
+                Margin="385,90,0,0" Grid.Row="1"
+                VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>

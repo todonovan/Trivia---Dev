@@ -12,10 +12,9 @@ using System.Windows.Input;
 
 namespace Trivia.Teams
 {
-    public class TeamEditViewModel : INotifyPropertyChanged
+    public class TeamEditViewModel : BindableBase
     {
-        private Team _team;
-        private TriviaDbContext _dbContext;
+        private TriviaDbContext _dbConn;
         private ITeamRepository _teamRepo;
         public long TeamId
         {
@@ -24,27 +23,18 @@ namespace Trivia.Teams
             set { }
         }
 
-        public TeamEditViewModel()
+        public TeamEditViewModel(TriviaDbContext dbConn)
         {
-            _dbContext = new TriviaDbContext();
-            _dbContext.Open();
-            _teamRepo = new TeamRepository(_dbContext.Connection);
+            _dbConn = dbConn;
+            _teamRepo = new TeamRepository(_dbConn.Connection);
             SaveCommand = new RelayCommand(OnSave);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
+        private Team _team;
         public Team Team
         {
             get { return _team; }
-            set
-            {
-                if (value != _team)
-                {
-                    _team = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Team"));
-                }
-            }
+            set { SetProperty(ref _team, value); }
         }
 
         public ICommand SaveCommand { get; private set; }

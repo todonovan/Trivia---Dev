@@ -6,12 +6,54 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
              xmlns:team="clr-namespace:Trivia.Teams"
+             xmlns:local="clr-namespace:Trivia"
+             xmlns:data="clr-namespace:TriviaData.Models;assembly=TriviaData"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.DataContext>
-        <team:TeamListViewModel />
-    </UserControl.DataContext>
+             d:DesignHeight="300" d:DesignWidth="300"
+             local:MvvmBehaviors.LoadedMethodName="LoadTeams">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type data:Team}">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}" />
+                <TextBlock Text="{Binding Year}" />
+                <ListBox ItemsSource="{Binding Members}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
-        <DataGrid ItemsSource="{Binding Teams}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DataGrid x:Name="teamDataGrid"
+                  Grid.Row="0"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Teams}"
+                  SelectedItem="{Binding SelectedTeam, Mode=TwoWay}"
+                  RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="nameColumn"
+                                    Binding="{Binding Name}"
+                                    Header="Team Name"
+                                    Width="SizeToHeader" />
+                <DataGridTextColumn x:Name="membersColumn"
+                                    Binding="{Binding Members}"
+                                    Header="Team Members"
+                                    Width="Auto" />
+                <DataGridTextColumn x:Name="yearColumn"
+                                    Binding="{Binding Year}"
+                                    Header="Year Played"
+                                    Width="SizeToHeader" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1">
+            <Button x:Name="deleteTeamButton" Content="Delete Team"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="70,80,0,0" Command="{Binding DeleteCommand}" />
+            <Button x:Name="saveChangesButton" Content="Save To Database"
+                    Command="{Binding UpdateDBCommand}"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="180,80,0,0"/>
+        </Grid>
     </Grid>
 </UserControl>

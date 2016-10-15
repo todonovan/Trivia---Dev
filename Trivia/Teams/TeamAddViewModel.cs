@@ -13,34 +13,26 @@ using System.Windows.Input;
 
 namespace Trivia.Teams
 {
-    public class TeamAddViewModel : INotifyPropertyChanged
+    public class TeamAddViewModel : BindableBase
     {
-        private TriviaDbContext _dbContext;
+        private TriviaDbContext _dbConn;
         private ITeamRepository _teamRepo;
-        private Team _team;
 
         public ICommand SaveCommand { get; private set; }
 
+        private Team _team;
         public Team Team
         {
             get { return _team; }
-            set
-            {
-                if (value != _team)
-                {
-                    _team = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Team"));
-                }
-            }
+            set { SetProperty(ref _team, value); }
         }
 
-        public TeamAddViewModel()
+        public TeamAddViewModel(TriviaDbContext dbConn)
         {
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
-            _dbContext = new TriviaDbContext();
-            _dbContext.Open();
-            _teamRepo = new TeamRepository(_dbContext.Connection);
+            _dbConn = dbConn;
+            _teamRepo = new TeamRepository(_dbConn.Connection);
             Team = new Team();
             SaveCommand = new RelayCommand(OnSave);
         }
@@ -49,7 +41,5 @@ namespace Trivia.Teams
         {
             _teamRepo.Add(Team);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
     }
 }

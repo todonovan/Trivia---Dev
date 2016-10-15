@@ -13,22 +13,76 @@ using TriviaData.Repos;
 
 namespace Trivia.Teams
 {
-    public class TeamListViewModel : INotifyPropertyChanged
+    public class TeamListViewModel : BindableBase
     {
-        public ObservableCollection<Team> Teams { get; set; }
-        private TriviaDbContext _dbcontext;
+        private TriviaDbContext _dbConn;
         private ITeamRepository _teamRepo;
 
-        public TeamListViewModel()
+        private ObservableCollection<Team> _teams;
+        public ObservableCollection<Team> Teams
+        {
+            get { return _teams; }
+            set { SetProperty(ref _teams, value); }
+        }
+
+        private List<Team> _teamsToDelete = new List<Team>();
+
+        private Team _selectedTeam;
+        public Team SelectedTeam
+        {
+            get
+            {
+                return _selectedTeam;
+            }
+            set
+            {
+                _selectedTeam = value;
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public TeamListViewModel(TriviaDbContext dbConn)
+        {
+            DeleteCommand = new RelayCommand(OnDelete, CanDelete);
+            UpdateDBCommand = new RelayCommand(OnUpdate, CanUpdate);
+            _dbConn = dbConn;
+        }
+
+        private bool CanUpdate()
+        {
+            return _teamsToDelete.Count != 0;
+        }
+
+        private void OnUpdate()
+        {
+            foreach (var t in _teamsToDelete)
+            {
+                _teamRepo.Remove(t);
+            }
+        }
+
+        private bool CanDelete()
+        {
+
+            return SelectedTeam != null;
+        }
+
+        private void OnDelete()
+        {
+            _teamsToDelete.Add(SelectedTeam);
+            Teams.Remove(SelectedTeam);
+            UpdateDBCommand.RaiseCanExecuteChanged();
+        }
+
+        public void LoadTeams()
         {
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
-            _dbcontext = new TriviaDbContext();
-            _dbcontext.Open();
-            _teamRepo = new TeamRepository(_dbcontext.Connection);
-            Teams = _teamRepo.GetAllTeams();
+            _teamRepo = new TeamRepository(_dbConn.Connection);
+            Teams = new ObservableCollection<Team>(_teamRepo.GetAllTeams());
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public RelayCommand DeleteCommand { get; private set; }
+        public RelayCommand UpdateDBCommand { get; private set; }
     }
 }

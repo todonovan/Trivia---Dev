@@ -142,9 +142,9 @@ namespace TriviaData.Repos
         /// GetAllTeams does NOT construct Player lists for the sake of efficiency -- cannot foresee any use case for this method that would require it to do so.
         /// </summary>
         /// <returns></returns>
-        public ObservableCollection<Team> GetAllTeams()
+        public List<Team> GetAllTeams()
         {
-            ObservableCollection<Team> teamsList = new ObservableCollection<Team>();
+            List<Team> teamsList = new List<Team>();
             string sql = $"SELECT * FROM Teams";
             SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
             SQLiteDataReader reader = command.ExecuteReader();
@@ -191,9 +191,9 @@ namespace TriviaData.Repos
         }
 
 
-        public ObservableCollection<Team> FindTeamsByYear(long year)
+        public List<Team> FindTeamsByYear(long year)
         {
-            ObservableCollection<Team> teamsByYear = new ObservableCollection<Team>();
+            List<Team> teamsByYear = new List<Team>();
 
             string sql = $"SELECT * FROM Teams WHERE year={year}";
             SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
@@ -211,9 +211,9 @@ namespace TriviaData.Repos
         /// </summary>
         /// <param name="year"></param>
         /// <returns></returns>
-        public ObservableCollection<Team> FindTeamsByYearNoPlayers(long year)
+        public List<Team> FindTeamsByYearNoPlayers(long year)
         {
-            ObservableCollection<Team> teamsByYear = new ObservableCollection<Team>();
+            List<Team> teamsByYear = new List<Team>();
 
             string sql = $"SELECT * FROM Teams WHERE year={year}";
             SQLiteCommand command = new SQLiteCommand(sql, _dbConn);

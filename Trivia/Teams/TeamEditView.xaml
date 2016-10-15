@@ -5,18 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+             xmlns:vm="clr-namespace:Trivia"
              xmlns:local="clr-namespace:Trivia.Teams"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.DataContext>
-        <local:TeamEditViewModel TeamId="1" />
-    </UserControl.DataContext>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <ei:CallMethodAction TargetObject="{Binding}"
-                                 MethodName="LoadTeam" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <Grid>
         <Grid x:Name="teamEdit" HorizontalAlignment="Left" Margin="40,40,40,40" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
