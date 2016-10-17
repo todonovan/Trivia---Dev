@@ -18,7 +18,7 @@ namespace Trivia.Teams
         private TriviaDbContext _dbConn;
         private ITeamRepository _teamRepo;
 
-        public ICommand SaveCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
 
         private Team _team;
         public Team Team
@@ -34,12 +34,18 @@ namespace Trivia.Teams
             _dbConn = dbConn;
             _teamRepo = new TeamRepository(_dbConn.Connection);
             Team = new Team();
-            SaveCommand = new RelayCommand(OnSave);
+            SaveCommand = new RelayCommand(OnSave, CanSave);
+        }
+
+        private bool CanSave()
+        {
+            return Team.Name != null && Team.Year != 0 && Team.Company != null;
         }
 
         private void OnSave()
         {
             _teamRepo.Add(Team);
+            Team = new Team();
         }
     }
 }

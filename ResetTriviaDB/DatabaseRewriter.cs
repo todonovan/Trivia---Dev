@@ -101,7 +101,7 @@ namespace ResetTriviaDB
             command.ExecuteNonQuery();
 
             Console.WriteLine("Teams...");
-            sql = "CREATE TABLE \"Teams\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , \"person_id_list\" VARCHAR(125), \"name\" VARCHAR(125) UNIQUE, \"year\" INTEGER, \"created_at\" VARCHAR(125))";
+            sql = "CREATE TABLE \"Teams\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , \"person_id_list\" VARCHAR(125), \"name\" VARCHAR(125) UNIQUE, \"year\" INTEGER, \"company\" VARCHAR(125), \"created_at\" VARCHAR(125))";
 
             command = new SQLiteCommand(sql, dbConn);
             command.ExecuteNonQuery();

@@ -45,6 +45,8 @@ namespace Trivia.Teams
         {
             DeleteCommand = new RelayCommand(OnDelete, CanDelete);
             UpdateDBCommand = new RelayCommand(OnUpdate, CanUpdate);
+            EditTeamCommand = new RelayCommand<Team>(OnEditTeam);
+            AddTeamCommand = new RelayCommand(OnAddTeam);
             _dbConn = dbConn;
         }
 
@@ -82,7 +84,22 @@ namespace Trivia.Teams
             Teams = new ObservableCollection<Team>(_teamRepo.GetAllTeams());
         }
 
+        public void OnAddTeam()
+        {
+            AddTeamRequested(new Team());
+        }
+
+        public void OnEditTeam(Team team)
+        {
+            EditTeamRequested(team);
+        }
+
         public RelayCommand DeleteCommand { get; private set; }
         public RelayCommand UpdateDBCommand { get; private set; }
+        public RelayCommand AddTeamCommand { get; private set; }
+        public RelayCommand<Team> EditTeamCommand { get; private set; }
+
+        public event Action<Team> AddTeamRequested = delegate { };
+        public event Action<Team> EditTeamRequested = delegate { };
     }
 }

@@ -5,52 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Trivia"
         xmlns:Teams="clr-namespace:Trivia.Teams"
+        xmlns:Login="clr-namespace:Trivia.Login"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
         Title="GPLC Trivia" Height="768" Width="1024"
         WindowStyle="ThreeDBorderWindow"
         ResizeMode="CanResize"
-        WindowStartupLocation="CenterScreen"
-        WindowState="Maximized">
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <local:MainWindowViewModel />
     </Window.DataContext>
     <Window.Resources>
+        <DataTemplate DataType="{x:Type Login:LoginViewModel}">
+            <Login:LoginView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type Teams:TeamListViewModel}">
             <Teams:TeamListView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type Teams:TeamAddViewModel}">
-            <Teams:TeamAddView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type Teams:TeamEditViewModel}">
-            <Teams:TeamEditView />
+        <DataTemplate DataType="{x:Type Teams:TeamAddEditViewModel}">
+            <Teams:TeamAddEditView />
         </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="200" />
         </Grid.RowDefinitions>
-        <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding CurrentViewModel}" />
-        <Button x:Name="editTeamButton" Content="Edit Team"
-                Command="{Binding NavCommand}"
-                CommandParameter="teamEdit"
-                Grid.Column="1" Grid.Row="1" Margin="290,90,0,0"
-                VerticalAlignment="Top" HorizontalAlignment="Left" Width="70"/>
-        <Button x:Name="teamListButton" Content="List of Teams"
-                Command="{Binding NavCommand}"
-                CommandParameter="teamList"
-                Grid.Column="1" HorizontalAlignment="Left"
-                Margin="180,90,0,0" Grid.Row="1"
-                VerticalAlignment="Top" Width="75" />
-        <Button x:Name="addTeamButton" Content="Add Team"
-                Command="{Binding OnNav}"
-                CommandParameter="teamAdd"
-                Grid.Column="1" HorizontalAlignment="Left"
-                Margin="385,90,0,0" Grid.Row="1"
-                VerticalAlignment="Top" Width="75"/>
+        <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Background="#FF79B8CB">
+            <TextBlock Text="GPLC Trivia" FontSize="36" TextAlignment="Center" FontWeight="Bold" Foreground="White" />
+            <Button x:Name="manageTeamsButton" Command="{Binding NavCommand}" CommandParameter="teamList" Content="Manage Teams" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button x:Name="startSessionButton" Content="Start Scoring" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button x:Name="seeReportsButton" Content="View a Report" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <ContentControl>
+                <i:Interaction.Behaviors>
+                    <local:ShowNotificationMessageBehavior Message="{Binding NotificationMessage}" />
+                </i:Interaction.Behaviors>
+            </ContentControl>
+            <ContentControl Content="{Binding CurrentViewModel}"
+                            Grid.Row="1" />
+        </Grid>
     </Grid>
 </Window>

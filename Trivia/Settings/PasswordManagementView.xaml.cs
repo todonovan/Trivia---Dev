@@ -12,24 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TriviaData.Models;
-using TriviaData.Repos;
-using System.Data.SQLite;
-using System.Configuration;
-using TriviaData;
-using System.Windows.Interactivity;
-using Microsoft.Expression.Interactivity;
 
-
-namespace Trivia.Teams
+namespace Trivia.Settings
 {
     /// <summary>
-    /// Interaction logic for TeamEditView.xaml
+    /// Interaction logic for PasswordManagementView.xaml
     /// </summary>
-    public partial class TeamEditView : UserControl
+    public partial class PasswordManagementView : UserControl
     {
-           
-        public TeamEditView()
+        public PasswordManagementView()
         {
             InitializeComponent();
         }

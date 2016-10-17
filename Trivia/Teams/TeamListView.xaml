@@ -9,17 +9,23 @@
              xmlns:local="clr-namespace:Trivia"
              xmlns:data="clr-namespace:TriviaData.Models;assembly=TriviaData"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             local:MvvmBehaviors.LoadedMethodName="LoadTeams">
+             d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type data:Team}">
             <StackPanel>
                 <TextBlock Text="{Binding Name}" />
                 <TextBlock Text="{Binding Year}" />
+                <TextBlock Text="{Binding Company}" />
                 <ListBox ItemsSource="{Binding Members}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction TargetObject="{Binding}"
+                                 MethodName="LoadTeams" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -36,24 +42,43 @@
                                     Binding="{Binding Name}"
                                     Header="Team Name"
                                     Width="SizeToHeader" />
-                <DataGridTextColumn x:Name="membersColumn"
-                                    Binding="{Binding Members}"
-                                    Header="Team Members"
-                                    Width="Auto" />
+                <DataGridTextColumn x:Name="companyColumn"
+                                    Binding="{Binding Company}"
+                                    Header="Company"
+                                    Width="SizeToHeader" />
                 <DataGridTextColumn x:Name="yearColumn"
                                     Binding="{Binding Year}"
                                     Header="Year Played"
                                     Width="SizeToHeader" />
+                <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Edit Team"
+                                    Command="{Binding DataContext.EditTeamCommand,
+                                RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete Team"
+                                    Command="{Binding DataContext.DeleteCommand,
+                                RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    Margin="5" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Grid.Row="1">
-            <Button x:Name="deleteTeamButton" Content="Delete Team"
-                    HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Margin="70,80,0,0" Command="{Binding DeleteCommand}" />
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button x:Name="addTeamButton" Content="Add New Team"
+                    Command="{Binding AddTeamCommand}" VerticalAlignment="Center" Margin="20,0,0,0" HorizontalAlignment="Left"/>
             <Button x:Name="saveChangesButton" Content="Save To Database"
                     Command="{Binding UpdateDBCommand}"
-                    HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Margin="180,80,0,0"/>
-        </Grid>
+                    HorizontalAlignment="Right" Margin="70,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </UserControl>

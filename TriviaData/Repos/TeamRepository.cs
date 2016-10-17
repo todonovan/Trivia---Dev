@@ -138,6 +138,55 @@ namespace TriviaData.Repos
             return t;
         }
 
+        public Team GetTeamByCompany(string companyName)
+        {
+            string sql = $"SELECT * FROM Teams WHERE company={companyName}";
+            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            Team t = new Team();
+            t.Id = (long)reader["id"];
+            t.Name = (string)reader["name"];
+            t.Company = companyName;
+            t.Year = (long)reader["year"];
+            t.Members = new List<Person>();
+            // Queries the reader for list of person ids, separated by comma; splits into individual strings, then converts each one to a long.
+            string dbMemberIds = (string)reader["person_id_list"];
+            if (dbMemberIds != "")
+            {
+                long[] memberIds = Array.ConvertAll(dbMemberIds.Split('-'), x => long.Parse(x));
+                PersonRepository personRepo = new PersonRepository(_dbConn);
+                foreach (var i in memberIds)
+                {
+                    Person p = personRepo.GetPersonById(i);
+                    t.Members.Add(p);
+                }
+            }
+            string dateString = (string)reader["created_at"];
+            t.CreatedAt = new DateTime(long.Parse(dateString));
+            command.Dispose();
+            return t;
+        }
+
+        public Team GetTeamByCompanyNoPlayers(string companyName)
+        {
+            string sql = $"SELECT * FROM Teams WHERE company={companyName}";
+            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            Team t = new Team();
+            t.Id = (long)reader["id"];
+            t.Name = (string)reader["name"];
+            t.Year = (long)reader["year"];
+            t.Company = companyName;
+            t.Members = new List<Person>();
+            string dateString = (string)reader["created_at"];
+            t.CreatedAt = new DateTime(long.Parse(dateString));
+
+            command.Dispose();
+            return t;
+        }
+
         /// <summary>
         /// GetAllTeams does NOT construct Player lists for the sake of efficiency -- cannot foresee any use case for this method that would require it to do so.
         /// </summary>

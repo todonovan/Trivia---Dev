@@ -8,9 +8,6 @@
              xmlns:team="clr-namespace:Trivia.Teams"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.DataContext>
-        <team:TeamAddViewModel />
-    </UserControl.DataContext>
     <Grid>
         <Grid x:Name="teamEdit" HorizontalAlignment="Left" Margin="40,40,40,40" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
@@ -36,7 +33,7 @@
                      Height="23"
                      Margin="3"
                      Grid.Row="0"
-                     Text="{Binding Team.Name}"
+                     Text="{Binding Team.Name, Mode=TwoWay}"
                      VerticalAlignment="Center"
                      Width="120" />
             <Label Content="Year:"
@@ -51,37 +48,22 @@
                      Height="23"
                      Margin="3"
                      Grid.Row="1"
-                     Text="{Binding Team.Year}"
+                     Text="{Binding Team.Year, Mode=TwoWay}"
                      VerticalAlignment="Center"
                      Width="120" />
-            <Label Content="Team Members:"
+            <Label Content="Company:"
                    Grid.Column="0"
                    HorizontalAlignment="Left"
                    Margin="3"
                    Grid.Row="2"
                    VerticalAlignment="Center" />
-            <TextBox x:Name="teamMembersTextBox"
+            <TextBox x:Name="teamCompany"
                      Grid.Column="1"
                      HorizontalAlignment="Left"
                      Height="23"
                      Margin="3"
                      Grid.Row="2"
-                     Text="{Binding Team.Members[0]}"
-                     VerticalAlignment="Center"
-                     Width="120" />
-            <Label Content="Created at:"
-                   Grid.Column="0"
-                   HorizontalAlignment="Left"
-                   Margin="3"
-                   Grid.Row="3"
-                   VerticalAlignment="Center"/>
-            <TextBox x:Name="teamCreatedDateTextBox"
-                     Grid.Column="1"
-                     HorizontalAlignment="Left"
-                     Height="23"
-                     Margin="3"
-                     Grid.Row="3"
-                     Text="{Binding Team.CreatedAt}"
+                     Text="{Binding Team.Company, Mode=TwoWay}"
                      VerticalAlignment="Center"
                      Width="120" />
             <StackPanel Grid.Row="4"

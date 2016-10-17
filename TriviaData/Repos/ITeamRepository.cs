@@ -18,6 +18,8 @@ namespace TriviaData.Repos
         void Update(Team team);
         Team GetTeamById(long id);
         Team GetTeamByIdNoPlayers(long id);
+        Team GetTeamByCompany(string companyName);
+        Team GetTeamByCompanyNoPlayers(string companyName);
         List<Team> GetAllTeams();
         Team GetTeamByName(string name);
         List<Team> FindTeamsByYear(long year);
