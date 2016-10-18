@@ -61,24 +61,16 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Delete Team"
-                                    Command="{Binding DataContext.DeleteCommand,
-                                RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                                    Margin="5" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button x:Name="addTeamButton" Content="Add New Team"
-                    Command="{Binding AddTeamCommand}" VerticalAlignment="Center" Margin="20,0,0,0" HorizontalAlignment="Left"/>
-            <Button x:Name="saveChangesButton" Content="Save To Database"
+                    Command="{Binding AddTeamCommand}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+            <Button x:Name="saveChangesButton" Content="Save Changes"
                     Command="{Binding UpdateDBCommand}"
-                    HorizontalAlignment="Right" Margin="70,0,0,0" VerticalAlignment="Center"/>
+                    HorizontalAlignment="Right" Margin="20,0,0,0" VerticalAlignment="Center"/>
+            <Button Content="Delete Team"
+                    Command="{Binding DeleteCommand}" Margin="20,0,0,0" VerticalAlignment="Center" />
         </StackPanel>
     </Grid>
 </UserControl>

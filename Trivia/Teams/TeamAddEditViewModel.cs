@@ -7,7 +7,6 @@ namespace Trivia.Teams
 {
     public class TeamAddEditViewModel : BindableBase
     {
-        private TriviaDbContext _dbConn;
         private ITeamRepository _teamRepo;
 
         private Team _editingTeam = null;
@@ -26,16 +25,16 @@ namespace Trivia.Teams
             set { SetProperty(ref _team, value); }
         }
 
-        public TeamAddEditViewModel(TriviaDbContext dbConn)
+        public TeamAddEditViewModel(ITeamRepository repo)
         {
-            _dbConn = dbConn;
-            _teamRepo = new TeamRepository(_dbConn.Connection);
+            _teamRepo = repo;
             SaveCommand = new RelayCommand(OnSave, CanSave);
             CancelCommand = new RelayCommand(OnCancel);
         }
 
         private void OnSave()
         {
+            UpdateTeam(Team, _editingTeam);
             if (EditMode) _teamRepo.Update(_editingTeam);
             else _teamRepo.Add(_editingTeam);
             Done();
@@ -58,6 +57,14 @@ namespace Trivia.Teams
             Team = new SimpleEditableTeam();
             Team.ErrorsChanged += RaiseCanExecuteChanged;
             CopyTeam(team, Team);
+        }
+
+        private void UpdateTeam(SimpleEditableTeam source, Team target)
+        {
+            target.Id = source.Id;
+            target.Name = source.Name;
+            target.Year = source.Year;
+            target.Company = source.Company;
         }
 
         private void RaiseCanExecuteChanged(object sender, EventArgs e)

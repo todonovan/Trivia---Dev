@@ -26,7 +26,6 @@ namespace Trivia.Teams
 
         private long _year;
         [Required]
-        [MaxLength(4)]
         public long Year
         {
             get { return _year; }

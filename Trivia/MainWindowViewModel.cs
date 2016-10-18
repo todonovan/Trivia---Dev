@@ -9,6 +9,8 @@ using Trivia.Login;
 using TriviaData;
 using TriviaData.Models;
 using Trivia.Teams;
+using TriviaData.Repos;
+using Microsoft.Practices.Unity;
 
 namespace Trivia
 {
@@ -26,9 +28,10 @@ namespace Trivia
         {
             _dbContext = new TriviaDbContext();
             _dbContext.Open();
-            _teamListViewModel = new TeamListViewModel(_dbContext);
-            _teamAddEditViewModel = new TeamAddEditViewModel(_dbContext);
-            _loginViewModel = new LoginViewModel();
+
+            _teamListViewModel = ContainerHelper.Container.Resolve<TeamListViewModel>();
+            _teamAddEditViewModel = ContainerHelper.Container.Resolve<TeamAddEditViewModel>();
+            _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _currentViewModel = _loginViewModel;
             NavCommand = new RelayCommand<string>(OnNav);
             _teamListViewModel.AddTeamRequested += NavToAddTeam;

@@ -11,7 +11,6 @@ namespace TriviaData.Repos
     {
         void Add();
         void Add(Scorer scorer);
-        void Add(List<Team> teams);
         void Remove(Scorer scorer);
         void Update(Scorer scorer);
         Scorer GetScorerById(long id);

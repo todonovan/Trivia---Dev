@@ -32,7 +32,7 @@ namespace Trivia.Teams
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
             _dbConn = dbConn;
-            _teamRepo = new TeamRepository(_dbConn.Connection);
+            _teamRepo = new TeamRepository();
             Team = new Team();
             SaveCommand = new RelayCommand(OnSave, CanSave);
         }

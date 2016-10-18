@@ -10,21 +10,18 @@ namespace TriviaData.Repos
 {
     public class ScorerRepository : IScorerRepository
     {
-        private SQLiteConnection _dbconn;
-
-        public ScorerRepository(SQLiteConnection dbConn)
-        {
-            _dbconn = dbConn;
-        }
-
         public void Add()
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Scorers (team_id_list, created_at) VALUES (\'\', {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            command.ExecuteNonQuery();
-
-            command.Dispose();
+            string sql = $"INSERT INTO Scorers (name, team_id_list, created_at) VALUES (\'\', \'\', {dateString})";
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
 
         public void Add(Scorer scorer)
@@ -35,68 +32,32 @@ namespace TriviaData.Repos
             {
                 teamIdsList[i] = scorer.Teams[i].Id.ToString();
             }
-            string sql = $"INSERT INTO Scorers (team_id_list, created_at) VALUES ({string.Join("-", teamIdsList)}, {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            command.ExecuteNonQuery();
-
-            command.Dispose();
-        }
-
-        public void Add(List<Team> teams)
-        {
-            string dateString = DateTime.Now.Ticks.ToString();
-            long[] teamIds = teams.Select(t => t.Id).ToArray();
-            string[] teamIdList = Array.ConvertAll(teamIds, x => x.ToString());
-            string sql = $"INSERT INTO Scorers (team_id_list, created_at) VALUES ({string.Join("-", teamIdList)}, {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            command.ExecuteNonQuery();
-
-            command.Dispose();
+            string sql = $"INSERT INTO Scorers (name, team_id_list, created_at) VALUES (\'{scorer.Name}\', \'{string.Join("-", teamIdsList)}\', {dateString})";
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
 
         public Scorer GetScorerById(long id)
         {
-            string sql = $"SELECT * FROM Scorers WHERE id={id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-
             Scorer s = new Scorer();
-            s.Id = id;
-            s.Teams = new List<Team>();
-            string teamIdsString = (string)reader["team_id_list"];
-            if (teamIdsString != "")
+            string sql = $"SELECT * FROM Scorers WHERE id={id}";
+            using (var _dbConn = new TriviaDbContext())
             {
-                TeamRepository teamRepo = new TeamRepository(_dbconn);
-                long[] teamIds = Array.ConvertAll(teamIdsString.Split('_'), x => long.Parse(x));
-                foreach (var t in teamIds)
-                {
-                    Team team = teamRepo.GetTeamById(t);
-                    s.Teams.Add(team);
-                }
-            }
-            s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-
-            command.Dispose();
-            return s;
-        }
-
-        public List<Scorer> GetAllScorers()
-        {
-            List<Scorer> scorerList = new List<Scorer>();
-            string sql = $"SELECT * FROM Scorers";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            SQLiteDataReader reader = command.ExecuteReader();
-            TeamRepository teamRepo = new TeamRepository(_dbconn);
-
-            while (reader.Read())
-            {
-                Scorer s = new Scorer();
-                s.Id = (long)reader["id"];
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                s.Id = id;
                 s.Teams = new List<Team>();
                 string teamIdsString = (string)reader["team_id_list"];
                 if (teamIdsString != "")
                 {
+                    TeamRepository teamRepo = new TeamRepository();
                     long[] teamIds = Array.ConvertAll(teamIdsString.Split('_'), x => long.Parse(x));
                     foreach (var t in teamIds)
                     {
@@ -104,11 +65,46 @@ namespace TriviaData.Repos
                         s.Teams.Add(team);
                     }
                 }
-                s.CreatedAt = new DateTime((long)reader["created_at"]);
-                scorerList.Add(s);
+                s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                command.Dispose();
+                _dbConn.Close();
             }
+            return s;
+        }
 
-            command.Dispose();
+        public List<Scorer> GetAllScorers()
+        {
+            List<Scorer> scorerList = new List<Scorer>();
+            string sql = $"SELECT * FROM Scorers";
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                TeamRepository teamRepo = new TeamRepository();
+
+                while (reader.Read())
+                {
+                    Scorer s = new Scorer();
+                    s.Id = (long)reader["id"];
+                    s.Name = (string)reader["name"];
+                    s.Teams = new List<Team>();
+                    string teamIdsString = (string)reader["team_id_list"];
+                    if (teamIdsString != "")
+                    {
+                        long[] teamIds = Array.ConvertAll(teamIdsString.Split('_'), x => long.Parse(x));
+                        foreach (var t in teamIds)
+                        {
+                            Team team = teamRepo.GetTeamById(t);
+                            s.Teams.Add(team);
+                        }
+                    }
+                    s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                    scorerList.Add(s);
+                }
+                command.Dispose();
+                _dbConn.Close();
+            }
             return scorerList;
         }
 
@@ -116,10 +112,14 @@ namespace TriviaData.Repos
         {
             long id = scorer.Id;
             string sql = $"DELETE FROM Scorers WHERE id={id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            command.ExecuteNonQuery();
-
-            command.Dispose();
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
 
         public void Update(Scorer scorer)
@@ -130,11 +130,15 @@ namespace TriviaData.Repos
             {
                 memberIdList[i] = scorer.Teams[i].Id.ToString();
             }
-            string sql = $"UPDATE Scorer SET team_id_list={string.Join("-", memberIdList)} WHERE id={id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbconn);
-            command.ExecuteNonQuery();
-
-            command.Dispose();
+            string sql = $"UPDATE Scorer SET name=\'{scorer.Name}\', team_id_list=\'{string.Join("-", memberIdList)}\' WHERE id={id}";
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
     }
 }

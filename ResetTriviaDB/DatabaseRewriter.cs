@@ -27,12 +27,6 @@ namespace ResetTriviaDB
             command = new SQLiteCommand(drop, dbConn);
             command.ExecuteNonQuery();
 
-            Console.WriteLine("People...");
-            sql = "CREATE TABLE \"People\"(\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \"full_name\" VARCHAR(125) UNIQUE, \"address\" TEXT, \"created_at\" VARCHAR(125))";
-
-            command = new SQLiteCommand(sql, dbConn);
-            command.ExecuteNonQuery();
-
             // Scorers
 
             drop = "DROP TABLE IF EXISTS Scorers";
@@ -40,7 +34,7 @@ namespace ResetTriviaDB
             command.ExecuteNonQuery();
 
             Console.WriteLine("Scorers...");
-            sql = "CREATE TABLE \"Scorers\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \"team_id_list\" VARCHAR(125), \"created_at\" VARCHAR(125))";
+            sql = "CREATE TABLE \"Scorers\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \"name\" VARCHAR(125), \"team_id_list\" VARCHAR(125), \"created_at\" VARCHAR(125))";
 
             command = new SQLiteCommand(sql, dbConn);
             command.ExecuteNonQuery();
@@ -101,7 +95,7 @@ namespace ResetTriviaDB
             command.ExecuteNonQuery();
 
             Console.WriteLine("Teams...");
-            sql = "CREATE TABLE \"Teams\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , \"person_id_list\" VARCHAR(125), \"name\" VARCHAR(125) UNIQUE, \"year\" INTEGER, \"company\" VARCHAR(125), \"created_at\" VARCHAR(125))";
+            sql = "CREATE TABLE \"Teams\" (\"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , \"name\" VARCHAR(125) UNIQUE, \"year\" INTEGER, \"company\" VARCHAR(125), \"created_at\" VARCHAR(125))";
 
             command = new SQLiteCommand(sql, dbConn);
             command.ExecuteNonQuery();

@@ -11,267 +11,152 @@ namespace TriviaData.Repos
 {
     public class TeamRepository : ITeamRepository
     {
-        private SQLiteConnection _dbConn;
-
-        public TeamRepository(SQLiteConnection dbConn)
-        {
-            _dbConn = dbConn;
-        }
-
         public void Add()
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (person_id_list, name, year, created_at) VALUES (\'\', \'\', 0, {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            command.ExecuteNonQuery();
-            command.Dispose();
+            string sql = $"INSERT INTO Teams (name, year, company, created_at) VALUES (\'\', 0, \'\', {dateString})";
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
 
         public void Add(Team team)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string members;
-            if (team.Members == null) { members = "\'\'"; }
-            else
+            string sql = $"INSERT INTO Teams (name, year, company, created_at) VALUES (\'{team.Name}\', {team.Year}, \'{team.Company}\', {dateString})";
+            using (var _dbConn = new TriviaDbContext())
             {
-                string[] personIdList = new string[team.Members.Count];
-                for (int i = 0; i < personIdList.Length; i++)
-                {
-                    personIdList[i] = team.Members[i].Id.ToString();
-                }
-                if (team.Members.Count == 0)
-                {
-                    members = "\'\'";
-                }
-                else
-                {
-                    members = string.Join("-", personIdList);
-                }
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
             }
-            string sql = $"INSERT INTO Teams (person_id_list, name, year, created_at) VALUES ({members}, \'{team.Name}\', {team.Year}, {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            command.ExecuteNonQuery();
-
-            command.Dispose();
         }
 
         public void Add(string name)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (person_id_list, name, year, created_at) VALUES (\'\', \'{name}\', 0, {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            command.ExecuteNonQuery();
-            command.Dispose();
-        }
-
-        public void Add(List<Person> members)
-        {
-            string dateString = DateTime.Now.Ticks.ToString();
-            string[] memberIdList = new string[members.Count];
-            for (int i = 0; i < memberIdList.Length; i++)
+            string sql = $"INSERT INTO Teams (name, year, company, created_at) VALUES (\'{name}\', 0, \'\', {dateString})";
+            using (var _dbConn = new TriviaDbContext())
             {
-                memberIdList[i] = members[i].Id.ToString();
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
             }
-            string sql = $"INSERT INTO Teams (person_id_list, name, year created_at) VALUES ({memberIdList}, \'\', 0, {dateString})";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            command.ExecuteNonQuery();
-            command.Dispose();
         }
 
         public Team GetTeamById(long id)
         {
-            string sql = $"SELECT * FROM Teams WHERE id={id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-
             Team t = new Team();
-            t.Id = id;
-            t.Name = (string)reader["name"];
-            t.Year = (long)reader["year"];
-            t.Members = new List<Person>();
-            // Queries the reader for list of person ids, separated by comma; splits into individual strings, then converts each one to a long.
-            string dbMemberIds = (string)reader["person_id_list"];
-            if (dbMemberIds != "")
+            string sql = $"SELECT * FROM Teams WHERE id={id}";
+            using (var _dbConn = new TriviaDbContext())
             {
-                long[] memberIds = Array.ConvertAll(((string)reader["person_id_list"]).Split('-'), x => long.Parse(x));
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
 
-                PersonRepository personRepo = new PersonRepository(_dbConn);
-                foreach (var i in memberIds)
-                {
-                    Person p = personRepo.GetPersonById(i);
-                    t.Members.Add(p);
-                }
+                t.Id = id;
+                t.Name = (string)reader["name"];
+                t.Year = (long)reader["year"];
+                t.Company = (string)reader["company"];
+                t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                command.Dispose();
+                _dbConn.Close();
             }
-            
-            string dateString = (string)reader["created_at"];
-            t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-            command.Dispose();
             return t;
         }
 
         public Team GetTeamByName(string name)
         {
-            string sql = $"SELECT * FROM Teams WHERE name={name}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-
             Team t = new Team();
-            t.Id = (long)reader["id"];
-            t.Name = (string)reader["name"];
-            t.Year = (long)reader["year"];
-            t.Members = new List<Person>();
-            // Queries the reader for list of person ids, separated by comma; splits into individual strings, then converts each one to a long.
-            string dbMemberIds = (string)reader["person_id_list"];
-            if (dbMemberIds != "")
+            using (var _dbConn = new TriviaDbContext())
             {
-                long[] memberIds = Array.ConvertAll(dbMemberIds.Split('-'), x => long.Parse(x));
-                PersonRepository personRepo = new PersonRepository(_dbConn);
-                foreach (var i in memberIds)
-                {
-                    Person p = personRepo.GetPersonById(i);
-                    t.Members.Add(p);
-                }
-            }            
-            string dateString = (string)reader["created_at"];
-            t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-            command.Dispose();
+                _dbConn.Open();
+                string sql = $"SELECT * FROM Teams WHERE name={name}";
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                t.Id = (long)reader["id"];
+                t.Name = (string)reader["name"];
+                t.Year = (long)reader["year"];
+                t.Company = (string)reader["company"];
+                t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                command.Dispose();
+                _dbConn.Close();
+            }
             return t;
         }
 
         public Team GetTeamByCompany(string companyName)
         {
             string sql = $"SELECT * FROM Teams WHERE company={companyName}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-
             Team t = new Team();
-            t.Id = (long)reader["id"];
-            t.Name = (string)reader["name"];
-            t.Company = companyName;
-            t.Year = (long)reader["year"];
-            t.Members = new List<Person>();
-            // Queries the reader for list of person ids, separated by comma; splits into individual strings, then converts each one to a long.
-            string dbMemberIds = (string)reader["person_id_list"];
-            if (dbMemberIds != "")
+            using (var _dbConn = new TriviaDbContext())
             {
-                long[] memberIds = Array.ConvertAll(dbMemberIds.Split('-'), x => long.Parse(x));
-                PersonRepository personRepo = new PersonRepository(_dbConn);
-                foreach (var i in memberIds)
-                {
-                    Person p = personRepo.GetPersonById(i);
-                    t.Members.Add(p);
-                }
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                t.Id = (long)reader["id"];
+                t.Name = (string)reader["name"];
+                t.Company = companyName;
+                t.Year = (long)reader["year"];
+                string dateString = (string)reader["created_at"];
+                t.CreatedAt = new DateTime(long.Parse(dateString));
+                command.Dispose();
+                _dbConn.Close();
             }
-            string dateString = (string)reader["created_at"];
-            t.CreatedAt = new DateTime(long.Parse(dateString));
-            command.Dispose();
             return t;
         }
 
-        public Team GetTeamByCompanyNoPlayers(string companyName)
-        {
-            string sql = $"SELECT * FROM Teams WHERE company={companyName}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            Team t = new Team();
-            t.Id = (long)reader["id"];
-            t.Name = (string)reader["name"];
-            t.Year = (long)reader["year"];
-            t.Company = companyName;
-            t.Members = new List<Person>();
-            string dateString = (string)reader["created_at"];
-            t.CreatedAt = new DateTime(long.Parse(dateString));
-
-            command.Dispose();
-            return t;
-        }
-
-        /// <summary>
-        /// GetAllTeams does NOT construct Player lists for the sake of efficiency -- cannot foresee any use case for this method that would require it to do so.
-        /// </summary>
-        /// <returns></returns>
         public List<Team> GetAllTeams()
         {
             List<Team> teamsList = new List<Team>();
             string sql = $"SELECT * FROM Teams";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-            PersonRepository personRepo = new PersonRepository(_dbConn);
-
-            while (reader.Read())
+            using (var _dbConn = new TriviaDbContext())
             {
-                Team t = new Team();
-                t.Id = (long)reader["id"];
-                t.Name = (string)reader["name"];
-                t.Year = (long)reader["year"];
-                t.Members = new List<Person>();
-                t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-                teamsList.Add(t);
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Team t = new Team();
+                    t.Id = (long)reader["id"];
+                    t.Name = (string)reader["name"];
+                    t.Year = (long)reader["year"];
+                    t.Company = (string)reader["company"];
+                    t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                    teamsList.Add(t);
+                }
+                command.Dispose();
+                _dbConn.Close();
             }
-            command.Dispose();
             return teamsList;
         }
-
-        /// <summary>
-        /// This method retrieves a team from the database but does not make calls to the People table. This will be a more efficient solution
-        /// during most use cases as very few uses will require specific team members to be displayed (for example, scoring itself). A more
-        /// robust solution might encapsulate a call to the regular GetTeam method and execute it the first time Team info is requested by the client...
-        /// but at this stage, I'd rather be notified when the app is trying to make a DB transaction to get Person info that I don't need.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Team object with an empty Person list.</returns>
-        public Team GetTeamByIdNoPlayers(long id)
-        {
-            string sql = $"SELECT * FROM Teams WHERE id={id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            Team t = new Team();
-            t.Id = id;
-            t.Name = (string)reader["name"];
-            t.Year = (long)reader["year"];
-            t.Members = new List<Person>();
-            string dateString = (string)reader["created_at"];
-            t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-
-            command.Dispose();
-            return t;
-        }
-
 
         public List<Team> FindTeamsByYear(long year)
         {
             List<Team> teamsByYear = new List<Team>();
-
             string sql = $"SELECT * FROM Teams WHERE year={year}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            using (var _dbConn = new TriviaDbContext())
             {
-                teamsByYear.Add(GetTeamById((long)reader["id"]));
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    teamsByYear.Add(GetTeamById((long)reader["id"]));
+                }
+                command.Dispose();
+                _dbConn.Close();
             }
-            command.Dispose();
-            return teamsByYear;
-        }
-
-        /// <summary>
-        /// Operates similarly to GetTeamByIdNoPlayers, but for year searching. Could be useful for GUI data controls -- organizing teams by year, etc.
-        /// </summary>
-        /// <param name="year"></param>
-        /// <returns></returns>
-        public List<Team> FindTeamsByYearNoPlayers(long year)
-        {
-            List<Team> teamsByYear = new List<Team>();
-
-            string sql = $"SELECT * FROM Teams WHERE year={year}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                teamsByYear.Add(GetTeamByIdNoPlayers((long)reader["id"]));
-            }
-            command.Dispose();
             return teamsByYear;
         }
 
@@ -279,23 +164,28 @@ namespace TriviaData.Repos
         {
             long id = team.Id;
             string sql = $"DELETE FROM Teams WHERE id={id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            command.ExecuteNonQuery();
-            command.Dispose();
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
 
         public void Update(Team team)
         {
-            string[] memberIdList = new string[team.Members.Count];
-            for (int i = 0; i < memberIdList.Length; i++)
-            {
-                memberIdList[i] = team.Members[i].Id.ToString();
-            }
             string dateString = team.CreatedAt.Ticks.ToString();
-            string sql = $"UPDATE Teams SET name=\'{team.Name}\', year={team.Year}, person_id_list=\'{string.Join("-", memberIdList)}\', created_at={dateString} WHERE id={team.Id}";
-            SQLiteCommand command = new SQLiteCommand(sql, _dbConn);
-            command.ExecuteNonQuery();
-            command.Dispose();
+            string sql = $"UPDATE Teams SET name=\'{team.Name}\', year={team.Year}, company=\'{team.Company}\', created_at={dateString} WHERE id={team.Id}";
+            using (var _dbConn = new TriviaDbContext())
+            {
+                _dbConn.Open();
+                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
+                command.ExecuteNonQuery();
+                command.Dispose();
+                _dbConn.Close();
+            }
         }
     }
 }
