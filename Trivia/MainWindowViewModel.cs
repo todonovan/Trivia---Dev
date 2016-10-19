@@ -11,6 +11,7 @@ using TriviaData.Models;
 using Trivia.Teams;
 using TriviaData.Repos;
 using Microsoft.Practices.Unity;
+using Trivia.Scorers;
 
 namespace Trivia
 {
@@ -18,6 +19,9 @@ namespace Trivia
     {
         private TeamListViewModel _teamListViewModel;
         private TeamAddEditViewModel _teamAddEditViewModel;
+        private ScorerListViewModel _scorerListViewModel;
+        private ScorerAddEditViewModel _scorerAddEditViewModel;
+        private ScorerSetTeamsViewModel _scorerSetTeamsViewModel;
         private LoginViewModel _loginViewModel;
         private TriviaDbContext _dbContext;
 
@@ -31,12 +35,21 @@ namespace Trivia
 
             _teamListViewModel = ContainerHelper.Container.Resolve<TeamListViewModel>();
             _teamAddEditViewModel = ContainerHelper.Container.Resolve<TeamAddEditViewModel>();
+            _scorerListViewModel = ContainerHelper.Container.Resolve<ScorerListViewModel>();
+            _scorerAddEditViewModel = ContainerHelper.Container.Resolve<ScorerAddEditViewModel>();
+            _scorerSetTeamsViewModel = ContainerHelper.Container.Resolve<ScorerSetTeamsViewModel>();
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _currentViewModel = _loginViewModel;
+
             NavCommand = new RelayCommand<string>(OnNav);
+
             _teamListViewModel.AddTeamRequested += NavToAddTeam;
             _teamListViewModel.EditTeamRequested += NavToEditTeam;
             _teamAddEditViewModel.Done += NavToTeamList;
+
+            _scorerListViewModel.AddScorerRequested += NavToAddScorer;
+            _scorerListViewModel.EditScorerRequested += NavToEditScorer;
+            _scorerAddEditViewModel.Done += NavToScorerList;
         }
 
         public BindableBase CurrentViewModel
@@ -64,6 +77,9 @@ namespace Trivia
                 case "teamList":
                     CurrentViewModel = _teamListViewModel;
                     break;
+                case "scorerList":
+                    CurrentViewModel = _scorerListViewModel;
+                    break;
                 default:
                     CurrentViewModel = _loginViewModel;
                     break;
@@ -87,6 +103,25 @@ namespace Trivia
         private void NavToTeamList()
         {
             CurrentViewModel = _teamListViewModel;
+        }
+
+        private void NavToAddScorer(Scorer scorer)
+        {
+            _scorerAddEditViewModel.EditMode = false;
+            _scorerAddEditViewModel.SetScorer(scorer);
+            CurrentViewModel = _scorerAddEditViewModel;
+        }
+
+        private void NavToEditScorer(Scorer scorer)
+        {
+            _scorerAddEditViewModel.EditMode = true;
+            _scorerAddEditViewModel.SetScorer(scorer);
+            CurrentViewModel = _scorerAddEditViewModel;
+        }
+
+        private void NavToScorerList()
+        {
+            CurrentViewModel = _scorerListViewModel;
         }
     }
 }

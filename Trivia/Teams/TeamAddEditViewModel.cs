@@ -7,7 +7,7 @@ namespace Trivia.Teams
 {
     public class TeamAddEditViewModel : BindableBase
     {
-        private ITeamRepository _teamRepo;
+        private ITeamRepository _repo;
 
         private Team _editingTeam = null;
 
@@ -27,7 +27,7 @@ namespace Trivia.Teams
 
         public TeamAddEditViewModel(ITeamRepository repo)
         {
-            _teamRepo = repo;
+            _repo = repo;
             SaveCommand = new RelayCommand(OnSave, CanSave);
             CancelCommand = new RelayCommand(OnCancel);
         }
@@ -35,8 +35,8 @@ namespace Trivia.Teams
         private void OnSave()
         {
             UpdateTeam(Team, _editingTeam);
-            if (EditMode) _teamRepo.Update(_editingTeam);
-            else _teamRepo.Add(_editingTeam);
+            if (EditMode) _repo.Update(_editingTeam);
+            else _repo.Add(_editingTeam);
             Done();
         }
 

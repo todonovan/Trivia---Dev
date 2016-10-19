@@ -8,7 +8,7 @@ using TriviaData.Models;
 
 namespace TriviaData.Repos
 {
-    public interface ITeamRepository
+    public interface ITeamRepository : IApplicationRepository
     {
         void Add();
         void Add(string name);

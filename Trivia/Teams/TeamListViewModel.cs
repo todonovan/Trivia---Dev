@@ -15,7 +15,7 @@ namespace Trivia.Teams
 {
     public class TeamListViewModel : BindableBase
     {
-        private ITeamRepository _teamRepo;
+        private ITeamRepository _repo;
 
         private ObservableCollection<Team> _teams;
         public ObservableCollection<Team> Teams
@@ -46,7 +46,7 @@ namespace Trivia.Teams
             UpdateDBCommand = new RelayCommand(OnUpdate, CanUpdate);
             EditTeamCommand = new RelayCommand<Team>(OnEditTeam);
             AddTeamCommand = new RelayCommand(OnAddTeam);
-            _teamRepo = repo;
+            _repo = repo;
         }
 
         private bool CanUpdate()
@@ -58,13 +58,12 @@ namespace Trivia.Teams
         {
             foreach (var t in _teamsToDelete)
             {
-                _teamRepo.Remove(t);
+                _repo.Remove(t);
             }
         }
 
         private bool CanDelete()
         {
-
             return SelectedTeam != null;
         }
 
@@ -79,7 +78,7 @@ namespace Trivia.Teams
         {
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
-            Teams = new ObservableCollection<Team>(_teamRepo.GetAllTeams());
+            Teams = new ObservableCollection<Team>(_repo.GetAllTeams());
         }
 
         public void OnAddTeam()

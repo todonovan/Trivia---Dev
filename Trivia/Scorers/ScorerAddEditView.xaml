@@ -1,15 +1,15 @@
-﻿<UserControl x:Class="Trivia.Teams.TeamAddView"
+﻿<UserControl x:Class="Trivia.Scorers.ScorerAddEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
-             xmlns:team="clr-namespace:Trivia.Teams"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:scorer="clr-namespace:Trivia.Scorers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Grid x:Name="teamAddEdit" HorizontalAlignment="Left" Margin="40,40,40,40" VerticalAlignment="Top">
+        <Grid x:Name="scorerAddEdit" HorizontalAlignment="Left" Margin="40,40,40,40" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -18,60 +18,49 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Label Content="Team Name:"
+            <Label Content="Scorer Name:"
                    Grid.Column="0"
                    HorizontalAlignment="Left"
                    Margin="3"
                    Grid.Row="0"
                    VerticalAlignment="Center" />
-            <TextBox x:Name="teamNameTextBox"
+            <TextBox x:Name="scorerNameTextBox"
                      Grid.Column="1"
                      HorizontalAlignment="Left"
                      Height="23"
                      Margin="3"
                      Grid.Row="0"
-                     Text="{Binding Team.Name, Mode=TwoWay}"
+                     Text="{Binding Scorer.Name, Mode=TwoWay}"
                      VerticalAlignment="Center"
                      Width="120" />
-            <Label Content="Year:"
+            <Label Content="Teams:"
                    Grid.Column="0"
                    HorizontalAlignment="Left"
                    Margin="3"
                    Grid.Row="1"
                    VerticalAlignment="Center" />
-            <TextBox x:Name="yearTextBox"
-                     Grid.Column="1"
-                     HorizontalAlignment="Left"
-                     Height="23"
-                     Margin="3"
-                     Grid.Row="1"
-                     Text="{Binding Team.Year, Mode=TwoWay}"
-                     VerticalAlignment="Center"
-                     Width="120" />
-            <Label Content="Company:"
-                   Grid.Column="0"
-                   HorizontalAlignment="Left"
-                   Margin="3"
-                   Grid.Row="2"
-                   VerticalAlignment="Center" />
-            <TextBox x:Name="teamCompany"
-                     Grid.Column="1"
-                     HorizontalAlignment="Left"
-                     Height="23"
-                     Margin="3"
-                     Grid.Row="2"
-                     Text="{Binding Team.Company, Mode=TwoWay}"
-                     VerticalAlignment="Center"
-                     Width="120" />
-            <StackPanel Grid.Row="4"
+            <ComboBox x:Name="scorerTeamsBox"
+                      Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      Width="120"
+                      Margin="3"
+                      Grid.Row="1"
+                      ItemsSource="{Binding Scorer.Teams}"
+                      VerticalAlignment="Center" />
+            <StackPanel Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal"
-                        Margin="3" RenderTransformOrigin="-0.362,0.45">
+                        Margin="10" RenderTransformOrigin="-0.362,0.45">
+                <Button x:Name="modifyTeamsPopupButton"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,40,0"
+                        Width="80"
+                        Content="Set Teams"
+                        Command="{Binding SetTeams}" />
                 <Button x:Name="saveButton"
                         Grid.Column="1"
                         HorizontalAlignment="Center"

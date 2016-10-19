@@ -63,6 +63,7 @@
     <Compile Include="Models\Round.cs" />
     <Compile Include="Models\Scorer.cs" />
     <Compile Include="Models\Team.cs" />
+    <Compile Include="Repos\IApplicationRepository.cs" />
     <Compile Include="Repos\IScorerRepository.cs" />
     <Compile Include="Repos\ITeamRepository.cs" />
     <Compile Include="Repos\ScorerRepository.cs" />

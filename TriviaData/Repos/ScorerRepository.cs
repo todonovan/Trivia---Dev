@@ -27,12 +27,17 @@ namespace TriviaData.Repos
         public void Add(Scorer scorer)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string[] teamIdsList = new string[scorer.Teams.Count];
-            for (int i = 0; i < teamIdsList.Length; i++)
+            string teamIds = " ";
+            if (scorer.Teams.Count != 0)
             {
-                teamIdsList[i] = scorer.Teams[i].Id.ToString();
+                string[] teamIdsList = new string[scorer.Teams.Count];
+                for (int i = 0; i < teamIdsList.Length; i++)
+                {
+                    teamIdsList[i] = scorer.Teams[i].Id.ToString();
+                }
+                teamIds = string.Join(",", teamIdsList);
             }
-            string sql = $"INSERT INTO Scorers (name, team_id_list, created_at) VALUES (\'{scorer.Name}\', \'{string.Join("-", teamIdsList)}\', {dateString})";
+            string sql = $"INSERT INTO Scorers (name, team_id_list, created_at) VALUES (\'{scorer.Name}\', \'{teamIds}\', {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -55,10 +60,10 @@ namespace TriviaData.Repos
                 s.Id = id;
                 s.Teams = new List<Team>();
                 string teamIdsString = (string)reader["team_id_list"];
-                if (teamIdsString != "")
+                if (teamIdsString != " ")
                 {
                     TeamRepository teamRepo = new TeamRepository();
-                    long[] teamIds = Array.ConvertAll(teamIdsString.Split('_'), x => long.Parse(x));
+                    long[] teamIds = Array.ConvertAll(teamIdsString.Split(','), x => long.Parse(x));
                     foreach (var t in teamIds)
                     {
                         Team team = teamRepo.GetTeamById(t);
@@ -90,9 +95,9 @@ namespace TriviaData.Repos
                     s.Name = (string)reader["name"];
                     s.Teams = new List<Team>();
                     string teamIdsString = (string)reader["team_id_list"];
-                    if (teamIdsString != "")
+                    if (teamIdsString != " ")
                     {
-                        long[] teamIds = Array.ConvertAll(teamIdsString.Split('_'), x => long.Parse(x));
+                        long[] teamIds = Array.ConvertAll(teamIdsString.Split(','), x => long.Parse(x));
                         foreach (var t in teamIds)
                         {
                             Team team = teamRepo.GetTeamById(t);
@@ -125,12 +130,17 @@ namespace TriviaData.Repos
         public void Update(Scorer scorer)
         {
             long id = scorer.Id;
-            string[] memberIdList = new string[scorer.Teams.Count];
-            for (int i = 0; i < memberIdList.Length; i++)
+            string teamIds = " ";
+            if (scorer.Teams.Count != 0)
             {
-                memberIdList[i] = scorer.Teams[i].Id.ToString();
+                string[] teamIdList = new string[scorer.Teams.Count];
+                for (int i = 0; i < teamIdList.Length; i++)
+                {
+                    teamIdList[i] = scorer.Teams[i].Id.ToString();
+                }
+                teamIds = string.Join(",", teamIdList);
             }
-            string sql = $"UPDATE Scorer SET name=\'{scorer.Name}\', team_id_list=\'{string.Join("-", memberIdList)}\' WHERE id={id}";
+            string sql = $"UPDATE Scorers SET name=\'{scorer.Name}\', team_id_list=\'{teamIds}\' WHERE id={id}";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();

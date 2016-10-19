@@ -16,6 +16,8 @@ namespace Trivia
             _container = new UnityContainer();
             _container.RegisterType<ITeamRepository, TeamRepository>(
                 new ContainerControlledLifetimeManager());
+            _container.RegisterType<IScorerRepository, ScorerRepository>(
+                new ContainerControlledLifetimeManager());
         }
 
         public static IUnityContainer Container

@@ -7,7 +7,7 @@ using TriviaData.Models;
 
 namespace TriviaData.Repos
 {
-    public interface IScorerRepository
+    public interface IScorerRepository : IApplicationRepository
     {
         void Add();
         void Add(Scorer scorer);
