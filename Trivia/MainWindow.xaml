@@ -7,6 +7,7 @@
         xmlns:Teams="clr-namespace:Trivia.Teams"
         xmlns:Login="clr-namespace:Trivia.Login"
         xmlns:Scorers="clr-namespace:Trivia.Scorers"
+        xmlns:Sessions="clr-namespace:Trivia.Sessions"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
         Title="GPLC Trivia" Height="768" Width="1024"
@@ -32,6 +33,12 @@
         <DataTemplate DataType="{x:Type Scorers:ScorerAddEditViewModel}">
             <Scorers:ScorerAddEditView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type Scorers:ScorerSetTeamsViewModel}">
+            <Scorers:ScorerSetTeamsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type Sessions:StartSessionViewModel}">
+            <Sessions:StartSessionView />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -40,13 +47,13 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="200" />
+            <RowDefinition Height="125" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Background="#FF79B8CB">
             <TextBlock Text="GPLC Trivia" FontSize="36" TextAlignment="Center" FontWeight="Bold" Foreground="White" />
             <Button x:Name="manageTeamsButton" Command="{Binding NavCommand}" CommandParameter="teamList" Content="Manage Teams" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
             <Button x:Name="manageScorersButton" Command="{Binding NavCommand}" CommandParameter="scorerList" Content="Manage Scorers" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
-            <Button x:Name="startSessionButton" Content="Start Scoring" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button x:Name="startSessionButton" Content="Start Scoring" Command="{Binding NavCommand}" CommandParameter="startSession" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
             <Button x:Name="seeReportsButton" Content="View a Report" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
         </StackPanel>
         <Grid Grid.Column="1">

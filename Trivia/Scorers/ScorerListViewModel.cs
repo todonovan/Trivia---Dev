@@ -40,6 +40,7 @@ namespace Trivia.Scorers
             DeleteCommand = new RelayCommand(OnDelete, CanDelete);
             UpdateDBCommand = new RelayCommand(OnUpdate, CanUpdate);
             EditScorerCommand = new RelayCommand<Scorer>(OnEditScorer);
+            AssociateTeamsCommand = new RelayCommand<Scorer>(OnAssociateTeams);
             AddScorerCommand = new RelayCommand(OnAddScorer);
         }
 
@@ -82,12 +83,19 @@ namespace Trivia.Scorers
             foreach (var s in _scorersToDelete) { _repo.Remove(s); }
         }
 
+        private void OnAssociateTeams(Scorer scorer)
+        {
+            AssociateTeamsRequested(scorer);
+        }
+
         public RelayCommand DeleteCommand { get; private set; }
         public RelayCommand UpdateDBCommand { get; private set; }
         public RelayCommand AddScorerCommand { get; private set; }
         public RelayCommand<Scorer> EditScorerCommand { get; private set; }
+        public RelayCommand<Scorer> AssociateTeamsCommand { get; private set; }
 
         public event Action<Scorer> AddScorerRequested = delegate { };
         public event Action<Scorer> EditScorerRequested = delegate { };
+        public event Action<Scorer> AssociateTeamsRequested = delegate { };
     }
 }

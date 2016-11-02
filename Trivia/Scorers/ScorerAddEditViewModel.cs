@@ -13,6 +13,11 @@ namespace Trivia.Scorers
         private IScorerRepository _repo;
 
         private Scorer _editingScorer = null;
+        public Scorer EditingScorer
+        {
+            get { return _editingScorer; }
+            set { SetProperty(ref _editingScorer, value); }
+        }
 
         private bool _editMode;
         public bool EditMode
@@ -33,11 +38,12 @@ namespace Trivia.Scorers
             _repo = repo;
             SaveCommand = new RelayCommand(OnSave, CanSave);
             CancelCommand = new RelayCommand(OnCancel);
+            AssociateTeamsCommand = new RelayCommand<Scorer>(OnAssociateTeams);
         }
 
         public void SetScorer(Scorer scorer)
         {
-            _editingScorer = scorer;
+            EditingScorer = scorer;
             if (Scorer != null) Scorer.ErrorsChanged -= RaiseCanExecuteChanged;
             Scorer = new SimpleEditableScorer();
             Scorer.ErrorsChanged += RaiseCanExecuteChanged;
@@ -79,6 +85,11 @@ namespace Trivia.Scorers
             Done();
         }
 
+        private void OnAssociateTeams(Scorer scorer)
+        {
+            AssociateTeamsRequested(scorer);
+        }
+
         private void RaiseCanExecuteChanged(object sender, EventArgs e)
         {
             SaveCommand.RaiseCanExecuteChanged();
@@ -86,6 +97,9 @@ namespace Trivia.Scorers
 
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
+        public RelayCommand<Scorer> AssociateTeamsCommand { get; private set; }
+
+        public event Action<Scorer> AssociateTeamsRequested = delegate { };
         public event Action Done = delegate { };
     }
 }

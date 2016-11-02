@@ -59,6 +59,7 @@
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\..\GPLC project\SQLTest\SQLTesting\SQLTesting\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.5\Libraries\System.Windows.Interactivity.dll</HintPath>
@@ -91,6 +92,7 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="MvvmBehaviors.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Scorers\ActiveScorer.cs" />
     <Compile Include="Scorers\ScorerAddEditView.xaml.cs">
       <DependentUpon>ScorerAddEditView.xaml</DependentUpon>
     </Compile>
@@ -104,7 +106,27 @@
     </Compile>
     <Compile Include="Scorers\ScorerSetTeamsViewModel.cs" />
     <Compile Include="Scorers\SimpleEditableScorer.cs" />
+    <Compile Include="Scoring\BonusRoundScorecardView.xaml.cs">
+      <DependentUpon>BonusRoundScorecardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scoring\BonusRoundScorecardViewModel.cs" />
+    <Compile Include="Sessions\GameSession.cs" />
+    <Compile Include="Scoring\ScoringRound.cs" />
+    <Compile Include="Scoring\ScorerRoundScorecardView.xaml.cs">
+      <DependentUpon>ScorerRoundScorecardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scoring\ScorerRoundScorecardViewModel.cs" />
+    <Compile Include="Scoring\ScoringTeam.cs" />
+    <Compile Include="Scoring\TeamRoundScoringView.xaml.cs">
+      <DependentUpon>TeamRoundScoringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scoring\TeamRoundScoringViewModel.cs" />
+    <Compile Include="Sessions\GameSessionSerializer.cs" />
     <Compile Include="Sessions\SimpleEditableSession.cs" />
+    <Compile Include="Sessions\StartSessionView.xaml.cs">
+      <DependentUpon>StartSessionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sessions\StartSessionViewModel.cs" />
     <Compile Include="Settings\PasswordManagementView.xaml.cs">
       <DependentUpon>PasswordManagementView.xaml</DependentUpon>
     </Compile>
@@ -150,6 +172,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scorers\ScorerSetTeamsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scoring\BonusRoundScorecardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scoring\ScorerRoundScorecardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scoring\TeamRoundScoringView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Sessions\StartSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,7 +247,10 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Reports\" />
+    <Folder Include="Scoreboard\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

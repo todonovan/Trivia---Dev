@@ -12,6 +12,9 @@ using Trivia.Teams;
 using TriviaData.Repos;
 using Microsoft.Practices.Unity;
 using Trivia.Scorers;
+using Trivia.Scoring;
+using Trivia.Sessions;
+using System.Windows;
 
 namespace Trivia
 {
@@ -23,22 +26,20 @@ namespace Trivia
         private ScorerAddEditViewModel _scorerAddEditViewModel;
         private ScorerSetTeamsViewModel _scorerSetTeamsViewModel;
         private LoginViewModel _loginViewModel;
-        private TriviaDbContext _dbContext;
+        private StartSessionViewModel _startSessionViewModel;
 
         private BindableBase _currentViewModel;
         private UserSession _currentUserSession;
         
         public MainWindowViewModel()
         {
-            _dbContext = new TriviaDbContext();
-            _dbContext.Open();
-
             _teamListViewModel = ContainerHelper.Container.Resolve<TeamListViewModel>();
             _teamAddEditViewModel = ContainerHelper.Container.Resolve<TeamAddEditViewModel>();
             _scorerListViewModel = ContainerHelper.Container.Resolve<ScorerListViewModel>();
             _scorerAddEditViewModel = ContainerHelper.Container.Resolve<ScorerAddEditViewModel>();
             _scorerSetTeamsViewModel = ContainerHelper.Container.Resolve<ScorerSetTeamsViewModel>();
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
+            _startSessionViewModel = ContainerHelper.Container.Resolve<StartSessionViewModel>();
             _currentViewModel = _loginViewModel;
 
             NavCommand = new RelayCommand<string>(OnNav);
@@ -49,7 +50,10 @@ namespace Trivia
 
             _scorerListViewModel.AddScorerRequested += NavToAddScorer;
             _scorerListViewModel.EditScorerRequested += NavToEditScorer;
+            _scorerListViewModel.AssociateTeamsRequested += NavToAssociateTeamsWithScorer;
             _scorerAddEditViewModel.Done += NavToScorerList;
+            _scorerAddEditViewModel.AssociateTeamsRequested += NavToAssociateTeamsWithScorer;
+            _scorerSetTeamsViewModel.Done += NavToScorerList;
         }
 
         public BindableBase CurrentViewModel
@@ -66,6 +70,7 @@ namespace Trivia
         }
 
         public RelayCommand<string> NavCommand { get; private set; }
+        public RelayCommand StartSessionCommand { get; private set; }
 
         private void OnNav(string destination)
         {
@@ -79,6 +84,9 @@ namespace Trivia
                     break;
                 case "scorerList":
                     CurrentViewModel = _scorerListViewModel;
+                    break;
+                case "startSession":
+                    CurrentViewModel = _startSessionViewModel;
                     break;
                 default:
                     CurrentViewModel = _loginViewModel;
@@ -122,6 +130,12 @@ namespace Trivia
         private void NavToScorerList()
         {
             CurrentViewModel = _scorerListViewModel;
+        }
+
+        private void NavToAssociateTeamsWithScorer(Scorer scorer)
+        {
+            _scorerSetTeamsViewModel.SetScorer(scorer);
+            CurrentViewModel = _scorerSetTeamsViewModel;
         }
     }
 }

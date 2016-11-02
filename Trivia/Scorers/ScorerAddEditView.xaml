@@ -34,33 +34,13 @@
                      Text="{Binding Scorer.Name, Mode=TwoWay}"
                      VerticalAlignment="Center"
                      Width="120" />
-            <Label Content="Teams:"
-                   Grid.Column="0"
-                   HorizontalAlignment="Left"
-                   Margin="3"
-                   Grid.Row="1"
-                   VerticalAlignment="Center" />
-            <ComboBox x:Name="scorerTeamsBox"
-                      Grid.Column="1"
-                      HorizontalAlignment="Left"
-                      Width="120"
-                      Margin="3"
-                      Grid.Row="1"
-                      ItemsSource="{Binding Scorer.Teams}"
-                      VerticalAlignment="Center" />
+
             <StackPanel Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal"
                         Margin="10" RenderTransformOrigin="-0.362,0.45">
-                <Button x:Name="modifyTeamsPopupButton"
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        Margin="0,0,40,0"
-                        Width="80"
-                        Content="Set Teams"
-                        Command="{Binding SetTeams}" />
                 <Button x:Name="saveButton"
                         Grid.Column="1"
                         HorizontalAlignment="Center"

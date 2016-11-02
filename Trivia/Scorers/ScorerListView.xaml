@@ -9,21 +9,12 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <DataTemplate DataType="{x:Type data:Scorer}">
-            <StackPanel>
-                <TextBlock Text="{Binding Name}" />
-                <ComboBox ItemsSource="{Binding Teams}" />
-            </StackPanel>
-        </DataTemplate>
-    </UserControl.Resources>
+             d:DesignHeight="300" d:DesignWidth="300">    
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadScorers" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -34,15 +25,24 @@
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Scorers}"
                   SelectedItem="{Binding SelectedScorer, Mode=TwoWay}"
-                  RowDetailsVisibilityMode="VisibleWhenSelected">
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Scorer Name" Width="SizeToHeader" />
-                <DataGridComboBoxColumn x:Name="teamsColumn" ItemsSource="{Binding Teams}" Header="Associated Teams" Width="SizeToHeader" />
+                <DataGridTemplateColumn x:Name="teamsColumn" Width="Auto" Header="Teams">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Teams}"
+                                      DisplayMemberPath="Name"
+                                      SelectedItem="{Binding Teams[0]}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Edit Scorer"
-                                    Command="{Binding DataContext.EditScorerCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    Command="{Binding DataContext.AssociateTeamsCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
                                     CommandParameter="{Binding}"
                                     Margin="5" />
                         </DataTemplate>

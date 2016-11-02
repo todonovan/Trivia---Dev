@@ -35,20 +35,21 @@
                   AutoGenerateColumns="False"
                   ItemsSource="{Binding Teams}"
                   SelectedItem="{Binding SelectedTeam, Mode=TwoWay}"
-                  RowDetailsVisibilityMode="VisibleWhenSelected">
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="nameColumn"
                                     Binding="{Binding Name}"
                                     Header="Team Name"
-                                    Width="SizeToHeader" />
+                                    Width="*" />
                 <DataGridTextColumn x:Name="companyColumn"
                                     Binding="{Binding Company}"
                                     Header="Company"
-                                    Width="SizeToHeader" />
+                                    Width="*" />
                 <DataGridTextColumn x:Name="yearColumn"
                                     Binding="{Binding Year}"
                                     Header="Year Played"
-                                    Width="SizeToHeader" />
+                                    Width="*" />
                 <DataGridTemplateColumn Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

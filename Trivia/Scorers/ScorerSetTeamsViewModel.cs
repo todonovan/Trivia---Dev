@@ -12,7 +12,10 @@ namespace Trivia.Scorers
 {
     public class ScorerSetTeamsViewModel : BindableBase
     {
-        private ITeamRepository _repo;
+        private ITeamRepository _teamRepo;
+        private IScorerRepository _scorerRepo;
+
+        private Scorer _scorerToAssociate;
 
         private ObservableCollection<Team> _teams;
         public ObservableCollection<Team> Teams
@@ -21,34 +24,154 @@ namespace Trivia.Scorers
             set { SetProperty(ref _teams, value); }
         }
 
-        private ObservableCollection<Team> _teamsToAssociate = new ObservableCollection<Team>();
+        private ObservableCollection<Team> _allTeams;
+
+        private ObservableCollection<Team> _teamsToAssociate;
         public ObservableCollection<Team> TeamsToAssociate
         {
             get { return _teamsToAssociate; }
-            set { SetProperty(ref _teamsToAssociate, value); }
+            set
+            {
+                SetProperty(ref _teamsToAssociate, value);
+                AssociateTeamsCommand.RaiseCanExecuteChanged();
+            }
         }
 
-        public ScorerSetTeamsViewModel(ITeamRepository repo)
+        private Team _selectedTeam;
+        public Team SelectedTeam
         {
-            _repo = repo;
-            AssociateTeamsCommand = new RelayCommand(OnAssociateTeams, CanAssociateTeams);
+            get { return _selectedTeam; }
+            set
+            {
+                _selectedTeam = value;
+                AddTeamCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private Team _selectedTeamToRemove;
+        public Team SelectedTeamToRemove
+        {
+            get { return _selectedTeamToRemove; }
+            set
+            {
+                _selectedTeamToRemove = value;
+                RemoveTeamCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private string _searchInput;
+        public string SearchInput
+        {
+            get { return _searchInput; }
+            set
+            {
+                SetProperty(ref _searchInput, value);
+                FilterCustomers(_searchInput);
+            }
+        }
+
+        public ScorerSetTeamsViewModel(ITeamRepository teamRepo, IScorerRepository scorerRepo)
+        {
+            _teamRepo = teamRepo;
+            _scorerRepo = scorerRepo;
+            AssociateTeamsCommand = new RelayCommand(OnAssociateTeams);
+            AddTeamCommand = new RelayCommand(OnAddTeam, CanAddTeam);
+            RemoveTeamCommand = new RelayCommand(OnRemoveTeam, CanRemoveTeam);
+            CancelCommand = new RelayCommand(OnCancel);
+            ClearSearchCommand = new RelayCommand(OnClear);
+        }
+
+        private void FilterCustomers(string searchInput)
+        {
+            if (string.IsNullOrWhiteSpace(searchInput))
+            {
+                Teams = new ObservableCollection<Team>(_allTeams);
+                return;
+            }
+            else
+            {
+                Teams = new ObservableCollection<Team>(_allTeams.Where(c => c.Year.ToString().Contains(searchInput)));
+            }
+        }        
+
+        public void SetScorer(Scorer scorer)
+        {
+            _scorerToAssociate = scorer;
         }
 
         public void LoadTeams()
         {
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
-            Teams = new ObservableCollection<Team>(_repo.GetAllTeams());
+            Teams = new ObservableCollection<Team>(_teamRepo.GetAllTeams());
+            var teamsToHandle = new List<Team>();
+            foreach (var t in Teams)
+            {
+                if (_scorerToAssociate.Teams.Select(y => y.Id).Contains(t.Id))
+                {
+                    teamsToHandle.Add(t);
+                }
+            }
+            foreach (var t in teamsToHandle)
+            {
+                Teams.Remove(t);
+            }
+            TeamsToAssociate = new ObservableCollection<Team>(_scorerToAssociate.Teams);
+            _allTeams = Teams;
         }
 
         private bool CanAssociateTeams()
         {
-            return _teamsToAssociate.Count != 0;
+            return TeamsToAssociate.Count != 0;
         }
 
         private void OnAssociateTeams()
         {
-
+            _scorerToAssociate.Teams = TeamsToAssociate.ToList();
+            _scorerRepo.Update(_scorerToAssociate);
+            Done();
         }
+
+        private bool CanAddTeam()
+        {
+            return SelectedTeam != null;
+        }
+
+        private void OnAddTeam()
+        {
+            TeamsToAssociate.Add(SelectedTeam);
+            Teams.Remove(SelectedTeam);
+            SelectedTeam = null;
+        }
+
+        private bool CanRemoveTeam()
+        {
+            return SelectedTeamToRemove != null;
+        }
+
+        private void OnRemoveTeam()
+        {
+            Teams.Add(SelectedTeamToRemove);
+            TeamsToAssociate.Remove(SelectedTeamToRemove);
+            SelectedTeamToRemove = null;
+        }
+
+        private void OnCancel()
+        {
+            Done();
+        }
+
+        private void OnClear()
+        {
+            SearchInput = null;
+        }
+
+        public RelayCommand AssociateTeamsCommand { get; private set; }
+        public RelayCommand AddTeamCommand { get; private set; }
+        public RelayCommand RemoveTeamCommand { get; private set; }
+        public RelayCommand CancelCommand { get; private set; }
+        public RelayCommand ClearSearchCommand { get; private set; }
+
+        public event Action Done = delegate { };
     }
 }
