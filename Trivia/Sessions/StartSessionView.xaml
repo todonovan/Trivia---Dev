@@ -4,8 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Trivia.Sessions"
+             xmlns:scorers="clr-namespace:Trivia.Scorers"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="537" d:DesignWidth="716">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction MethodName="LoadScorers" TargetObject="{Binding}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
@@ -26,11 +34,11 @@
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="How many rounds?"
-                   HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="18" VerticalAlignment="Center"/>
+                   HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="18" VerticalAlignment="Center" FontWeight="Bold"/>
             <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding UserNumRounds, Mode=TwoWay}"
                      Height="30" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="18"/>
             <Label Grid.Column="0" Grid.Row="1" Content="Points per round:"
-                   HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" />
+                   HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" FontWeight="Bold" />
             <DataGrid Grid.Column="1" Grid.Row="1" Margin="10,10,0,10" Width="400" HorizontalAlignment="Left"
                       AutoGenerateColumns="False"
                       ItemsSource="{Binding ScoringRounds}"
@@ -49,17 +57,52 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Label Grid.Column="0" Grid.Row="2" Content="Pick scorers to use:"
-                   HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" />
-            <DataGrid Grid.Column="1" Grid.Row="2" Margin="10,10,0,10" Width="400" HorizontalAlignment="Left">
-
+                   HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" FontWeight="Bold" />
+            <DataGrid x:Name="scorersDataGrid"
+                      Grid.Row="2" Grid.Column="1" Margin="10" HorizontalAlignment="Left" Width="400"
+                      AutoGenerateColumns="False"
+                      ItemsSource="{Binding Scorers}"
+                      SelectedItem="{Binding SelectedScorer, Mode=TwoWay}"
+                      RowDetailsVisibilityMode="VisibleWhenSelected"
+                      IsReadOnly="True" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Scorer Name" Width="*" />
+                    <DataGridTemplateColumn x:Name="teamsColumn" Width="*" Header="Teams">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Teams}"
+                                      DisplayMemberPath="Name"
+                                      SelectedItem="{Binding Teams[0]}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Select"
+                                    Command="{Binding DataContext.SelectScorerCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="3" Grid.Column="1" Content="Reset" Height="30" Width="100" FontSize="18" HorizontalAlignment="Left" Margin="50,0,0,0" FontWeight="Bold" Foreground="White" BorderBrush="Black" Background="#FFC93333"/>
-            <Button Grid.Row="3" Grid.Column="1" Content="Start!" Height="30" Width="100" FontSize="18" HorizontalAlignment="Right" Margin="0,0,50,0" FontWeight="Bold" Background="#FF46AA3C" BorderBrush="Black" Foreground="White"/>
+            <Button Grid.Row="3" Grid.Column="1" Content="Reset" Command="{Binding ResetCommand}"
+                    Height="30" Width="100" FontSize="18" HorizontalAlignment="Left"
+                    Margin="50,0,0,0" FontWeight="Bold"
+                    Foreground="White" BorderBrush="Black" Background="#FFC93333"/>
+            <Button Grid.Row="3" Grid.Column="1" Content="Start!" Command="{Binding StartCommand}"
+                    Height="30" Width="100" FontSize="18" HorizontalAlignment="Right" Margin="0,0,50,0"
+                    FontWeight="Bold" Background="#FF46AA3C" BorderBrush="Black" Foreground="White"/>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Content="Load Config" Height="30" Width="100" Margin="75,0,0,0"/>
-            <Button Content="Load Saved Session" Height="30" Width="125" Margin="75,0,0,0"/>
-            <Button Content="Cancel" Height="30" Width="100" Margin="75,0,0,0"/>
+            <Button Content="Load Config" Command="{Binding LoadConfigCommand}"
+                    Height="30" Width="100" Margin="75,0,0,0"/>
+            <Button Content="Load Saved Session" Command="{Binding LoadSavedSessionCommand}"
+                    Height="30" Width="125" Margin="75,0,0,0"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}"
+                    Height="30" Width="100" Margin="75,0,0,0"/>
         </StackPanel>
     </Grid>
 </UserControl>

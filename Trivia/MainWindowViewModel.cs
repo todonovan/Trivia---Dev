@@ -54,6 +54,7 @@ namespace Trivia
             _scorerAddEditViewModel.Done += NavToScorerList;
             _scorerAddEditViewModel.AssociateTeamsRequested += NavToAssociateTeamsWithScorer;
             _scorerSetTeamsViewModel.Done += NavToScorerList;
+            _startSessionViewModel.Done += NavToLogin;
         }
 
         public BindableBase CurrentViewModel
@@ -92,6 +93,11 @@ namespace Trivia
                     CurrentViewModel = _loginViewModel;
                     break;
             }
+        }
+
+        private void NavToLogin()
+        {
+            CurrentViewModel = _loginViewModel;
         }
 
         private void NavToAddTeam(Team team)
