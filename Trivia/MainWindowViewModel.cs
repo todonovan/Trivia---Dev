@@ -27,6 +27,7 @@ namespace Trivia
         private ScorerSetTeamsViewModel _scorerSetTeamsViewModel;
         private LoginViewModel _loginViewModel;
         private StartSessionViewModel _startSessionViewModel;
+        private SaveSessionConfigViewModel _saveSessionConfigViewModel;
 
         private BindableBase _currentViewModel;
         private UserSession _currentUserSession;
@@ -40,6 +41,7 @@ namespace Trivia
             _scorerSetTeamsViewModel = ContainerHelper.Container.Resolve<ScorerSetTeamsViewModel>();
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _startSessionViewModel = ContainerHelper.Container.Resolve<StartSessionViewModel>();
+            _saveSessionConfigViewModel = ContainerHelper.Container.Resolve<SaveSessionConfigViewModel>();
             _currentViewModel = _loginViewModel;
 
             NavCommand = new RelayCommand<string>(OnNav);
@@ -54,7 +56,14 @@ namespace Trivia
             _scorerAddEditViewModel.Done += NavToScorerList;
             _scorerAddEditViewModel.AssociateTeamsRequested += NavToAssociateTeamsWithScorer;
             _scorerSetTeamsViewModel.Done += NavToScorerList;
+
             _startSessionViewModel.Done += NavToLogin;
+            _startSessionViewModel.LoadConfigRequested += NavToLoadConfig;
+            _startSessionViewModel.LoadSavedSessionRequested += NavToLoadSavedSession;
+            _startSessionViewModel.SaveConfigRequested += NavToSaveConfig;
+            _startSessionViewModel.StartSessionRequested += NavToStartSession;
+
+            _saveSessionConfigViewModel.Done += NavToLogin;
         }
 
         public BindableBase CurrentViewModel
@@ -142,6 +151,27 @@ namespace Trivia
         {
             _scorerSetTeamsViewModel.SetScorer(scorer);
             CurrentViewModel = _scorerSetTeamsViewModel;
+        }
+
+        private void NavToLoadConfig()
+        {
+
+        }
+
+        private void NavToLoadSavedSession()
+        {
+
+        }
+
+        private void NavToSaveConfig(SessionConfigParams configParams)
+        {
+            _saveSessionConfigViewModel.SessionConfigParams = configParams;
+            CurrentViewModel = _saveSessionConfigViewModel;
+        }
+
+        private void NavToStartSession(SessionConfigParams configParams)
+        {
+
         }
     }
 }

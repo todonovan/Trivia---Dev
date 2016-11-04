@@ -122,6 +122,12 @@
     </Compile>
     <Compile Include="Scoring\TeamRoundScoringViewModel.cs" />
     <Compile Include="Sessions\GameSessionSerializer.cs" />
+    <Compile Include="Sessions\SaveSessionConfigView.xaml.cs">
+      <DependentUpon>SaveSessionConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sessions\SaveSessionConfigViewModel.cs" />
+    <Compile Include="Sessions\SessionConfig.cs" />
+    <Compile Include="Sessions\SessionConfigParams.cs" />
     <Compile Include="Sessions\SimpleEditableSession.cs" />
     <Compile Include="Sessions\StartSessionView.xaml.cs">
       <DependentUpon>StartSessionView.xaml</DependentUpon>
@@ -184,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scoring\TeamRoundScoringView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Sessions\SaveSessionConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
