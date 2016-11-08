@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Trivia.Sessions"
              xmlns:scorers="clr-namespace:Trivia.Scorers"
+             xmlns:trivia="clr-namespace:Trivia"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
@@ -29,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
@@ -39,23 +40,8 @@
                      Height="30" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="18"/>
             <Label Grid.Column="0" Grid.Row="1" Content="Points per round:"
                    HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" FontWeight="Bold" />
-            <DataGrid Grid.Column="1" Grid.Row="1" Margin="10,10,0,10" Width="400" HorizontalAlignment="Left"
-                      AutoGenerateColumns="False"
-                      ItemsSource="{Binding ScoringRounds}"
-                      SelectedItem="{Binding SelectedScoringRound, Mode=TwoWay}"
-                      RowDetailsVisibilityMode="VisibleWhenSelected"
-                      CanUserAddRows="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding OrderOfRound}" Width="30"/>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding PointValue}" FontSize="18"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding UserPointsPerRound, Mode=TwoWay}"
+                     Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" FontSize="18" />
             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical">
                 <Label Content="Pick scorers to use:"
                    HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" FontWeight="Bold" />

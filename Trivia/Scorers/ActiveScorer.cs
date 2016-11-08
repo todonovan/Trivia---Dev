@@ -16,6 +16,11 @@ namespace Trivia.Scorers
         public Scorer Scorer { get; private set; }
         [DataMember()]
         public List<ScoringTeam> ScoringTeams { get; private set; }
+        public string Name
+        {
+            get { return Scorer.Name; }
+            private set { }
+        }
 
         /// <summary>
         /// The default constructor for use in building a fresh ActiveScorer

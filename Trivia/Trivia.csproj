@@ -122,12 +122,20 @@
     </Compile>
     <Compile Include="Scoring\TeamRoundScoringViewModel.cs" />
     <Compile Include="Sessions\GameSessionSerializer.cs" />
+    <Compile Include="Sessions\LoadConfigView.xaml.cs">
+      <DependentUpon>LoadConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sessions\LoadConfigViewModel.cs" />
     <Compile Include="Sessions\SaveSessionConfigView.xaml.cs">
       <DependentUpon>SaveSessionConfigView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Sessions\SaveSessionConfigViewModel.cs" />
     <Compile Include="Sessions\SessionConfig.cs" />
     <Compile Include="Sessions\SessionConfigParams.cs" />
+    <Compile Include="Sessions\SessionStartConfirmView.xaml.cs">
+      <DependentUpon>SessionStartConfirmView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sessions\SessionStartConfirmViewModel.cs" />
     <Compile Include="Sessions\SimpleEditableSession.cs" />
     <Compile Include="Sessions\StartSessionView.xaml.cs">
       <DependentUpon>StartSessionView.xaml</DependentUpon>
@@ -138,6 +146,7 @@
     </Compile>
     <Compile Include="Settings\PasswordManagementVIewModel.cs" />
     <Compile Include="ShowNotificationMessageBehavior.cs" />
+    <Compile Include="StringToIntArrayValueConverter.cs" />
     <Compile Include="Teams\SimpleEditableTeam.cs" />
     <Compile Include="Teams\TeamAddView.xaml.cs">
       <DependentUpon>TeamAddView.xaml</DependentUpon>
@@ -193,7 +202,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Sessions\LoadConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Sessions\SaveSessionConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Sessions\SessionStartConfirmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

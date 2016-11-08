@@ -58,6 +58,7 @@ namespace TriviaData.Repos
                 SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
                 SQLiteDataReader reader = command.ExecuteReader();
                 s.Id = id;
+                s.Name = (string)reader["name"];
                 s.Teams = new List<Team>();
                 string teamIdsString = (string)reader["team_id_list"];
                 if (teamIdsString != " ")

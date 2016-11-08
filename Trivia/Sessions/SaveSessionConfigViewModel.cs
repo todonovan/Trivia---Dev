@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trivia.Scorers;
 using Trivia.Scoring;
 using TriviaData.Models;
 using TriviaData.Repos;
@@ -23,7 +24,7 @@ namespace Trivia.Sessions
 
         public int NumRounds
         {
-            get { return SessionConfigParams.ScoringRounds.Count; }
+            get { return SessionConfigParams.NumRounds; }
             private set { }
         }
 
@@ -33,9 +34,15 @@ namespace Trivia.Sessions
             private set { }
         }
 
-        public ObservableCollection<Scorer> Scorers
+        public int PointValue
         {
-            get { return SessionConfigParams.Scorers; }
+            get { return SessionConfigParams.PointValue; }
+            private set { }
+        }
+
+        public ObservableCollection<ActiveScorer> Scorers
+        {
+            get { return SessionConfigParams.ActiveScorers; }
             private set { }
         }
 
@@ -53,9 +60,6 @@ namespace Trivia.Sessions
         public SaveSessionConfigViewModel(IScorerRepository repo)
         {
             _scorerRepo = repo;
-            SessionConfigParams = new SessionConfigParams();
-            SessionConfigParams.Scorers = new ObservableCollection<Scorer>();
-            SessionConfigParams.ScoringRounds = new ObservableCollection<ScoringRound>();
             CancelCommand = new RelayCommand(OnCancel);
             SaveCommand = new RelayCommand(OnSave, CanSave);
         }

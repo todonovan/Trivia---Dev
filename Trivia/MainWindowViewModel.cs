@@ -28,6 +28,7 @@ namespace Trivia
         private LoginViewModel _loginViewModel;
         private StartSessionViewModel _startSessionViewModel;
         private SaveSessionConfigViewModel _saveSessionConfigViewModel;
+        private LoadConfigViewModel _loadConfigViewModel;
 
         private BindableBase _currentViewModel;
         private UserSession _currentUserSession;
@@ -42,6 +43,7 @@ namespace Trivia
             _loginViewModel = ContainerHelper.Container.Resolve<LoginViewModel>();
             _startSessionViewModel = ContainerHelper.Container.Resolve<StartSessionViewModel>();
             _saveSessionConfigViewModel = ContainerHelper.Container.Resolve<SaveSessionConfigViewModel>();
+            _loadConfigViewModel = ContainerHelper.Container.Resolve<LoadConfigViewModel>();
             _currentViewModel = _loginViewModel;
 
             NavCommand = new RelayCommand<string>(OnNav);
@@ -61,9 +63,12 @@ namespace Trivia
             _startSessionViewModel.LoadConfigRequested += NavToLoadConfig;
             _startSessionViewModel.LoadSavedSessionRequested += NavToLoadSavedSession;
             _startSessionViewModel.SaveConfigRequested += NavToSaveConfig;
-            _startSessionViewModel.StartSessionRequested += NavToStartSession;
+            _startSessionViewModel.StartSessionRequested += NavToConfirmSession;
 
             _saveSessionConfigViewModel.Done += NavToLogin;
+
+            _loadConfigViewModel.Done += NavToLogin;
+            _loadConfigViewModel.UseConfigRequested += NavToConfirmSession;
         }
 
         public BindableBase CurrentViewModel
@@ -155,7 +160,7 @@ namespace Trivia
 
         private void NavToLoadConfig()
         {
-
+            CurrentViewModel = _loadConfigViewModel;
         }
 
         private void NavToLoadSavedSession()
@@ -169,7 +174,7 @@ namespace Trivia
             CurrentViewModel = _saveSessionConfigViewModel;
         }
 
-        private void NavToStartSession(SessionConfigParams configParams)
+        private void NavToConfirmSession(SessionConfigParams configParams)
         {
 
         }

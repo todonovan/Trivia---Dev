@@ -22,11 +22,7 @@ namespace Trivia.Sessions
         public int UserNumRounds
         {
             get { return _userNumRounds; }
-            set
-            {
-                SetProperty(ref _userNumRounds, value);
-                BuildScoringRounds(UserNumRounds);
-            }
+            set { SetProperty(ref _userNumRounds, value); }
         }
 
         private ObservableCollection<Scorer> _scorers;
@@ -50,18 +46,18 @@ namespace Trivia.Sessions
             set { SetProperty(ref _selectedScorers, value); }
         }
 
-        private ObservableCollection<ScoringRound> _scoringRounds;
-        public ObservableCollection<ScoringRound> ScoringRounds
-        {
-            get { return _scoringRounds; }
-            set { SetProperty(ref _scoringRounds, value); }
-        }
-
         private int _numTeams;
         public int NumTeams
         {
             get { return _numTeams; }
             set { SetProperty(ref _numTeams, value); }
+        }
+
+        private int _userPointsPerRound;
+        public int UserPointsPerRound
+        {
+            get { return _userPointsPerRound; }
+            set { SetProperty(ref _userPointsPerRound, value); }
         }
 
         public StartSessionViewModel(ITeamRepository teamRepo, IScorerRepository scorerRepo)
@@ -75,21 +71,6 @@ namespace Trivia.Sessions
             LoadConfigCommand = new RelayCommand(OnLoadConfig);
             LoadSavedSessionCommand = new RelayCommand(OnLoadSavedSession);
             CancelCommand = new RelayCommand(OnCancel);
-        }
-
-        private void BuildScoringRounds(int numRounds)
-        {
-            ScoringRounds = new ObservableCollection<ScoringRound>();
-            ObservableCollection<ScoringRound> srBuilder = new ObservableCollection<ScoringRound>();
-
-            for (int i = 1; i < numRounds; i++)
-            {
-                ScoringRound sr = new ScoringRound(i, false, 5, 0);
-                srBuilder.Add(sr);
-            }
-
-            srBuilder.Add(new ScoringRound(numRounds, true, 1, 0));
-            ScoringRounds = srBuilder;
         }
 
         public void LoadScorers()
@@ -118,17 +99,13 @@ namespace Trivia.Sessions
 
         private void OnStart()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams();
-            sessionConfig.Scorers = SelectedScorers;
-            sessionConfig.ScoringRounds = ScoringRounds;
+            SessionConfigParams sessionConfig = new SessionConfigParams(SelectedScorers, UserNumRounds, UserPointsPerRound);
             StartSessionRequested(sessionConfig);
         }
 
         private void OnSaveConfig()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams();
-            sessionConfig.Scorers = SelectedScorers;
-            sessionConfig.ScoringRounds = ScoringRounds;
+            SessionConfigParams sessionConfig = new SessionConfigParams(SelectedScorers, UserNumRounds, UserPointsPerRound);
             SaveConfigRequested(sessionConfig);
         }
 

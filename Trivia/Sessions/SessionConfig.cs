@@ -17,25 +17,21 @@ namespace Trivia.Sessions
 
         public static void SaveConfig(SessionConfigParams sessionConfig, string name)
         {
-            string[] lines = new string[2];
+            string[] lines = new string[3];
             string scorerString = string.Empty;
-            foreach (var s in sessionConfig.Scorers)
+            foreach (var s in sessionConfig.ActiveScorers)
             {
-                scorerString += s.Id.ToString();
+                scorerString += s.Scorer.Id.ToString();
                 scorerString += ";";
             }
 
-            List<ScoringRound> srList = sessionConfig.ScoringRounds.ToList();
-            string roundString = string.Empty;
-            foreach (var r in srList)
-            {
-                roundString += r.OrderOfRound + "," + r.NumQuestions + "," + r.PointValue + "," + r.IsBonusRound + ";";
-            }
+            string numRoundString = sessionConfig.NumRounds.ToString();
+            string pointValString = sessionConfig.PointValue.ToString();
             lines[0] = scorerString;
-            lines[1] = roundString;
+            lines[1] = numRoundString;
+            lines[2] = pointValString;
 
-
-            using (var writer = new StreamWriter(@"C:\Users\Terrence\Documents\TriviaDev\Trivia\Trivia\SessionConfigs\" + name))
+            using (var writer = new StreamWriter(ConfigurationManager.AppSettings["session_config"] + name))
             {
                 foreach (var l in lines)
                 {
@@ -46,31 +42,21 @@ namespace Trivia.Sessions
 
         public static SessionConfigParams LoadSession(IScorerRepository scorerRepo, string name)
         {
-            SessionConfigParams session = new SessionConfigParams();
             List<Scorer> scorers = new List<Scorer>();
             List<ScoringRound> scoringRounds = new List<ScoringRound>();
-            string[] lines = File.ReadAllLines(ConfigurationManager.ConnectionStrings["session_config"] + name);
-            string scorerString = lines[0], roundString = lines[1];
+            string[] lines = File.ReadAllLines(ConfigurationManager.AppSettings["session_config"] + name);
+            string scorerString = lines[0], roundString = lines[1], pointValString = lines[2];
             string[] scorerStrings = scorerString.Split(';');
-            foreach (var s in scorerStrings)
+            for (int i = 0; i < scorerStrings.Length - 1; i++)
             {
-                Scorer scorer = scorerRepo.GetScorerById(long.Parse(s));
+                Scorer scorer = scorerRepo.GetScorerById(long.Parse(scorerStrings[i]));
                 scorers.Add(scorer);
             }
-            session.Scorers = new ObservableCollection<Scorer>(scorers);
 
-            string[] roundStrings = roundString.Split(';');
-            foreach (var r in roundStrings)
-            {
-                string[] substrings = r.Split(',');
-                int orderOfRound = int.Parse(substrings[0]);
-                int numQuestions = int.Parse(substrings[1]);
-                int pointValue = int.Parse(substrings[2]);
-                bool isBonusRound = bool.Parse(substrings[3]);
-                ScoringRound sr = new ScoringRound(orderOfRound, isBonusRound, numQuestions, pointValue);
-                scoringRounds.Add(sr);
-            }
-            session.ScoringRounds = new ObservableCollection<ScoringRound>(scoringRounds);
+            int numRounds = int.Parse(roundString);
+            int pointValue = int.Parse(pointValString);
+
+            SessionConfigParams session = new SessionConfigParams(new ObservableCollection<Scorer>(scorers), numRounds, pointValue);
 
             return session;
         }
