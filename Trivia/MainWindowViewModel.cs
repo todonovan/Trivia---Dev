@@ -29,6 +29,7 @@ namespace Trivia
         private StartSessionViewModel _startSessionViewModel;
         private SaveSessionConfigViewModel _saveSessionConfigViewModel;
         private LoadConfigViewModel _loadConfigViewModel;
+        private SessionStartConfirmViewModel _sessionStartConfirmViewModel;
 
         private BindableBase _currentViewModel;
         private UserSession _currentUserSession;
@@ -44,6 +45,7 @@ namespace Trivia
             _startSessionViewModel = ContainerHelper.Container.Resolve<StartSessionViewModel>();
             _saveSessionConfigViewModel = ContainerHelper.Container.Resolve<SaveSessionConfigViewModel>();
             _loadConfigViewModel = ContainerHelper.Container.Resolve<LoadConfigViewModel>();
+            _sessionStartConfirmViewModel = ContainerHelper.Container.Resolve<SessionStartConfirmViewModel>();
             _currentViewModel = _loginViewModel;
 
             NavCommand = new RelayCommand<string>(OnNav);
@@ -69,6 +71,8 @@ namespace Trivia
 
             _loadConfigViewModel.Done += NavToLogin;
             _loadConfigViewModel.UseConfigRequested += NavToConfirmSession;
+
+            _sessionStartConfirmViewModel.Done += NavToLogin;
         }
 
         public BindableBase CurrentViewModel
@@ -101,12 +105,20 @@ namespace Trivia
                     CurrentViewModel = _scorerListViewModel;
                     break;
                 case "startSession":
-                    CurrentViewModel = _startSessionViewModel;
+                    NavToStartSession();
                     break;
                 default:
                     CurrentViewModel = _loginViewModel;
                     break;
             }
+        }
+
+        private void NavToStartSession()
+        {
+            _startSessionViewModel.NumTeams = 0;
+            _startSessionViewModel.UserNumRounds = 0;
+            _startSessionViewModel.UserPointsPerRound = 0;
+            CurrentViewModel = _startSessionViewModel;
         }
 
         private void NavToLogin()
@@ -176,7 +188,8 @@ namespace Trivia
 
         private void NavToConfirmSession(SessionConfigParams configParams)
         {
-
+            _sessionStartConfirmViewModel.SetSessionConfig(configParams);
+            CurrentViewModel = _sessionStartConfirmViewModel;
         }
     }
 }
