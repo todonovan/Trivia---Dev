@@ -73,6 +73,7 @@ namespace Trivia
             _loadConfigViewModel.UseConfigRequested += NavToConfirmSession;
 
             _sessionStartConfirmViewModel.Done += NavToLogin;
+            _sessionStartConfirmViewModel.StartSessionRequested += OpenScoringWindow;
         }
 
         public BindableBase CurrentViewModel
@@ -190,6 +191,16 @@ namespace Trivia
         {
             _sessionStartConfirmViewModel.SetSessionConfig(configParams);
             CurrentViewModel = _sessionStartConfirmViewModel;
+        }
+
+        private void OpenScoringWindow(SessionConfigParams configParams)
+        {
+            Window w = new ScoringWindow();
+            ScoringWindowViewModel vm = ContainerHelper.Container.Resolve<ScoringWindowViewModel>();
+            vm.SetCurrentGameSession(configParams);
+            w.DataContext = vm;
+            w.Show();
+            NavToStartSession();
         }
     }
 }

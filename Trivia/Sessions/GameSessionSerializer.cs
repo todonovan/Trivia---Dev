@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Trivia.Scorers;
 
 namespace Trivia.Sessions
 {
@@ -13,7 +14,7 @@ namespace Trivia.Sessions
     {
         public static GameSession GetGameSession(string fileName)
         {
-            GameSession g = new GameSession(0, 0, new List<int>(), new List<TriviaData.Models.Scorer>());
+            GameSession g = new GameSession(0, 0, 0, new List<ActiveScorer>());
             try
             {
                 g = ReadObject(fileName);

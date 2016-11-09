@@ -36,7 +36,12 @@ namespace Trivia.Scoring
             set { SetProperty(ref _teamRoundScoringViewModels, value); }
         }
 
-        public ScorerRoundScorecardViewModel(ScoringRound r, ActiveScorer s)
+        public ScorerRoundScorecardViewModel()
+        {
+
+        }
+
+        public void SetRoundAndScorer(ScoringRound r, ActiveScorer s)
         {
             _round = r;
             Scorer = s;

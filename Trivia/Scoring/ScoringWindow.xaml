@@ -1,0 +1,27 @@
+﻿<Window x:Class="Trivia.Scoring.ScoringWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Trivia.Scoring"
+        mc:Ignorable="d"
+        Title="Session Scoring" Height="768" Width="1024"
+        WindowStyle="ThreeDBorderWindow"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:ScoringMasterViewModel}">
+            <local:ScoringMasterView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local:BonusRoundScorecardViewModel}">
+            <local:BonusRoundScorecardView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local:ScorerRoundScorecardViewModel}">
+            <local:ScorerRoundScorecardView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type local:TeamRoundScoringViewModel}">
+            <local:TeamRoundScoringView />
+        </DataTemplate>
+    </Window.Resources>
+    <ContentControl Content="{Binding CurrentViewModel}"/>
+</Window>
