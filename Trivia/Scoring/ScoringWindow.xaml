@@ -9,6 +9,9 @@
         WindowStyle="ThreeDBorderWindow"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <local:ScoringWindowViewModel />
+    </Window.DataContext>
     <Window.Resources>
         <DataTemplate DataType="{x:Type local:ScoringMasterViewModel}">
             <local:ScoringMasterView />

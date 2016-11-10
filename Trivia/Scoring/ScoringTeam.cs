@@ -23,7 +23,7 @@ namespace Trivia.Scoring
         }
 
         /// <summary>
-        /// For use with serialization
+        /// For use with serialization?
         /// </summary>
         /// <param name="t"></param>
         /// <param name="score"></param>
@@ -38,7 +38,7 @@ namespace Trivia.Scoring
         /// May be expanded later
         /// </summary>
         /// <param name="point value"></param>
-        public void ChangeScore(int value)
+        public void AddToScore(int value)
         {
             Score += value;
         }

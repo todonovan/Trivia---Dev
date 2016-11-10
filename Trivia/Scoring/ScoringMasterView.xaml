@@ -13,11 +13,11 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Vertical" Background="#FF79B8CB">
             <TextBlock Text="Scoring Screen" FontSize="36" TextAlignment="Center" FontWeight="Bold" Foreground="White" />
-            <Button Command="{Binding NavCommand}" CommandParameter="teamList" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
-            <Button Command="{Binding NavCommand}" CommandParameter="scorerList" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
-            <Button Content="" Command="{Binding NavCommand}" CommandParameter="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
-            <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button Command="{Binding BeginRoundCommand}" Content="Score Next Round" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button Command="{Binding TimerCommand}" Content="Timer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button Content="Scoreboard" Command="{Binding ScoreboardCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button Content="Save and Exit" Command="{Binding ExitCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
         </StackPanel>
-        <TextBlock Text="{Binding NumRounds}" Margin="10,0,-10,0" />
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
     </Grid>
 </UserControl>

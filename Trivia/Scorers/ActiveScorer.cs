@@ -43,5 +43,16 @@ namespace Trivia.Scorers
             Scorer = s;
             ScoringTeams = scoringTeams;
         }
+
+        public Dictionary<string, int> ReportScores()
+        {
+            Dictionary<string, int> scores = new Dictionary<string, int>();
+            foreach (var s in ScoringTeams)
+            {
+                scores.Add(s.Team.Name, s.Score);
+            }
+
+            return scores;
+        }
     }
 }

@@ -172,6 +172,9 @@
       <DependentUpon>TeamListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Teams\TeamListViewModel.cs" />
+    <Compile Include="Timer\TimerWindow.xaml.cs">
+      <DependentUpon>TimerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidatableBindableBase.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Page Include="Login\LoginView.xaml">
@@ -255,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Teams\TeamListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Timer\TimerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
