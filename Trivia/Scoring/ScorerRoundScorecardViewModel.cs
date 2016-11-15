@@ -10,11 +10,17 @@ namespace Trivia.Scoring
     public class ScorerRoundScorecardViewModel : BindableBase
     {
         private ScoringRound _round;
-        public int RoundNumber
+        public ScoringRound Round
         {
-            get { return _round.OrderOfRound + 1; }
-            private set { }
+            get { return _round; }
+            set
+            {
+                SetProperty(ref _round, value);
+                RoundNumber = value.OrderOfRound + 1;
+            }
         }
+
+        public int RoundNumber { get; private set; }
 
         public int NumQuestions
         {
@@ -22,12 +28,18 @@ namespace Trivia.Scoring
             private set { }
         }
 
-        public ActiveScorer Scorer { get; private set; }
-        public string ScorerName
+        private ActiveScorer _scorer;
+        public ActiveScorer Scorer
         {
-            get { return Scorer.Scorer.Name; }
-            private set { }
+            get { return _scorer; }
+            set
+            {
+                SetProperty(ref _scorer, value);
+                ScorerName = value.Name;
+            }
         }
+
+        public string ScorerName { get; private set; }
 
         private List<TeamRoundScoringViewModel> _teamRoundScoringViewModels;
         public List<TeamRoundScoringViewModel> TeamRoundScoringViewModels
@@ -38,7 +50,8 @@ namespace Trivia.Scoring
 
         public ScorerRoundScorecardViewModel()
         {
-
+            ScorerName = string.Empty;
+            RoundNumber = 0;
         }
 
         public void SetRoundAndScorer(ScoringRound r, ActiveScorer s)
@@ -48,8 +61,10 @@ namespace Trivia.Scoring
             TeamRoundScoringViewModels = new List<TeamRoundScoringViewModel>();
             foreach (var t in s.ScoringTeams)
             {
-                TeamRoundScoringViewModels.Add(new TeamRoundScoringViewModel(NumQuestions));
+                TeamRoundScoringViewModels.Add(new TeamRoundScoringViewModel());
             }
+            ScorerName = s.Name;
+            RoundNumber = r.OrderOfRound + 1;
         }
     }
 }

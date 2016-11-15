@@ -66,6 +66,7 @@ namespace Trivia.Sessions
             UseConfigCommand = new RelayCommand(OnUseConfig, CanUseConfig);
 
             _loadedSession = null;
+            SelectedConfigName = string.Empty;
             LoadedNumTeams = 0;
             LoadedConfigName = string.Empty;
             LoadedScorers = new ObservableCollection<ActiveScorer>();

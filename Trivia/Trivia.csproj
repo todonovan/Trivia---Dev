@@ -114,10 +114,15 @@
       <DependentUpon>BonusRoundScorecardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\BonusRoundScorecardViewModel.cs" />
+    <Compile Include="Scoring\QuestionToVisibilityConverter.cs" />
     <Compile Include="Scoring\ScoringMasterView.xaml.cs">
       <DependentUpon>ScoringMasterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\ScoringMasterViewModel.cs" />
+    <Compile Include="Scoring\ScoringRoundMasterView.xaml.cs">
+      <DependentUpon>ScoringRoundMasterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scoring\ScoringRoundMasterViewModel.cs" />
     <Compile Include="Scoring\ScoringWindow.xaml.cs">
       <DependentUpon>ScoringWindow.xaml</DependentUpon>
     </Compile>
@@ -218,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scoring\ScoringMasterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Scoring\ScoringRoundMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

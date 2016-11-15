@@ -5,17 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Trivia.Scoring"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
-    <Grid>
-        <GroupBox x:Name="groupBox"  HorizontalAlignment="Left" Margin="25,120,0,0" VerticalAlignment="Top" Height="75" Width="340" BorderBrush="Black">
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35" Margin="25,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-                <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35" Margin="25,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-                <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35" Margin="25,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-                <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35" Margin="25,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-                <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="35" Margin="25,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-            </StackPanel>
-        </GroupBox>
-
-    </Grid>
+             d:DesignHeight="200" d:DesignWidth="500" Background="#FFD8C4C4" BorderBrush="#FF3A3333" BorderThickness="1">
+    <UserControl.Effect>
+        <DropShadowEffect />
+    </UserControl.Effect>
+    <UserControl.Resources>
+        <local:QuestionToVisibilityConverter x:Key="ColorConverter"/>
+    </UserControl.Resources>
+    <GroupBox Margin="15" Header="{Binding TeamName}" FontSize="18" BorderBrush="Black" BorderThickness="1" Background="#FFCEEEF0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Ellipse x:Name="questionOneCircle" Grid.Column="0" Height="50" Width="50" Fill="{Binding Questions[0], Converter={StaticResource ColorConverter}}"/>
+            <Ellipse x:Name="questionTwoCircle" Grid.Column="1" Height="50" Width="50" Fill="{Binding Questions[1], Converter={StaticResource ColorConverter}}"/>
+            <Ellipse x:Name="questionThreeCircle" Grid.Column="2" Height="50" Width="50" Fill="{Binding Questions[2], Converter={StaticResource ColorConverter}}"/>
+            <Ellipse x:Name="questionFourCircle" Grid.Column="3" Height="50" Width="50" Fill="{Binding Questions[3], Converter={StaticResource ColorConverter}}"/>
+            <Ellipse x:Name="questionFiveCircle" Grid.Column="4" Height="50" Width="50" Fill="{Binding Questions[4], Converter={StaticResource ColorConverter}}"/>
+        </Grid>
+    </GroupBox>
 </UserControl>

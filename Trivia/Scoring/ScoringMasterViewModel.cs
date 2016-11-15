@@ -29,10 +29,7 @@ namespace Trivia.Scoring
         {
             CurrentRound = 1;
 
-            BeginRoundCommand = new RelayCommand(OnBeginRound);
-            TimerCommand = new RelayCommand(OnStartTimer);
-            ScoreboardCommand = new RelayCommand(OnOpenScoreboard);
-            ExitCommand = new RelayCommand(OnExit);
+          
         }
 
         public void SetGameSession(GameSession gs)
@@ -40,46 +37,14 @@ namespace Trivia.Scoring
             _gameSession = gs;
         }
 
-        private void OnBeginRound()
+        private void OnAutoScoreNextRound()
         {
+            AutoScoreNextRoundRequested(CurrentRound);
+        }        
 
-        }
+        public RelayCommand AutoScoreNextRoundCommand { get; private set; }
 
-        private void OnStartTimer()
-        {
 
-        }
-
-        private void OnOpenScoreboard()
-        {
-            Window w = new ScoreboardWindow();
-            ScoreboardWindowViewModel vm = new ScoreboardWindowViewModel();
-            Dictionary<string, int> currentScores = GetAllScores();
-            vm.SetScores(currentScores);
-            w.DataContext = vm;
-            w.Show();
-            vm.DisplayScores();
-        }
-
-        private void OnExit()
-        {
-
-        }
-
-        private Dictionary<string, int> GetAllScores()
-        {
-            List<Dictionary<string, int>> scoresList = new List<Dictionary<string, int>>();
-            foreach (var s in _gameSession.Scorers)
-            {
-                scoresList.Add(s.ReportScores());
-            }
-
-            return scoresList.SelectMany(dict => dict).ToDictionary(score => score.Key, score => score.Value);
-        }
-
-        public RelayCommand BeginRoundCommand { get; private set; }
-        public RelayCommand TimerCommand { get; private set; }
-        public RelayCommand ScoreboardCommand { get; private set; }
-        public RelayCommand ExitCommand { get; private set; }
+        public event Action<int> AutoScoreNextRoundRequested = delegate { };
     }
 }
