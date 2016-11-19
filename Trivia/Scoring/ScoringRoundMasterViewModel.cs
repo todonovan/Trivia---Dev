@@ -46,7 +46,11 @@ namespace Trivia.Scoring
         public ActiveScorer CurrentScorer
         {
             get { return _currentScorer; }
-            set { SetProperty(ref _currentScorer, value); }
+            set
+            {
+                SetProperty(ref _currentScorer, value);
+                CurrentScorecardViewModel.SetRoundAndScorer(CurrentRound, value);
+            }
         }
 
         public ScoringRoundMasterViewModel()
