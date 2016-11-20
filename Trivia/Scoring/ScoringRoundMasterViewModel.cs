@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trivia.Scorers;
+using Trivia.ScoringHelpers;
 using Trivia.Sessions;
 
 namespace Trivia.Scoring
 {
     public class ScoringRoundMasterViewModel : BindableBase
     {
-        private GameSession _gs;
+        private GameState _gs;
 
         private ScorerRoundScorecardViewModel _currentScorecardViewModel;
         public ScorerRoundScorecardViewModel CurrentScorecardViewModel
@@ -38,7 +39,7 @@ namespace Trivia.Scoring
             set
             {
                 SetProperty(ref _currentScorerNum, value);
-                CurrentScorer = _gs.Scorers[value];
+                CurrentScorer = _gs.ActiveScorers[value];
             }
         }
 
@@ -60,17 +61,17 @@ namespace Trivia.Scoring
             NextScorecardCommand = new RelayCommand(OnNextScorecard, NextScorecardExists);
             PreviousScorecardCommand = new RelayCommand(OnPrevScorecard, PrevScorecardExists);
             ReturnToMasterViewCommand = new RelayCommand(OnReturnToMaster);
-            FinishRoundCommand = new RelayCommand<GameSession>(OnFinishRound);
+            FinishRoundCommand = new RelayCommand<GameState>(OnFinishRound);
         }
 
-        public void SetGameSession(GameSession gs)
+        public void SetGameSession(GameState gs)
         {
             _gs = gs;
         }
 
         private bool NextScorecardExists()
         {
-            return _currentScorerNum + 1 < _gs.Scorers.Count;
+            return _currentScorerNum + 1 < _gs.ActiveScorers.Count;
         }
 
         private void OnNextScorecard()
@@ -95,7 +96,7 @@ namespace Trivia.Scoring
             RoundCanceled();
         }
 
-        private void OnFinishRound(GameSession gs)
+        private void OnFinishRound(GameState gs)
         {
             RoundComplete(gs);
         }
@@ -103,9 +104,9 @@ namespace Trivia.Scoring
         public RelayCommand NextScorecardCommand { get; private set; }
         public RelayCommand PreviousScorecardCommand { get; private set; }
         public RelayCommand ReturnToMasterViewCommand { get; private set; }
-        public RelayCommand<GameSession> FinishRoundCommand { get; private set; }
+        public RelayCommand<GameState> FinishRoundCommand { get; private set; }
 
         public event Action RoundCanceled = delegate { };
-        public event Action<GameSession> RoundComplete = delegate { };
+        public event Action<GameState> RoundComplete = delegate { };
     }
 }

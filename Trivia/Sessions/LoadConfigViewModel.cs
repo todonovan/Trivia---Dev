@@ -42,8 +42,8 @@ namespace Trivia.Sessions
             set { SetProperty(ref _loadedConfigName, value); }
         }
 
-        private ObservableCollection<ActiveScorer> _loadedScorers;
-        public ObservableCollection<ActiveScorer> LoadedScorers
+        private ObservableCollection<Scorer> _loadedScorers;
+        public ObservableCollection<Scorer> LoadedScorers
         {
             get { return _loadedScorers; }
             set { SetProperty(ref _loadedScorers, value); }
@@ -69,7 +69,7 @@ namespace Trivia.Sessions
             SelectedConfigName = string.Empty;
             LoadedNumTeams = 0;
             LoadedConfigName = string.Empty;
-            LoadedScorers = new ObservableCollection<ActiveScorer>();
+            LoadedScorers = new ObservableCollection<Scorer>();
         }
 
         public void PopulateFileList()
@@ -99,10 +99,10 @@ namespace Trivia.Sessions
         private void OnLoad()
         {
             LoadedNumTeams = 0;
-            _loadedSession = SessionConfig.LoadSession(_scorerRepo, SelectedConfigName);
+            _loadedSession = SessionSerialization.LoadSession(_scorerRepo, SelectedConfigName);
             LoadedConfigName = SelectedConfigName;
-            LoadedScorers = _loadedSession.ActiveScorers;
-            foreach (var s in LoadedScorers) LoadedNumTeams += s.ScoringTeams.Count;
+            LoadedScorers = new ObservableCollection<Scorer>(_loadedSession.Scorers);
+            foreach (var s in LoadedScorers) LoadedNumTeams += s.Teams.Count;
             UseConfigCommand.RaiseCanExecuteChanged();
         }
 

@@ -22,7 +22,22 @@ namespace Trivia.Sessions
         public int UserNumRounds
         {
             get { return _userNumRounds; }
-            set { SetProperty(ref _userNumRounds, value); }
+            set
+            {
+                SetProperty(ref _userNumRounds, value);
+                SaveConfigCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private int _userNumQuestions;
+        public int UserNumQuestions
+        {
+            get { return _userNumQuestions; }
+            set
+            {
+                SetProperty(ref _userNumQuestions, value);
+                SaveConfigCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private ObservableCollection<Scorer> _scorers;
@@ -43,7 +58,11 @@ namespace Trivia.Sessions
         public ObservableCollection<Scorer> SelectedScorers
         {
             get { return _selectedScorers; }
-            set { SetProperty(ref _selectedScorers, value); }
+            set
+            {
+                SetProperty(ref _selectedScorers, value);
+                SaveConfigCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private int _numTeams;
@@ -53,21 +72,44 @@ namespace Trivia.Sessions
             set { SetProperty(ref _numTeams, value); }
         }
 
-        private int _userPointsPerRound;
-        public int UserPointsPerRound
+        private string _userPointsPerRound;
+        public string UserPointsPerRound
         {
             get { return _userPointsPerRound; }
-            set { SetProperty(ref _userPointsPerRound, value); }
+            set
+            {
+                SetProperty(ref _userPointsPerRound, value);
+                if (value.Length == 0)
+                {
+                    _pointValsPerRound = new List<int>();
+                }
+                else
+                {
+                    string[] split = value.Replace(' ', '\0').Split(',');
+                    try
+                    {
+                        _pointValsPerRound = Array.ConvertAll(split, x => int.Parse(x)).ToList();
+                    }
+                    catch
+                    {
+                        UserPointsPerRound = string.Empty;
+                    }
+                }
+                SaveConfigCommand.RaiseCanExecuteChanged();
+            }
         }
+
+        private List<int> _pointValsPerRound;
 
         public StartSessionViewModel(ITeamRepository teamRepo, IScorerRepository scorerRepo)
         {
             _teamRepo = teamRepo;
             _scorerRepo = scorerRepo;
+            _pointValsPerRound = new List<int>();
             SelectScorerCommand = new RelayCommand(OnSelectScorer);
             ResetCommand = new RelayCommand(OnReset);
             StartCommand = new RelayCommand(OnStart);
-            SaveConfigCommand = new RelayCommand(OnSaveConfig);
+            SaveConfigCommand = new RelayCommand(OnSaveConfig, CanSaveConfig);
             LoadConfigCommand = new RelayCommand(OnLoadConfig);
             LoadSavedSessionCommand = new RelayCommand(OnLoadSavedSession);
             CancelCommand = new RelayCommand(OnCancel);
@@ -94,18 +136,25 @@ namespace Trivia.Sessions
         {
             LoadScorers();
             UserNumRounds = 0;
+            UserNumQuestions = 0;
+            UserPointsPerRound = string.Empty;
             NumTeams = 0;
         }
 
         private void OnStart()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams(SelectedScorers, UserNumRounds, UserPointsPerRound);
+            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _pointValsPerRound, SelectedScorers.ToList());
             StartSessionRequested(sessionConfig);
+        }
+
+        private bool CanSaveConfig()
+        {
+            return _pointValsPerRound.Count != 0 && UserNumRounds != 0 && UserNumQuestions != 0 && SelectedScorers.Count != 0;
         }
 
         private void OnSaveConfig()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams(SelectedScorers, UserNumRounds, UserPointsPerRound);
+            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _pointValsPerRound, SelectedScorers.ToList());
             SaveConfigRequested(sessionConfig);
         }
 

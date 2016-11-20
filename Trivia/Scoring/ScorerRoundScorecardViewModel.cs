@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trivia.Scorers;
+using Trivia.ScoringHelpers;
 
 namespace Trivia.Scoring
 {

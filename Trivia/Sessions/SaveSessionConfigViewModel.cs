@@ -24,25 +24,25 @@ namespace Trivia.Sessions
 
         public int NumRounds
         {
-            get { return SessionConfigParams.NumRounds; }
+            get { return SessionConfigParams.NumberOfRounds; }
             private set { }
         }
 
-        public ObservableCollection<ScoringRound> ScoringRounds
+        public int NumQuestions
         {
-            get { return SessionConfigParams.ScoringRounds; }
+            get { return SessionConfigParams.NumberOfQuestions; }
             private set { }
         }
 
-        public int PointValue
+        public ObservableCollection<int> PointValues
         {
-            get { return SessionConfigParams.PointValue; }
+            get { return new ObservableCollection<int>(SessionConfigParams.PointValuesPerRound); }
             private set { }
         }
 
-        public ObservableCollection<ActiveScorer> Scorers
+        public ObservableCollection<Scorer> Scorers
         {
-            get { return SessionConfigParams.ActiveScorers; }
+            get { return new ObservableCollection<Scorer>(SessionConfigParams.Scorers); }
             private set { }
         }
 
@@ -77,7 +77,7 @@ namespace Trivia.Sessions
 
         private void OnSave()
         {
-            SessionConfig.SaveConfig(SessionConfigParams, ConfigName);
+            SessionSerialization.SaveConfig(SessionConfigParams, ConfigName);
             ConfigName = "Save successful!";
             System.Threading.Thread.Sleep(1000);
             Done();

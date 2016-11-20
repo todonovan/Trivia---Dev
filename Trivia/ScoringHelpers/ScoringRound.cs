@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace Trivia.Scoring
+namespace Trivia.ScoringHelpers
 {
     [DataContract()]
     public class ScoringRound

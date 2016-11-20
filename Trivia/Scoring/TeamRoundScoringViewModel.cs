@@ -4,13 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trivia.ScoringHelpers;
 
 namespace Trivia.Scoring
 {
     public class TeamRoundScoringViewModel : BindableBase
     {
-        public enum Question { NotAnswered, Correct, Incorrect };
-
         public int NumQuestions { get; private set; }
         public string TeamName { get; private set; }
 

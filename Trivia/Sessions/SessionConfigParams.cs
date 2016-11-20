@@ -6,31 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Trivia.Scorers;
 using Trivia.Scoring;
+using Trivia.ScoringHelpers;
 using TriviaData.Models;
 
 namespace Trivia.Sessions
 {
     public class SessionConfigParams
     {
-        public ObservableCollection<ActiveScorer> ActiveScorers { get; set; }
-        public ObservableCollection<ScoringRound> ScoringRounds { get; set; }
-        public int PointValue { get; private set; }
-        public int NumRounds { get; private set; }
+        public int NumberOfRounds { get; set; }
+        public int NumberOfQuestions { get; set; }
+        public List<int> PointValuesPerRound { get; set; }
+        public List<Scorer> Scorers { get; set; }
 
-        public SessionConfigParams(ObservableCollection<Scorer> scorers, int numRounds, int pointValue)
+        public SessionConfigParams(int numRounds, int numQuestions, List<int> pointValsPerRound, List<Scorer> scorers)
         {
-            ActiveScorers = new ObservableCollection<ActiveScorer>();
-            foreach (var s in scorers) ActiveScorers.Add(new ActiveScorer(s));
-
-            ScoringRounds = new ObservableCollection<ScoringRound>();
-            for (int i = 0; i < numRounds - 1; i++)
-            {
-                ScoringRound sr = new ScoringRound(i, false, 5, pointValue);
-                ScoringRounds.Add(sr);
-            }
-            ScoringRounds.Add(new ScoringRound(numRounds-1, true, 1, 0));
-            PointValue = pointValue;
-            NumRounds = numRounds;
+            NumberOfRounds = numRounds;
+            NumberOfQuestions = numQuestions;
+            PointValuesPerRound = pointValsPerRound;
+            Scorers = scorers;
         }
     }
 }

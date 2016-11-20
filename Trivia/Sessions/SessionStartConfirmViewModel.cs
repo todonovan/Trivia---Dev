@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trivia.Scorers;
+using TriviaData.Models;
 
 namespace Trivia.Sessions
 {
@@ -12,8 +13,8 @@ namespace Trivia.Sessions
     {
         private SessionConfigParams _sessionConfigParams;
 
-        private ObservableCollection<ActiveScorer> _scorers;
-        public ObservableCollection<ActiveScorer> Scorers
+        private ObservableCollection<Scorer> _scorers;
+        public ObservableCollection<Scorer> Scorers
         {
             get { return _scorers; }
             set { SetProperty(ref _scorers, value); }
@@ -35,9 +36,9 @@ namespace Trivia.Sessions
         public void SetSessionConfig(SessionConfigParams scp)
         {
             _sessionConfigParams = scp;
-            Scorers = scp.ActiveScorers;
+            Scorers = new ObservableCollection<Scorer>(scp.Scorers);
             NumTeams = 0;
-            foreach (var s in scp.ActiveScorers) NumTeams += s.ScoringTeams.Count;
+            foreach (var s in scp.Scorers) NumTeams += s.Teams.Count;
         }
 
         private void OnCancel()

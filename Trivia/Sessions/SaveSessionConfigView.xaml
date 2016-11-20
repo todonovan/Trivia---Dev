@@ -30,27 +30,32 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0"
                 Content="Number of Rounds:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
             <TextBlock Grid.Column="1" Grid.Row="0"
                        Text="{Binding NumRounds}" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" />
             <Label Grid.Column="0" Grid.Row="1"
+                Content="Number of Questions:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Text="{Binding NumQuestions}" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" />
+            <Label Grid.Column="0" Grid.Row="2"
                 Content="Points per round:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
-            <TextBlock Grid.Row="1" Grid.Column="1"
-                     Text="{Binding PointValue, Mode=OneWay}"
+            <ListBox Grid.Row="2" Grid.Column="1"
+                     ItemsSource="{Binding PointValues, Mode=OneWay}"
                      Height="Auto" Width="100" FontSize="18"
                      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
-            <Label Grid.Column="0" Grid.Row="2"
+            <Label Grid.Column="0" Grid.Row="3"
                 Content="Scorers:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
-            <ListBox Grid.Column="1" Grid.Row="2"
+            <ListBox Grid.Column="1" Grid.Row="3"
                      ItemsSource="{Binding Scorers}"
                      DisplayMemberPath="Name"
                      Height="Auto" Width="100"
                      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
-            <Label Grid.Column="0" Grid.Row="3"
+            <Label Grid.Column="0" Grid.Row="4"
                 Content="Name to save as:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
-            <TextBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
+            <TextBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
                      Text="{Binding ConfigName, Mode=TwoWay}" FontSize="18"/>
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">

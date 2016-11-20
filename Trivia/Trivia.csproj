@@ -96,7 +96,7 @@
       <DependentUpon>ScoreboardWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoreboard\ScoreboardWindowViewModel.cs" />
-    <Compile Include="Scorers\ActiveScorer.cs" />
+    <Compile Include="ScoringHelpers\ActiveScorer.cs" />
     <Compile Include="Scorers\ScorerAddEditView.xaml.cs">
       <DependentUpon>ScorerAddEditView.xaml</DependentUpon>
     </Compile>
@@ -110,15 +110,13 @@
     </Compile>
     <Compile Include="Scorers\ScorerSetTeamsViewModel.cs" />
     <Compile Include="Scorers\SimpleEditableScorer.cs" />
+    <Compile Include="ScoringHelpers\AnswerSet.cs" />
+    <Compile Include="ScoringHelpers\GameStateFactory.cs" />
     <Compile Include="Scoring\BonusRoundScorecardView.xaml.cs">
       <DependentUpon>BonusRoundScorecardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\BonusRoundScorecardViewModel.cs" />
     <Compile Include="Scoring\QuestionToVisibilityConverter.cs" />
-    <Compile Include="Scoring\ScoringMasterView.xaml.cs">
-      <DependentUpon>ScoringMasterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Scoring\ScoringMasterViewModel.cs" />
     <Compile Include="Scoring\ScoringRoundMasterView.xaml.cs">
       <DependentUpon>ScoringRoundMasterView.xaml</DependentUpon>
     </Compile>
@@ -127,18 +125,18 @@
       <DependentUpon>ScoringWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\ScoringWindowViewModel.cs" />
-    <Compile Include="Sessions\GameSession.cs" />
-    <Compile Include="Scoring\ScoringRound.cs" />
+    <Compile Include="ScoringHelpers\GameState.cs" />
+    <Compile Include="ScoringHelpers\ScoringRound.cs" />
     <Compile Include="Scoring\ScorerRoundScorecardView.xaml.cs">
       <DependentUpon>ScorerRoundScorecardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\ScorerRoundScorecardViewModel.cs" />
-    <Compile Include="Scoring\ScoringTeam.cs" />
+    <Compile Include="ScoringHelpers\ScoringTeam.cs" />
     <Compile Include="Scoring\TeamRoundScoringView.xaml.cs">
       <DependentUpon>TeamRoundScoringView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\TeamRoundScoringViewModel.cs" />
-    <Compile Include="Sessions\GameSessionSerializer.cs" />
+    <Compile Include="Sessions\GameStateSerializer.cs" />
     <Compile Include="Sessions\LoadConfigView.xaml.cs">
       <DependentUpon>LoadConfigView.xaml</DependentUpon>
     </Compile>
@@ -147,13 +145,12 @@
       <DependentUpon>SaveSessionConfigView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Sessions\SaveSessionConfigViewModel.cs" />
-    <Compile Include="Sessions\SessionConfig.cs" />
+    <Compile Include="Sessions\SessionSerialization.cs" />
     <Compile Include="Sessions\SessionConfigParams.cs" />
     <Compile Include="Sessions\SessionStartConfirmView.xaml.cs">
       <DependentUpon>SessionStartConfirmView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Sessions\SessionStartConfirmViewModel.cs" />
-    <Compile Include="Sessions\SimpleEditableSession.cs" />
     <Compile Include="Sessions\StartSessionView.xaml.cs">
       <DependentUpon>StartSessionView.xaml</DependentUpon>
     </Compile>
@@ -219,10 +216,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scoring\ScorerRoundScorecardView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Scoring\ScoringMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

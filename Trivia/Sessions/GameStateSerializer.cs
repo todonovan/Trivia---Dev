@@ -7,14 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Trivia.Scorers;
+using Trivia.ScoringHelpers;
 
 namespace Trivia.Sessions
 {
-    public static class GameSessionSerializer
+    public static class GameStateSerializer
     {
-        public static GameSession GetGameSession(string fileName)
+        public static GameState GetGameSession(string fileName)
         {
-            GameSession g = new GameSession(0, 0, 0, new List<ActiveScorer>());
+            GameState g = new GameState();
             try
             {
                 g = ReadObject(fileName);
@@ -27,12 +28,12 @@ namespace Trivia.Sessions
             return g;
         }
 
-        public static void SaveGameSession(GameSession gs, string fileName)
+        public static void SaveGameSession(GameState gs, string fileName)
         {
             try
             {
                 FileStream writer = new FileStream(fileName, FileMode.Create);
-                DataContractSerializer ser = new DataContractSerializer(typeof(GameSession));
+                DataContractSerializer ser = new DataContractSerializer(typeof(GameState));
                 ser.WriteObject(writer, gs);
                 writer.Close();
             }
@@ -44,13 +45,13 @@ namespace Trivia.Sessions
             
         }
 
-        public static GameSession ReadObject(string fileName)
+        public static GameState ReadObject(string fileName)
         {
             FileStream fs = new FileStream(fileName, FileMode.Open);
             XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
-            DataContractSerializer ser = new DataContractSerializer(typeof(GameSession));
+            DataContractSerializer ser = new DataContractSerializer(typeof(GameState));
 
-            GameSession gs = (GameSession)ser.ReadObject(reader, true);
+            GameState gs = (GameState)ser.ReadObject(reader, true);
             reader.Close();
             fs.Close();
             return gs;
