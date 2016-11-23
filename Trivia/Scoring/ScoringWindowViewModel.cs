@@ -14,6 +14,7 @@ namespace Trivia.Scoring
 {
     public class ScoringWindowViewModel : BindableBase
     {
+        private ScoringOverviewViewModel _scoringOverviewViewModel;
         private ScorerRoundScorecardViewModel _scorerRoundScorecardViewModel;
         private ScoreboardWindowViewModel _scoreboardWindowViewModel;
         private ScoringRoundMasterViewModel _scoringRoundMasterViewModel;
@@ -36,37 +37,25 @@ namespace Trivia.Scoring
 
         public ScoringWindowViewModel()
         {
+            _scoringOverviewViewModel = ContainerHelper.Container.Resolve<ScoringOverviewViewModel>();
             _scoreboardWindowViewModel = ContainerHelper.Container.Resolve<ScoreboardWindowViewModel>();
             _scorerRoundScorecardViewModel = ContainerHelper.Container.Resolve<ScorerRoundScorecardViewModel>();
             _scoringRoundMasterViewModel = ContainerHelper.Container.Resolve<ScoringRoundMasterViewModel>();
 
-            _scoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
-            _scoringRoundMasterViewModel.RoundComplete += OnRoundComplete;
+            CurrentViewModel = _scoringOverviewViewModel;
 
-            CurrentViewModel = ;
+            _scoringOverviewViewModel.GoToRoundRequested += OnScoreRound;
 
-            BeginRoundCommand = new RelayCommand(OnBeginRound);
             TimerCommand = new RelayCommand(OnStartTimer);
             ScoreboardCommand = new RelayCommand(OnOpenScoreboard);
             ExitCommand = new RelayCommand(OnExit);
         }
 
-        public void SetCurrentGameSession(SessionConfigParams scp)
+        public void SetCurrentGameState(GameState gs)
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) return;
-            GameState gs = GameStateFactory.GetNewGameState(scp);
             CurrentGameState = gs;
-            
-        }
-
-        private void OnRoundComplete(GameState gs)
-        {
-            
-        }
-
-        private void OnBeginRound()
-        {
-            
+            _scoringOverviewViewModel.SetGameState(CurrentGameState);
         }
 
         private void OnStartTimer()
@@ -101,15 +90,15 @@ namespace Trivia.Scoring
 
         }
 
+        private void OnScoreRound(RoundScoringParams rsp)
+        {
+            _scoringRoundMasterViewModel.SetGameStateAndRoundNumber(rsp);
+            CurrentViewModel = _scoringRoundMasterViewModel;
+        }
+
         public RelayCommand BeginRoundCommand { get; private set; }
         public RelayCommand TimerCommand { get; private set; }
         public RelayCommand ScoreboardCommand { get; private set; }
         public RelayCommand ExitCommand { get; private set; }
-
-        // Need view models for...
-        // Scoreboard
-        // ScoringOverview
-        // ScorerRoundScorecardView
-        // maybe a details view? or a 'stats' view? 
     }
 }

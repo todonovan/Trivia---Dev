@@ -15,6 +15,7 @@ using Trivia.Scorers;
 using Trivia.Scoring;
 using Trivia.Sessions;
 using System.Windows;
+using Trivia.ScoringHelpers;
 
 namespace Trivia
 {
@@ -118,7 +119,7 @@ namespace Trivia
         {
             _startSessionViewModel.NumTeams = 0;
             _startSessionViewModel.UserNumRounds = 0;
-            _startSessionViewModel.UserPointsPerRound = 0;
+            _startSessionViewModel.UserPointsPerRound = string.Empty;
             CurrentViewModel = _startSessionViewModel;
         }
 
@@ -197,7 +198,8 @@ namespace Trivia
         {
             Window w = new ScoringWindow();
             ScoringWindowViewModel vm = ContainerHelper.Container.Resolve<ScoringWindowViewModel>();
-            vm.SetCurrentGameSession(configParams);
+            GameState gs = GameStateFactory.GetNewGameState(configParams);
+            vm.SetCurrentGameState(gs);
             w.DataContext = vm;
             w.Show();
             NavToStartSession();

@@ -58,5 +58,15 @@ namespace Trivia.ScoringHelpers
             }
             else return Score;
         }
+
+        public bool HasRoundBeenScored(int roundNumber)
+        {
+            var roundAnswers = AnswerSet.GetAnswersForRound(roundNumber);
+            foreach (var a in roundAnswers)
+            {
+                if (a == Question.NotJudged) return false;
+            }
+            return true;
+        }
     }
 }

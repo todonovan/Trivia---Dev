@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,24 +11,14 @@ namespace Trivia.Scoring
 {
     public class ScorerRoundScorecardViewModel : BindableBase
     {
-        private ScoringRound _round;
-        public ScoringRound Round
-        {
-            get { return _round; }
-            set
-            {
-                SetProperty(ref _round, value);
-                RoundNumber = value.OrderOfRound + 1;
-            }
-        }
+        private GameState _gameState;
 
-        public int RoundNumber { get; private set; }
-
-        public int NumQuestions
+        private int _roundNumber;
+        public int RoundNumber
         {
-            get { return _round.NumQuestions; }
-            private set { }
-        }
+            get { return _roundNumber; }
+            set { SetProperty(ref _roundNumber, value); }
+        }        
 
         private ActiveScorer _scorer;
         public ActiveScorer Scorer
@@ -42,11 +33,18 @@ namespace Trivia.Scoring
 
         public string ScorerName { get; private set; }
 
-        private List<TeamRoundScoringViewModel> _teamRoundScoringViewModels;
-        public List<TeamRoundScoringViewModel> TeamRoundScoringViewModels
+        private ObservableCollection<TeamRoundScoringViewModel> _teamRoundScoringViewModels;
+        public ObservableCollection<TeamRoundScoringViewModel> TeamRoundScoringViewModels
         {
             get { return _teamRoundScoringViewModels; }
             set { SetProperty(ref _teamRoundScoringViewModels, value); }
+        }
+
+        private TeamRoundScoringViewModel _selectedTeam;
+        public TeamRoundScoringViewModel SelectedTeam
+        {
+            get { return _selectedTeam; }
+            set { SetProperty(ref _selectedTeam, value); }
         }
 
         public ScorerRoundScorecardViewModel()
@@ -55,17 +53,17 @@ namespace Trivia.Scoring
             RoundNumber = 0;
         }
 
-        public void SetRoundAndScorer(ScoringRound r, ActiveScorer s)
+        public void SetRoundAndScorer(RoundScoringParams roundParams, ActiveScorer s)
         {
-            _round = r;
+            RoundNumber = roundParams.RoundNumber + 1;
+            _gameState = roundParams.GameState;
             Scorer = s;
-            TeamRoundScoringViewModels = new List<TeamRoundScoringViewModel>();
+            TeamRoundScoringViewModels = new ObservableCollection<TeamRoundScoringViewModel>();
             foreach (var t in s.ScoringTeams)
             {
                 TeamRoundScoringViewModels.Add(new TeamRoundScoringViewModel());
             }
             ScorerName = s.Name;
-            RoundNumber = r.OrderOfRound + 1;
         }
     }
 }

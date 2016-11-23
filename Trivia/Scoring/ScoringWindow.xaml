@@ -13,8 +13,8 @@
         <local:ScoringWindowViewModel />
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type local:ScoringMasterViewModel}">
-            <local:ScoringMasterView />
+        <DataTemplate DataType="{x:Type local:ScoringOverviewViewModel}">
+            <local:ScoringOverviewView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:ScoringRoundMasterViewModel}">
             <local:ScoringRoundMasterView />
@@ -36,7 +36,6 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Vertical" Background="#FF79B8CB">
             <TextBlock Text="Scoring Screen" FontSize="36" TextAlignment="Center" FontWeight="Bold" Foreground="White" />
-            <Button Command="{Binding BeginRoundCommand}" Content="Score Next Round" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
             <Button Command="{Binding TimerCommand}" Content="Timer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
             <Button Content="Scoreboard" Command="{Binding ScoreboardCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
             <Button Content="Save and Exit" Command="{Binding ExitCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>

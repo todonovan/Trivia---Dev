@@ -36,5 +36,14 @@ namespace Trivia.ScoringHelpers
             }
             return scores;
         }
+
+        public bool AllTeamsScoredForRound(int roundNumber)
+        {
+            foreach (var t in ScoringTeams)
+            {
+                if (!t.HasRoundBeenScored(roundNumber)) return false;
+            }
+            return true;
+        }
     }
 }

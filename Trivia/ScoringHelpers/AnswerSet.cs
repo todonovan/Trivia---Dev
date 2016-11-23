@@ -6,40 +6,51 @@ using System.Threading.Tasks;
 
 namespace Trivia.ScoringHelpers
 {
-    public enum Question { NotAnswered, Correct, Incorrect };
+    public enum Question { NotJudged, NotAnswered, Correct, Incorrect };
 
     public class AnswerSet
     {
-        private Question[,] _answers;
+        private List<List<Question>> _answers;
 
         public AnswerSet(int numRounds, int numQuestions)
         {
-            _answers = new Question[numRounds, numQuestions];
+            _answers = new List<List<Question>>();
+            for (int i = 0; i < numRounds; i++)
+            {
+                var roundList = new List<Question>(numQuestions);
+                for (int j = 0; j < roundList.Capacity; j++)
+                {
+                    roundList.Add(Question.NotJudged);
+                }
+                _answers.Add(roundList);
+            }
         }
 
         public Question GetAnswer(int round, int questionNum)
         {
-            return _answers[round, questionNum];
+            return _answers[round][questionNum];
         }
 
         public void SetAnswer(int round, int questionNum, Question val)
         {
-            _answers[round, questionNum] = val;
+            _answers[round][questionNum] = val;
         }
 
         public List<List<Question>> GetAllAnswers()
         {
-            List<List<Question>> answers = new List<List<Question>>();
-            for (int i = 0; i < _answers.Rank; i++)
+            List<List<Question>> allAnswers = new List<List<Question>>(_answers.Count);
+            for (int i = 0; i < allAnswers.Count; i++)
             {
-                List<Question> roundAnswers = new List<Question>();
-                for (int j = 0; j < _answers.GetLength(i); j++)
-                {
-                    roundAnswers.Add(_answers[i, j]);
-                }
-                answers.Add(roundAnswers);
+                allAnswers.Add(GetAnswersForRound(i));
             }
-            return answers;
+            return allAnswers;
+        }
+
+        public List<Question> GetAnswersForRound(int roundNumber)
+        {
+            List<Question> roundAnswers = new List<Question>(_answers[roundNumber].Count);
+            for (int i = 0; i < roundAnswers.Capacity; i++) roundAnswers.Add(_answers[roundNumber][i]);
+            return roundAnswers;
         }
     }
 }

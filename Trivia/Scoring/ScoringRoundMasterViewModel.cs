@@ -20,13 +20,13 @@ namespace Trivia.Scoring
             set { SetProperty(ref _currentScorecardViewModel, value); }
         }
 
-        private ScoringRound _currentRound;
-        public ScoringRound CurrentRound
+        private int _currentRoundIndex;
+        public int CurrentRoundIndex
         {
-            get { return _currentRound; }
+            get { return _currentRoundIndex; }
             set
             {
-                SetProperty(ref _currentRound, value);
+                SetProperty(ref _currentRoundIndex, value);
                 NextScorecardCommand.RaiseCanExecuteChanged();
                 PreviousScorecardCommand.RaiseCanExecuteChanged();
             }
@@ -47,11 +47,7 @@ namespace Trivia.Scoring
         public ActiveScorer CurrentScorer
         {
             get { return _currentScorer; }
-            set
-            {
-                SetProperty(ref _currentScorer, value);
-                CurrentScorecardViewModel.SetRoundAndScorer(CurrentRound, value);
-            }
+            set { SetProperty(ref _currentScorer, value); }
         }
 
         public ScoringRoundMasterViewModel()
@@ -64,9 +60,12 @@ namespace Trivia.Scoring
             FinishRoundCommand = new RelayCommand<GameState>(OnFinishRound);
         }
 
-        public void SetGameSession(GameState gs)
+        public void SetGameStateAndRoundNumber(RoundScoringParams roundParams)
         {
-            _gs = gs;
+            _gs = roundParams.GameState;
+            CurrentScorer = _gs.ActiveScorers[0];
+            CurrentRoundIndex = roundParams.RoundNumber;
+            _currentScorecardViewModel.SetRoundAndScorer(roundParams, CurrentScorer);
         }
 
         private bool NextScorecardExists()
@@ -77,7 +76,7 @@ namespace Trivia.Scoring
         private void OnNextScorecard()
         {
             _currentScorerNum += 1;
-            _currentScorecardViewModel.SetRoundAndScorer(CurrentRound, CurrentScorer);
+            _currentScorecardViewModel.SetRoundAndScorer(new RoundScoringParams(_gs, CurrentRoundIndex), CurrentScorer);
         }
 
         private bool PrevScorecardExists()
@@ -88,7 +87,7 @@ namespace Trivia.Scoring
         private void OnPrevScorecard()
         {
             _currentScorerNum -= 1;
-            _currentScorecardViewModel.SetRoundAndScorer(CurrentRound, CurrentScorer);
+            _currentScorecardViewModel.SetRoundAndScorer(new RoundScoringParams(_gs, CurrentRoundIndex), CurrentScorer);
         }
 
         private void OnReturnToMaster()

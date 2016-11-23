@@ -21,13 +21,7 @@
             <TextBlock Text="{Binding ScorerName}" DockPanel.Dock="Left" FontSize="18" Foreground="White"/>
             <TextBlock Text="{Binding RoundNumber}" DockPanel.Dock="Right" FontSize="18" Foreground="White"/>
         </DockPanel>
-        <ListBox Grid.Row="1"
-                 ItemsSource="{Binding TeamRoundScoringViewModels}"
-                 SelectedItem="{Binding SelectedTeam}"/>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Content="Return to Overview" Margin="10,10,10,10" />
-            <Button Content="Next" Margin="10,10,10,10" />
-            <Button Content="Back" Margin="10,10,10,10" />
-        </StackPanel>
+        <GroupBox Grid.Row="1"
+                 Content="{Binding TeamRoundScoringViewModels}"/>
     </Grid>
 </UserControl>
