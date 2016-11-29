@@ -113,6 +113,7 @@
     <Compile Include="ScoringHelpers\AnswerSet.cs" />
     <Compile Include="ScoringHelpers\GameStateFactory.cs" />
     <Compile Include="ScoringHelpers\RoundScoringParams.cs" />
+    <Compile Include="ScoringHelpers\ScorecardTeam.cs" />
     <Compile Include="Scoring\BonusRoundScorecardView.xaml.cs">
       <DependentUpon>BonusRoundScorecardView.xaml</DependentUpon>
     </Compile>

@@ -37,6 +37,12 @@ namespace Trivia.ScoringHelpers
             }
             ScoreNeedsUpdated = true;
         }
+        
+        public List<Question> GetRoundAnswers(int roundNumber)
+        {
+            List<Question> answers = AnswerSet.GetAnswersForRound(roundNumber);
+            return answers;
+        }
 
         public int GetScore()
         {

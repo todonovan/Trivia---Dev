@@ -4,12 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Trivia.Scoring"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type local:TeamRoundScoringViewModel}">
-            <local:TeamRoundScoringView />
-        </DataTemplate>
+        <local:QuestionToVisibilityConverter x:Key="questionConverter" />
+        <Style TargetType="ListBoxItem">
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="IsSelected" Value="True" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -17,11 +24,39 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Background="#FF79B8CB">
-            <TextBlock Text="{Binding ScorerName}" DockPanel.Dock="Left" FontSize="18" Foreground="White"/>
-            <TextBlock Text="{Binding RoundNumber}" DockPanel.Dock="Right" FontSize="18" Foreground="White"/>
-        </DockPanel>
-        <GroupBox Grid.Row="1"
-                 Content="{Binding TeamRoundScoringViewModels}"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Background="#FF79B8CB">
+            <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" FontSize="18" Foreground="White"/>
+            <TextBlock Text="{Binding RoundNumber}" HorizontalAlignment="Right" FontSize="18" Foreground="White"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams}"
+                  SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="nameColumn" Binding="{Binding TeamName}" FontSize="18" />
+                <DataGridTemplateColumn x:Name="questionsColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding RoundAnswers, Mode=TwoWay}" SelectedIndex="{Binding DataContext.SelectedQuestionIndex, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Margin="5" Orientation="Horizontal" IsItemsHost="True" Background="FloralWhite" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Width="75" Height="75" Command="{Binding DataContext.IncrementQuestionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Margin="5">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Ellipse Stroke="Black" Fill="{Binding Path=., Converter={StaticResource questionConverter}}" />
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
