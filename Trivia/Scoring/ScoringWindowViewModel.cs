@@ -45,6 +45,7 @@ namespace Trivia.Scoring
             CurrentViewModel = _scoringOverviewViewModel;
 
             _scoringOverviewViewModel.GoToRoundRequested += OnScoreRound;
+            _scoringRoundMasterViewModel.RoundComplete += OnRoundComplete;
 
             TimerCommand = new RelayCommand(OnStartTimer);
             ScoreboardCommand = new RelayCommand(OnOpenScoreboard);
@@ -94,6 +95,12 @@ namespace Trivia.Scoring
         {
             _scoringRoundMasterViewModel.SetGameStateAndRoundNumber(rsp);
             CurrentViewModel = _scoringRoundMasterViewModel;
+        }
+
+        private void OnRoundComplete(GameState gs)
+        {
+            SetCurrentGameState(gs);
+            CurrentViewModel = _scoringOverviewViewModel;
         }
 
         public RelayCommand BeginRoundCommand { get; private set; }

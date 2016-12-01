@@ -70,6 +70,9 @@ namespace Trivia.Scoring
             RoundNumber = 0;
 
             IncrementQuestionCommand = new RelayCommand(OnIncrementQuestion);
+            IncrementAndAdvanceCommand = new RelayCommand<string>(OnIncrementAndAdvance);
+            NextQuestionCommand = new RelayCommand(OnNextQuestion);
+            PrevQuestionCommand = new RelayCommand(OnPrevQuestion);
             SaveChangesCommand = new RelayCommand(OnSaveChanges);
         }
 
@@ -98,6 +101,49 @@ namespace Trivia.Scoring
             SelectedQuestionIndex = curIndex;
         }
 
+        private void OnIncrementAndAdvance(string input)
+        {
+            int curIndex = SelectedQuestionIndex;
+            if (input == "r") SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
+            else if (input == "w") SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Incorrect;
+            else if (input == "n") SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.NotAnswered;
+            SelectedQuestionIndex = curIndex;
+            OnNextQuestion();
+        }
+
+        private void OnNextQuestion()
+        {
+            if (SelectedQuestionIndex + 1 == _gameState.NumQuestionsPerRound)
+            {
+                if (SelectedTeam == Teams[Teams.Count - 1])
+                {
+                    OnNextScorer();
+                }
+                else
+                {
+                    int curTeamIndex = Teams.IndexOf(SelectedTeam);
+                    SelectedTeam = Teams[curTeamIndex + 1];
+                    SelectedQuestionIndex = 0;
+                }
+            }
+            else SelectedQuestionIndex += 1;
+        }
+
+        private void OnPrevQuestion()
+        {
+            if (SelectedQuestionIndex == 0)
+            {
+                if (SelectedTeam == Teams[0]) return;
+                else
+                {
+                    int curTeamIndex = Teams.IndexOf(SelectedTeam);
+                    SelectedTeam = Teams[curTeamIndex - 1];
+                    SelectedQuestionIndex = _gameState.NumQuestionsPerRound - 1;
+                }
+            }
+            else SelectedQuestionIndex -= 1;
+        }
+
         private void OnSaveChanges()
         {
             foreach (var t in Teams)
@@ -106,7 +152,18 @@ namespace Trivia.Scoring
             }
         }
 
+        private void OnNextScorer()
+        {
+            OnSaveChanges();
+            NextScorerRequested(_gameState);
+        }
+
         public RelayCommand IncrementQuestionCommand { get; private set; }
+        public RelayCommand<string> IncrementAndAdvanceCommand { get; private set; }
+        public RelayCommand NextQuestionCommand { get; private set; }
+        public RelayCommand PrevQuestionCommand { get; private set; }
         public RelayCommand SaveChangesCommand { get; private set; }
+
+        public event Action<GameState> NextScorerRequested = delegate { };
     }
 }

@@ -39,7 +39,11 @@ namespace Trivia.Scoring
             set
             {
                 SetProperty(ref _currentScorerNum, value);
-                CurrentScorer = _gs.ActiveScorers[value];
+                if (value < _gs.ActiveScorers.Count)
+                {
+                    CurrentScorer = _gs.ActiveScorers[value];
+                }                
+                NextScorecardCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -53,11 +57,13 @@ namespace Trivia.Scoring
         public ScoringRoundMasterViewModel()
         {
             _currentScorerNum = 0;
-            _currentScorecardViewModel = new ScorerRoundScorecardViewModel();
-            NextScorecardCommand = new RelayCommand(OnNextScorecard, NextScorecardExists);
+            CurrentScorecardViewModel = new ScorerRoundScorecardViewModel();
+            NextScorecardCommand = new RelayCommand<GameState>(OnNextScorecard, NextScorecardExists);
             PreviousScorecardCommand = new RelayCommand(OnPrevScorecard, PrevScorecardExists);
             ReturnToMasterViewCommand = new RelayCommand(OnReturnToMaster);
             FinishRoundCommand = new RelayCommand<GameState>(OnFinishRound);
+
+            CurrentScorecardViewModel.NextScorerRequested += HandleNextScorecardRequest;
         }
 
         public void SetGameStateAndRoundNumber(RoundScoringParams roundParams)
@@ -65,18 +71,35 @@ namespace Trivia.Scoring
             _gs = roundParams.GameState;
             CurrentScorer = _gs.ActiveScorers[0];
             CurrentRoundIndex = roundParams.RoundNumber;
-            _currentScorecardViewModel.SetRoundAndScorer(roundParams, CurrentScorer);
+            CurrentScorecardViewModel.SetRoundAndScorer(roundParams, CurrentScorer);
         }
 
-        private bool NextScorecardExists()
+        private bool NextScorecardExists(GameState gs)
         {
-            return _currentScorerNum + 1 < _gs.ActiveScorers.Count;
+            return CurrentScorerNum + 1 < _gs.ActiveScorers.Count;
         }
 
-        private void OnNextScorecard()
+        private void OnNextScorecard(GameState gs)
         {
-            _currentScorerNum += 1;
-            _currentScorecardViewModel.SetRoundAndScorer(new RoundScoringParams(_gs, CurrentRoundIndex), CurrentScorer);
+            _gs = gs;
+            CurrentScorecardViewModel.NextScorerRequested -= OnNextScorecard;
+            CurrentScorecardViewModel = new ScorerRoundScorecardViewModel();
+            CurrentScorerNum += 1;
+            CurrentScorecardViewModel.SetRoundAndScorer(new RoundScoringParams(_gs, CurrentRoundIndex), CurrentScorer);
+            CurrentScorecardViewModel.NextScorerRequested += OnNextScorecard;
+        }
+
+        private void HandleNextScorecardRequest(GameState gs)
+        {
+            _gs = gs;
+            if (NextScorecardExists(_gs))
+            {
+                OnNextScorecard(gs);
+            }
+            else
+            {
+                OnFinishRound(gs);
+            }
         }
 
         private bool PrevScorecardExists()
@@ -100,7 +123,7 @@ namespace Trivia.Scoring
             RoundComplete(gs);
         }
 
-        public RelayCommand NextScorecardCommand { get; private set; }
+        public RelayCommand<GameState> NextScorecardCommand { get; private set; }
         public RelayCommand PreviousScorecardCommand { get; private set; }
         public RelayCommand ReturnToMasterViewCommand { get; private set; }
         public RelayCommand<GameState> FinishRoundCommand { get; private set; }
