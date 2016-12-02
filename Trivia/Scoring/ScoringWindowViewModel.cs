@@ -100,7 +100,7 @@ namespace Trivia.Scoring
         private void OnRoundComplete(GameState gs)
         {
             SetCurrentGameState(gs);
-            CurrentViewModel = _scoringOverviewViewModel;
+            CurrentViewModel = _scoringOverviewViewModel;            
         }
 
         public RelayCommand BeginRoundCommand { get; private set; }

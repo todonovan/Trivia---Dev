@@ -88,6 +88,7 @@ namespace Trivia.Scoring
                 Teams.Add(new ScorecardTeam(RoundNumber, t.Team.Name, t.GetRoundAnswers(RoundNumber)));
             }
             SelectedTeam = Teams[0];
+            SelectedQuestionIndex = 0;
         }
 
         private void OnIncrementQuestion()
