@@ -62,7 +62,12 @@ namespace Trivia.Scoring
             set { SetProperty(ref _selectedQuestion, value); }
         }
 
-        public string ScorerName { get; private set; }
+        private string _scorerName;
+        public string ScorerName
+        {
+            get { return _scorerName; }
+            set { SetProperty(ref _scorerName, value); }
+        }
 
         public ScorerRoundScorecardViewModel()
         {
@@ -89,6 +94,14 @@ namespace Trivia.Scoring
             }
             SelectedTeam = Teams[0];
             SelectedQuestionIndex = 0;
+        }
+
+        public void OnSaveChanges()
+        {
+            foreach (var t in Teams)
+            {
+                Scorer.ScoringTeams.Where(x => x.Team.Name == t.TeamName).Single().SetRoundAnswers(t.RoundAnswers.ToList(), RoundNumber);
+            }
         }
 
         private void OnIncrementQuestion()
@@ -143,14 +156,6 @@ namespace Trivia.Scoring
                 }
             }
             else SelectedQuestionIndex -= 1;
-        }
-
-        private void OnSaveChanges()
-        {
-            foreach (var t in Teams)
-            {
-                Scorer.ScoringTeams.Where(x => x.Team.Name == t.TeamName).Single().SetRoundAnswers(t.RoundAnswers.ToList(), RoundNumber);
-            }
         }
 
         private void OnNextScorer()

@@ -3,17 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:Trivia.Scoreboard"
         mc:Ignorable="d"
         Title="GPLC Trivia Scoreboard" Height="768" Width="1024"
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        
-    </Grid>
+    <Window.DataContext>
+        <local:ScoreboardWindowViewModel />
+    </Window.DataContext>
+    <DataGrid ItemsSource="{Binding Scores}"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
+              CanUserAddRows="False"
+              HeadersVisibility="None"
+              Focusable="False"
+              GridLinesVisibility="Vertical"
+              FontSize="24"
+              FontWeight="Bold">
+        <DataGrid.Columns>
+            <DataGridTextColumn Binding="{Binding Name}" Width="*" />
+            <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
+        </DataGrid.Columns>
+    </DataGrid>
 </Window>

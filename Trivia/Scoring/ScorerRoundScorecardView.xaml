@@ -7,9 +7,10 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="625" d:DesignWidth="700">
     <UserControl.Resources>
         <local:QuestionToVisibilityConverter x:Key="questionConverter" />
+        <local:RoundToHumanIndexConverter x:Key="indexConverter" />
         <Style TargetType="ListBoxItem">
             <Style.Triggers>
                 <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -18,19 +19,19 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <UserControl.InputBindings>
-              
-    </UserControl.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0" Background="#FF79B8CB">
-            <TextBlock Text="{Binding ScorerName}" DockPanel.Dock="Left" FontSize="30" Foreground="White"/>
-            <TextBlock Text="{Binding RoundNumber}" DockPanel.Dock="Right" FontSize="30" Foreground="White"/>
-        </DockPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FF79B8CB">
+            <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
+            <TextBlock Text="{Binding RoundNumber, Converter={StaticResource indexConverter}}" HorizontalAlignment="Right" Margin="500,0,0,0" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
         <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams}"
                   SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None" KeyboardNavigation.DirectionalNavigation="None" IsReadOnly="True">
             <DataGrid.InputBindings>

@@ -16,7 +16,6 @@ namespace Trivia.Scoring
     {
         private ScoringOverviewViewModel _scoringOverviewViewModel;
         private ScorerRoundScorecardViewModel _scorerRoundScorecardViewModel;
-        private ScoreboardWindowViewModel _scoreboardWindowViewModel;
         private ScoringRoundMasterViewModel _scoringRoundMasterViewModel;
 
         private string _serializationName;
@@ -38,7 +37,6 @@ namespace Trivia.Scoring
         public ScoringWindowViewModel()
         {
             _scoringOverviewViewModel = ContainerHelper.Container.Resolve<ScoringOverviewViewModel>();
-            _scoreboardWindowViewModel = ContainerHelper.Container.Resolve<ScoreboardWindowViewModel>();
             _scorerRoundScorecardViewModel = ContainerHelper.Container.Resolve<ScorerRoundScorecardViewModel>();
             _scoringRoundMasterViewModel = ContainerHelper.Container.Resolve<ScoringRoundMasterViewModel>();
 
@@ -46,6 +44,7 @@ namespace Trivia.Scoring
 
             _scoringOverviewViewModel.GoToRoundRequested += OnScoreRound;
             _scoringRoundMasterViewModel.RoundComplete += OnRoundComplete;
+            _scoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
 
             TimerCommand = new RelayCommand(OnStartTimer);
             ScoreboardCommand = new RelayCommand(OnOpenScoreboard);
@@ -67,15 +66,14 @@ namespace Trivia.Scoring
         private void OnOpenScoreboard()
         {
             Window w = new ScoreboardWindow();
-            ScoreboardWindowViewModel vm = new ScoreboardWindowViewModel();
-            Dictionary<string, int> currentScores = GetAllScores();
+            ScoreboardWindowViewModel vm = ContainerHelper.Container.Resolve<ScoreboardWindowViewModel>();
+            List<ScoreboardScore> currentScores = GetAllScores();
             vm.SetScores(currentScores);
             w.DataContext = vm;
             w.Show();
-            vm.DisplayScores();
         }
 
-        private Dictionary<string, int> GetAllScores()
+        private List<ScoreboardScore> GetAllScores()
         {
             List<Dictionary<string, int>> scoresList = new List<Dictionary<string, int>>();
             foreach (var s in CurrentGameState.ActiveScorers)
@@ -83,7 +81,17 @@ namespace Trivia.Scoring
                 scoresList.Add(s.ReportScores());
             }
 
-            return scoresList.SelectMany(dict => dict).ToDictionary(score => score.Key, score => score.Value);
+            var scoresDict = scoresList.SelectMany(dict => dict).ToDictionary(score => score.Key, score => score.Value).ToList();
+            List<ScoreboardScore> scores = new List<ScoreboardScore>();
+            foreach (var pair in scoresDict)
+            {
+                ScoreboardScore s = new ScoreboardScore();
+                s.Name = pair.Key;
+                s.Score = pair.Value;
+                scores.Add(s);
+            }
+
+            return scores;
         }
 
         private void OnExit()
@@ -101,6 +109,11 @@ namespace Trivia.Scoring
         {
             SetCurrentGameState(gs);
             CurrentViewModel = _scoringOverviewViewModel;            
+        }
+
+        private void OnRoundCanceled()
+        {
+            CurrentViewModel = _scoringOverviewViewModel;
         }
 
         public RelayCommand BeginRoundCommand { get; private set; }

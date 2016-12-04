@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,41 +9,21 @@ namespace Trivia.Scoreboard
 {
     public class ScoreboardWindowViewModel : BindableBase
     {
-        private Dictionary<string, int> _scores;
-
-        private List<string> _orderedNames;
-        public List<string> OrderedNames
+        private ObservableCollection<ScoreboardScore> _scores;
+        public ObservableCollection<ScoreboardScore> Scores
         {
-            get { return _orderedNames; }
-            set { SetProperty(ref _orderedNames, value); }
-        }
-
-        private List<int> _orderedScores;
-        public List<int> OrderedScores
-        {
-            get { return _orderedScores; }
-            set { SetProperty(ref _orderedScores, value); }
+            get { return _scores; }
+            set { SetProperty(ref _scores, value); }
         }
 
         public ScoreboardWindowViewModel()
         {
-
+            Scores = new ObservableCollection<ScoreboardScore>();
         }
 
-        public void DisplayScores()
+        public void SetScores(List<ScoreboardScore> scores)
         {
-            var scoresDict = _scores.ToList();
-            scoresDict.Sort((score1, score2) => score2.Value.CompareTo(score1.Value));
-            foreach (var pair in scoresDict)
-            {
-                OrderedNames.Add(pair.Key);
-                OrderedScores.Add(pair.Value);
-            }
-        }
-
-        public void SetScores(Dictionary<string, int> scores)
-        {
-            _scores = scores;
+            Scores = new ObservableCollection<ScoreboardScore>(scores.OrderBy(s => s.Score).ToList());
         }
     }
 }

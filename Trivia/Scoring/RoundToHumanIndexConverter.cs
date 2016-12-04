@@ -15,8 +15,8 @@ namespace Trivia.Scoring
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return 0;
-            var indices = (ObservableCollection<int>)value;
-            return indices.Select(x => x + 1);
+            int num = (int)value;
+            return num + 1;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

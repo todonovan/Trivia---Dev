@@ -18,10 +18,10 @@
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="0" Content="{Binding CurrentScorecardViewModel}" />
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Content="Previous Scorer" Command="{Binding PreviousScorecardCommand}" Height="30" Margin="40,0"/>
-            <Button Content="Return to Overview" Command="{Binding ReturnToMasterViewCommand}" Height="30" Margin="40,0"/>
+            <Button Content="Previous Scorer" Command="{Binding PreviousScorecardCommand}" Height="30" Margin="40,0"/>            
             <Button Content="Next Scorer" Command="{Binding NextScorecardCommand}" Height="30" Margin="40,0"/>
-            <Button Content="Finish Round" Command="{Binding FinishRoundCommand}" Height="30" Margin="40,0" />
+            <Button Content="Cancel and Return" Command="{Binding CancelAndReturnCommand}" Height="30" Margin="40,0"/>
+            <Button Content="Save and Return" Command="{Binding SaveAndReturnCommand}" Height="30" Margin="40,0" />
         </StackPanel>
     </Grid>
 </UserControl>
