@@ -84,6 +84,7 @@ namespace Trivia.Scoring
 
         private void OnNextScorecard()
         {
+            CurrentScorecardViewModel.OnSaveChanges();
             CurrentScorecardViewModel.NextScorerRequested -= HandleNextScorecardRequest;
             CurrentScorecardViewModel = new ScorerRoundScorecardViewModel();
             CurrentScorerNum += 1;
@@ -124,6 +125,7 @@ namespace Trivia.Scoring
 
         private void OnPrevScorecard()
         {
+            CurrentScorecardViewModel.OnSaveChanges();
             CurrentScorecardViewModel.NextScorerRequested -= HandleNextScorecardRequest;
             CurrentScorecardViewModel = new ScorerRoundScorecardViewModel();
             CurrentScorerNum -= 1;

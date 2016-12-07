@@ -23,7 +23,7 @@ namespace Trivia.Scoreboard
 
         public void SetScores(List<ScoreboardScore> scores)
         {
-            Scores = new ObservableCollection<ScoreboardScore>(scores.OrderBy(s => s.Score).ToList());
+            Scores = new ObservableCollection<ScoreboardScore>(scores.OrderBy(s => (-1 * s.Score)).ToList());
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Trivia.ScoringHelpers
         public List<List<Question>> GetAllAnswers()
         {
             List<List<Question>> allAnswers = new List<List<Question>>(_answers.Count);
-            for (int i = 0; i < allAnswers.Count; i++)
+            for (int i = 0; i < _answers.Count; i++)
             {
                 allAnswers.Add(GetAnswersForRound(i));
             }
