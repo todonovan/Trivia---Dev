@@ -15,14 +15,14 @@ namespace Trivia.Sessions
     {
         public int NumberOfRounds { get; set; }
         public int NumberOfQuestions { get; set; }
-        public List<int> PointValuesPerRound { get; set; }
+        public int PointsPerQuestion { get; set; }
         public List<Scorer> Scorers { get; set; }
 
-        public SessionConfigParams(int numRounds, int numQuestions, List<int> pointValsPerRound, List<Scorer> scorers)
+        public SessionConfigParams(int numRounds, int numQuestions, string userPointsPerRoundString, List<Scorer> scorers)
         {
             NumberOfRounds = numRounds;
             NumberOfQuestions = numQuestions;
-            PointValuesPerRound = pointValsPerRound;
+            PointsPerQuestion = int.Parse(userPointsPerRoundString);
             Scorers = scorers;
         }
     }

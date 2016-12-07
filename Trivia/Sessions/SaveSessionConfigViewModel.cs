@@ -34,9 +34,9 @@ namespace Trivia.Sessions
             private set { }
         }
 
-        public ObservableCollection<int> PointValues
+        public int PointsPerQuestion
         {
-            get { return new ObservableCollection<int>(SessionConfigParams.PointValuesPerRound); }
+            get { return SessionConfigParams.PointsPerQuestion; }
             private set { }
         }
 

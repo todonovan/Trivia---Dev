@@ -5,26 +5,23 @@ using Trivia.ScoringHelpers;
 
 namespace Trivia.ScoringHelpers
 {
-    [DataContract()]
     public class ActiveScorer
     {
-        [DataMember()]
         public Scorer Scorer { get; private set; }
-        [DataMember()]
         public List<ScoringTeam> ScoringTeams { get; private set; }
         public string Name
         {
             get { return Scorer.Name; }
             private set { }
         }
-        public List<int> RoundPointVals { get; private set; }
+        public int PointsPerQuestion { get; private set; }
 
-        public ActiveScorer(Scorer s, int numRounds, int numQuestions, List<int> roundPointVals)
+        public ActiveScorer(Scorer s, int numRounds, int numQuestions, int pointsPerQuestion)
         {
             Scorer = s;
             ScoringTeams = new List<ScoringTeam>();
-            RoundPointVals = roundPointVals;
-            foreach (var t in s.Teams) ScoringTeams.Add(new ScoringTeam(t, numRounds, numQuestions, RoundPointVals));
+            PointsPerQuestion = pointsPerQuestion;
+            foreach (var t in s.Teams) ScoringTeams.Add(new ScoringTeam(t, numRounds, numQuestions, PointsPerQuestion));
         }
 
         public Dictionary<string, int> ReportScores()

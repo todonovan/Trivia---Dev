@@ -41,9 +41,9 @@
             <TextBlock Grid.Column="1" Grid.Row="1"
                        Text="{Binding NumQuestions}" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" />
             <Label Grid.Column="0" Grid.Row="2"
-                Content="Points per round:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
-            <ListBox Grid.Row="2" Grid.Column="1"
-                     ItemsSource="{Binding PointValues, Mode=OneWay}"
+                Content="Max points per question:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" FontSize="18" />
+            <TextBlock Grid.Row="2" Grid.Column="1"
+                     Text="{Binding PointsPerQuestion, Mode=OneWay}"
                      Height="Auto" Width="100" FontSize="18"
                      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
             <Label Grid.Column="0" Grid.Row="3"

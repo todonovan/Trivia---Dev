@@ -28,11 +28,7 @@ namespace Trivia.Sessions
 
             string numRoundString = sessionConfig.NumberOfRounds.ToString();
             string numQuestionString = sessionConfig.NumberOfQuestions.ToString();
-            string pointValString = string.Empty;
-            foreach (var pv in sessionConfig.PointValuesPerRound)
-            {
-                pointValString += pv.ToString() + "_";
-            }
+            string pointValString = sessionConfig.PointsPerQuestion.ToString();
             lines[0] = scorerString;
             lines[1] = numRoundString;
             lines[2] = numQuestionString;
@@ -62,10 +58,8 @@ namespace Trivia.Sessions
 
             int numRounds = int.Parse(roundString);
             int numQuestions = int.Parse(numQuestionString);
-            List<string> splitPPRString = pointValString.Split('_').Where(x => x != string.Empty).ToList();
-            List<int> pointValsPerRound = splitPPRString.Select(x => int.Parse(x)).ToList();
 
-            SessionConfigParams session = new SessionConfigParams(numRounds, numQuestions, pointValsPerRound, scorers);
+            SessionConfigParams session = new SessionConfigParams(numRounds, numQuestions, pointValString, scorers);
 
             return session;
         }

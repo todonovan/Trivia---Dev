@@ -119,7 +119,7 @@ namespace Trivia
         {
             _startSessionViewModel.NumTeams = 0;
             _startSessionViewModel.UserNumRounds = 0;
-            _startSessionViewModel.UserPointsPerRound = string.Empty;
+            _startSessionViewModel.UserPointsPerQuestion = string.Empty;
             CurrentViewModel = _startSessionViewModel;
         }
 

@@ -8,25 +8,21 @@ using System.Runtime.Serialization;
 
 namespace Trivia.ScoringHelpers
 {
-    [DataContract()]
     public class ScoringTeam
     {
-        [DataMember()]
         public Team Team { get; private set; }
-        [DataMember()]
         public int Score { get; private set; }
-        [DataMember()]
         public AnswerSet AnswerSet { get; private set; }
         public bool ScoreNeedsUpdated { get; private set; }
-        private List<int> _roundPointVals;
+        private int _pointsPerQuestion;
 
-        public ScoringTeam(Team t, int numRounds, int numQuestions, List<int> roundPointVals)
+        public ScoringTeam(Team t, int numRounds, int numQuestions, int pointsPerQuestion)
         {
             Team = t;
             Score = 0;
             AnswerSet = new AnswerSet(numRounds, numQuestions);
             ScoreNeedsUpdated = false;
-            _roundPointVals = roundPointVals;
+            _pointsPerQuestion = pointsPerQuestion;
         }
 
         public void SetRoundAnswers(List<Question> answers, int roundNumber)
@@ -54,8 +50,8 @@ namespace Trivia.ScoringHelpers
                 {
                     for (int j = 0; j < answers[i].Count; j++)
                     {
-                        if (answers[i][j] == Question.Correct) score += _roundPointVals[i];
-                        else if (answers[i][j] == Question.Incorrect) score -= _roundPointVals[i]; // are negative scores legal?
+                        if (answers[i][j] == Question.Correct) score += _pointsPerQuestion;
+                        else if (answers[i][j] == Question.NotAnswered) score += (_pointsPerQuestion / 2);
                     }
                 }
                 Score = score;

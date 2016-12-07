@@ -72,40 +72,22 @@ namespace Trivia.Sessions
             set { SetProperty(ref _numTeams, value); }
         }
 
-        private string _userPointsPerRound;
-        public string UserPointsPerRound
+        private string _userPointsPerQuestion;
+        public string UserPointsPerQuestion
         {
-            get { return _userPointsPerRound; }
+            get { return _userPointsPerQuestion; }
             set
             {
-                SetProperty(ref _userPointsPerRound, value);
-                if (value.Length == 0)
-                {
-                    _pointValsPerRound = new List<int>();
-                }
-                else
-                {
-                    string[] split = value.Replace(' ', '\0').Split(',');
-                    try
-                    {
-                        _pointValsPerRound = Array.ConvertAll(split, x => int.Parse(x)).ToList();
-                    }
-                    catch
-                    {
-                        UserPointsPerRound = string.Empty;
-                    }
-                }
+                SetProperty(ref _userPointsPerQuestion, value);
                 SaveConfigCommand.RaiseCanExecuteChanged();
             }
         }
-
-        private List<int> _pointValsPerRound;
 
         public StartSessionViewModel(ITeamRepository teamRepo, IScorerRepository scorerRepo)
         {
             _teamRepo = teamRepo;
             _scorerRepo = scorerRepo;
-            _pointValsPerRound = new List<int>();
+            _userPointsPerQuestion = string.Empty;
             SelectScorerCommand = new RelayCommand(OnSelectScorer);
             ResetCommand = new RelayCommand(OnReset);
             StartCommand = new RelayCommand(OnStart);
@@ -137,24 +119,24 @@ namespace Trivia.Sessions
             LoadScorers();
             UserNumRounds = 0;
             UserNumQuestions = 0;
-            UserPointsPerRound = string.Empty;
+            UserPointsPerQuestion = string.Empty;
             NumTeams = 0;
         }
 
         private void OnStart()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _pointValsPerRound, SelectedScorers.ToList());
+            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList());
             StartSessionRequested(sessionConfig);
         }
 
         private bool CanSaveConfig()
         {
-            return _pointValsPerRound.Count != 0 && UserNumRounds != 0 && UserNumQuestions != 0 && SelectedScorers.Count != 0;
+            return UserPointsPerQuestion != string.Empty && UserNumRounds != 0 && UserNumQuestions != 0 && SelectedScorers.Count != 0;
         }
 
         private void OnSaveConfig()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _pointValsPerRound, SelectedScorers.ToList());
+            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList());
             SaveConfigRequested(sessionConfig);
         }
 

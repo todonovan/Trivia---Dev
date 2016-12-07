@@ -13,7 +13,7 @@ namespace Trivia.ScoringHelpers
             List<ActiveScorer> activeScorers = new List<ActiveScorer>();
             foreach (var s in config.Scorers)
             {
-                activeScorers.Add(new ActiveScorer(s, config.NumberOfRounds, config.NumberOfQuestions, config.PointValuesPerRound));
+                activeScorers.Add(new ActiveScorer(s, config.NumberOfRounds, config.NumberOfQuestions, config.PointsPerQuestion));
             }
             gs.ActiveScorers = activeScorers;
 
