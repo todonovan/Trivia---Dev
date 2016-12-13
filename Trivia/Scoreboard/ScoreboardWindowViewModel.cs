@@ -4,13 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trivia.ScoringHelpers;
 
 namespace Trivia.Scoreboard
 {
     public class ScoreboardWindowViewModel : BindableBase
     {
-        private ObservableCollection<ScoreboardScore> _scores;
-        public ObservableCollection<ScoreboardScore> Scores
+        private ObservableCollection<ReportedScore> _scores;
+        public ObservableCollection<ReportedScore> Scores
         {
             get { return _scores; }
             set { SetProperty(ref _scores, value); }
@@ -18,12 +19,12 @@ namespace Trivia.Scoreboard
 
         public ScoreboardWindowViewModel()
         {
-            Scores = new ObservableCollection<ScoreboardScore>();
+            Scores = new ObservableCollection<ReportedScore>();
         }
 
-        public void SetScores(List<ScoreboardScore> scores)
+        public void SetScores(List<ReportedScore> scores)
         {
-            Scores = new ObservableCollection<ScoreboardScore>(scores.OrderBy(s => (-1 * s.Score)).ToList());
+            Scores = new ObservableCollection<ReportedScore>(scores.OrderBy(s => (-1 * s.Score)).ToList());
         }
     }
 }

@@ -4,9 +4,102 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Trivia.Scoring"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="625" d:DesignWidth="700">
+    <UserControl.Resources>
+        <local:QuestionToVisibilityConverter x:Key="questionConverter"/>
+        <local:RoundToHumanIndexConverter x:Key="indexConverter"/>
+        <local:BoolToColorConverter x:Key="boolConverter"/>
+    <Style TargetType="ListBoxItem">
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="IsSelected" Value="True"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FF79B8CB">
+            <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
+            <Label Grid.Row="0" FontSize="35"  HorizontalAlignment="Right" FontWeight="Bold" Foreground="White" Margin="200,0,0,0">
+                <Label.Content>
+                    <Binding Path="BonusRoundNumber" Converter="{StaticResource indexConverter}"/>
+                </Label.Content>
+                <Label.ContentStringFormat>
+                    Bonus Round #{0}
+                </Label.ContentStringFormat>
+            </Label>
+        </StackPanel>
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams, Mode=TwoWay}" SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None">
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Right" Command="{Binding NextQuestionCommand}"/>
+                <KeyBinding Key="Left" Command="{Binding PrevQuestionCommand}"/>
+                <KeyBinding Key="Up" Command="{Binding IncrementQuestionCommand}"/>
+                <KeyBinding Key="R"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='r' />
+                <KeyBinding Key="W"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='w' />
+                <KeyBinding Key="N"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='n' />
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="nameColumn" Binding="{Binding TeamName}" FontSize="18" IsReadOnly="True" />
+                <DataGridTemplateColumn x:Name="questionsColumn">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="75" Height="75" Command="{Binding DataContext.IncrementQuestionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Margin="5">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Ellipse Stroke="Black" Fill="{Binding RoundAnswer, Converter={StaticResource questionConverter}}" />
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label FontSize="18">
+                                    <Label.Content>
+                                        <Binding Path="MaxWager"/>
+                                    </Label.Content>
+                                    <Label.ContentStringFormat>
+                                        Max wager: {0}
+                                    </Label.ContentStringFormat>
+                                </Label>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox FontSize="18" Width="50" Text="{Binding Wager, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" BorderBrush="{Binding WagerValid, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
+                                <!--<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="LostFocus">
+                                        <i:InvokeCommandAction
+                                            Command="{Binding DataContext.SetWagerAttemptCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding Wager}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>-->
+                            </TextBox>
+                        </DataTemplate>                        
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

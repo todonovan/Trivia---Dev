@@ -19,6 +19,9 @@
         <DataTemplate DataType="{x:Type local:ScoringRoundMasterViewModel}">
             <local:ScoringRoundMasterView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type local:BonusScoringRoundMasterViewModel}">
+            <local:ScoringRoundMasterView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type local:BonusRoundScorecardViewModel}">
             <local:BonusRoundScorecardView />
         </DataTemplate>

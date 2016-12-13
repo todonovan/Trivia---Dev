@@ -17,6 +17,7 @@ namespace Trivia.Scoring
         private ScoringOverviewViewModel _scoringOverviewViewModel;
         private ScorerRoundScorecardViewModel _scorerRoundScorecardViewModel;
         private ScoringRoundMasterViewModel _scoringRoundMasterViewModel;
+        private BonusScoringRoundMasterViewModel _bonusScoringRoundMasterViewModel;
 
         private string _serializationName;
 
@@ -39,12 +40,16 @@ namespace Trivia.Scoring
             _scoringOverviewViewModel = ContainerHelper.Container.Resolve<ScoringOverviewViewModel>();
             _scorerRoundScorecardViewModel = ContainerHelper.Container.Resolve<ScorerRoundScorecardViewModel>();
             _scoringRoundMasterViewModel = ContainerHelper.Container.Resolve<ScoringRoundMasterViewModel>();
+            _bonusScoringRoundMasterViewModel = ContainerHelper.Container.Resolve<BonusScoringRoundMasterViewModel>();
 
             CurrentViewModel = _scoringOverviewViewModel;
 
             _scoringOverviewViewModel.GoToRoundRequested += OnScoreRound;
+            _scoringOverviewViewModel.GoToBonusRoundRequested += OnScoreBonusRound;
             _scoringRoundMasterViewModel.RoundComplete += OnRoundComplete;
             _scoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
+            _bonusScoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
+            _bonusScoringRoundMasterViewModel.BonusRoundComplete += OnBonusRoundComplete;
 
             TimerCommand = new RelayCommand(OnStartTimer);
             ScoreboardCommand = new RelayCommand(OnOpenScoreboard);
@@ -67,31 +72,10 @@ namespace Trivia.Scoring
         {
             Window w = new ScoreboardWindow();
             ScoreboardWindowViewModel vm = ContainerHelper.Container.Resolve<ScoreboardWindowViewModel>();
-            List<ScoreboardScore> currentScores = GetAllScores();
+            List<ReportedScore> currentScores = CurrentGameState.GetAllScores();
             vm.SetScores(currentScores);
             w.DataContext = vm;
             w.Show();
-        }
-
-        private List<ScoreboardScore> GetAllScores()
-        {
-            List<Dictionary<string, int>> scoresList = new List<Dictionary<string, int>>();
-            foreach (var s in CurrentGameState.ActiveScorers)
-            {
-                scoresList.Add(s.ReportScores());
-            }
-
-            var scoresDict = scoresList.SelectMany(dict => dict).ToDictionary(score => score.Key, score => score.Value).ToList();
-            List<ScoreboardScore> scores = new List<ScoreboardScore>();
-            foreach (var pair in scoresDict)
-            {
-                ScoreboardScore s = new ScoreboardScore();
-                s.Name = pair.Key;
-                s.Score = pair.Value;
-                scores.Add(s);
-            }
-
-            return scores;
         }
 
         private void OnExit()
@@ -105,10 +89,23 @@ namespace Trivia.Scoring
             CurrentViewModel = _scoringRoundMasterViewModel;
         }
 
+        private void OnScoreBonusRound(RoundScoringParams rsp)
+        {
+            _bonusScoringRoundMasterViewModel.SetGameStateAndRoundNumber(rsp);
+            CurrentViewModel = _bonusScoringRoundMasterViewModel;
+        }
+
         private void OnRoundComplete(GameState gs)
         {
             SetCurrentGameState(gs);
             CurrentViewModel = _scoringOverviewViewModel;            
+        }
+
+        private void OnBonusRoundComplete(GameState gs)
+        {
+            gs.NumberOfCompleteBonusRounds += 1;
+            SetCurrentGameState(gs);
+            CurrentViewModel = _scoringOverviewViewModel;
         }
 
         private void OnRoundCanceled()

@@ -42,10 +42,7 @@ namespace Trivia.Scoring
         public ScorecardTeam SelectedTeam
         {
             get { return _selectedTeam; }
-            set
-            {
-                SetProperty(ref _selectedTeam, value);
-            }
+            set { SetProperty(ref _selectedTeam, value); }
         }
 
         private int _selectedQuestionIndex;
@@ -90,7 +87,7 @@ namespace Trivia.Scoring
             Teams = new ObservableCollection<ScorecardTeam>();
             foreach (var t in s.ScoringTeams)
             {
-                Teams.Add(new ScorecardTeam(RoundNumber, t.Team.Name, t.GetRoundAnswers(RoundNumber)));
+                Teams.Add(new ScorecardTeam(RoundNumber, t.Team.Name, t.GetNonBonusRoundAnswers(RoundNumber)));
             }
             SelectedTeam = Teams[0];
             SelectedQuestionIndex = 0;
@@ -147,7 +144,10 @@ namespace Trivia.Scoring
         {
             if (SelectedQuestionIndex == 0)
             {
-                if (SelectedTeam == Teams[0]) return;
+                if (SelectedTeam == Teams[0])
+                {
+                    return;
+                }
                 else
                 {
                     int curTeamIndex = Teams.IndexOf(SelectedTeam);

@@ -10,12 +10,16 @@
              d:DesignHeight="737" d:DesignWidth="716">
     <UserControl.Resources>
         <local:RoundToHumanIndexConverter x:Key="RoundConverter" />
+        <local:BoolToYesNoConverter x:Key="BoolConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/>
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition  Height="150"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
@@ -29,12 +33,108 @@
                 Rounds scored: {0}
             </Label.ContentStringFormat>
         </Label>
-        <Label Grid.Column="0" Grid.Row="1" FontSize="25" Content="Go to round number:" HorizontalAlignment="Right" />
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding GameRoundIndices}" SelectedItem="{Binding SelectedRoundIndex}" IsSynchronizedWithCurrentItem="True" Height="30" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10, 5, 0, 0"/>
-            <Button Content="Go" Command="{Binding GoToRoundCommand}" Width="100" Height="30" Background="Green" HorizontalAlignment="Left" Margin="10,15,10,10"/>
+        <Label Grid.Column="0"
+               Grid.Row="1"
+               FontSize="25"
+               Content="Go to round number:"
+               HorizontalAlignment="Right" />
+        <StackPanel Grid.Column="1"
+                    Grid.Row="1">
+            <ComboBox Grid.Column="1"
+                      Grid.Row="1"
+                      ItemsSource="{Binding GameRoundIndices}"
+                      SelectedItem="{Binding SelectedRoundIndex}"
+                      IsSynchronizedWithCurrentItem="True"
+                      Height="30"
+                      Width="100"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Margin="10, 5, 0, 0"/>
+            <Button Content="Go"
+                    Command="{Binding GoToRoundCommand}"
+                    Width="100"
+                    Height="30"
+                    Background="Green"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    Margin="10,15,10,10"/>
         </StackPanel>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Auto-score next unscored round:" FontSize="25" HorizontalAlignment="Right" TextWrapping="Wrap" TextAlignment="Right" Margin="0,0,10,0"/>
-        <Button Grid.Column="1" Grid.Row="2" Content="Go" Command="{Binding AutoScoreNextRoundCommand}" Width="100" Height="30" Background="Green" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,10,10"/>
+        <TextBlock Grid.Column="0"
+                   Grid.Row="2"
+                   Text="Next unscored round:"
+                   FontSize="25"
+                   HorizontalAlignment="Right"
+                   TextWrapping="Wrap"
+                   TextAlignment="Right"
+                   Margin="0,0,10,0"/>
+        <Button Grid.Column="1"
+                Grid.Row="2"
+                Content="Go"
+                Command="{Binding AutoScoreNextRoundCommand}"
+                Width="100"
+                Height="30"
+                Background="Green"
+                Foreground="White"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="10,0,0,0"/>
+        <StackPanel Grid.Column="0"
+                    Grid.Row="3">
+            <TextBlock Grid.Column="0"
+                   Grid.Row="3"
+                   Text="Bonus round info:"
+                   FontSize="25"
+                   HorizontalAlignment="Right"
+                   TextWrapping="Wrap"
+                   TextAlignment="Right"
+                   Margin="0,0,10,0"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Grid.Row="3">
+            <WrapPanel Margin="10,0,0,0">
+                <TextBlock Text="Tie?"
+                           Width="100"
+                           FontSize="25"/>
+                <TextBlock Text="{Binding DataContext.TieExists, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Converter={StaticResource BoolConverter}}" FontSize="25" Margin="10,0,0,0"/>
+            </WrapPanel>
+            <WrapPanel Margin="10,10,0,0">
+                <TextBlock Text="Teams tied:"
+                           Width="135"
+                           FontSize="25"/>
+                <ComboBox
+                      ItemsSource="{Binding DataContext.TeamsTied, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                      Height="30"
+                      Width="100"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Margin="10, 5, 0, 0"/>
+            </WrapPanel>
+        </StackPanel>
+        <Button Grid.Column="1"
+                Grid.Row="4"
+                Content="Score Next Bonus Round"
+                Command="{Binding ScoreNewBonusRoundCommand}"
+                Width="150"
+                Height="30"
+                Background="Green"
+                Foreground="White"
+                FontWeight="Bold"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+        <Button Grid.Column="1"
+                Grid.Row="5"
+                Content="Finish Game!"
+                Command="{Binding FinishGameCommand}"
+                Width="200"
+                Height="50"
+                Background="Green"
+                FontSize="20"
+                FontWeight="Bold"
+                Foreground="White"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="50" />
     </Grid>
 </UserControl>

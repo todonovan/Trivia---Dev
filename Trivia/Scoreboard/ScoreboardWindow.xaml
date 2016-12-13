@@ -24,7 +24,7 @@
               FontSize="24"
               FontWeight="Bold">
         <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Name}" Width="*" />
+            <DataGridTextColumn Binding="{Binding TeamName}" Width="*" />
             <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
         </DataGrid.Columns>
     </DataGrid>

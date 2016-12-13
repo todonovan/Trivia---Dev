@@ -8,7 +8,7 @@ using Trivia.ScoringHelpers;
 
 namespace Trivia.Scoring
 {
-    public class ScoringOverviewViewModel: BindableBase
+    public class ScoringOverviewViewModel : BindableBase
     {
         private GameState _gameState;
         public GameState GameState
@@ -28,6 +28,16 @@ namespace Trivia.Scoring
             }
         }
 
+        private int _numberOfCompleteBonusRounds;
+        public int NumberOfCompleteBonusRounds
+        {
+            get { return _numberOfCompleteBonusRounds; }
+            set
+            {
+                SetProperty(ref _numberOfCompleteBonusRounds, value);
+            }
+        }
+
         private ObservableCollection<int> _gameRoundIndices;
         public ObservableCollection<int> GameRoundIndices
         {
@@ -42,16 +52,50 @@ namespace Trivia.Scoring
             set { SetProperty(ref _selectedRoundIndex, value - 1); }
         }
 
+        private ObservableCollection<int> _bonusRoundIndices;
+        public ObservableCollection<int> BonusRoundIndices
+        {
+            get { return _bonusRoundIndices; }
+            set { SetProperty(ref _bonusRoundIndices, value); }
+        }
+
+        private int _selectedBonusRoundIndex;
+        public int SelectedBonusRoundIndex
+        {
+            get { return _selectedBonusRoundIndex; }
+            set { SetProperty(ref _selectedBonusRoundIndex, value - 1); }
+        }
+
+        private bool _tieExists;
+        public bool TieExists
+        {
+            get { return _tieExists; }
+            set { SetProperty(ref _tieExists, value); }
+        }
+
+        private ObservableCollection<string> _teamsTied;
+        public ObservableCollection<string> TeamsTied
+        {
+            get { return _teamsTied; }
+            set { SetProperty(ref _teamsTied, value); }
+        }
+
+        private int _topScore;
+
         public ScoringOverviewViewModel()
         {
             GoToRoundCommand = new RelayCommand(OnGoToRound);
             AutoScoreNextRoundCommand = new RelayCommand(OnAutoScoreNextRound, CanAutoScoreNextRound);
+            ScoreNewBonusRoundCommand = new RelayCommand(OnScoreNewBonusRound, CanScoreNewBonusRound);
+            FinishGameCommand = new RelayCommand(OnFinishGame, CanFinishGame);
         }
 
         public void SetGameState(GameState gs)
         {
             GameState = gs;
             PopulateRoundInfo();
+            ScoreNewBonusRoundCommand.RaiseCanExecuteChanged();
+            FinishGameCommand.RaiseCanExecuteChanged();
         }
 
         private void PopulateRoundInfo()
@@ -63,6 +107,14 @@ namespace Trivia.Scoring
                 roundIndices.Add(i);
             }
             GameRoundIndices = new ObservableCollection<int>(roundIndices);
+            List<int> bonusRoundIndices = new List<int>();
+            for (int j = 1; j <= NumberOfCompleteBonusRounds; j++)
+            {
+                bonusRoundIndices.Add(j);
+            }
+            BonusRoundIndices = new ObservableCollection<int>(bonusRoundIndices);
+            if (NumberOfRoundsScored == GameState.NumRounds) TieExists = DoesTieExist();
+            else TieExists = false;
         }
 
         private void CheckNumberOfRoundsScored()
@@ -75,6 +127,7 @@ namespace Trivia.Scoring
                 if (CheckIfRoundScored(i)) count++;
             }
             NumberOfRoundsScored = count;
+            NumberOfCompleteBonusRounds = GameState.NumberOfCompleteBonusRounds;
         }
 
         private bool CheckIfRoundScored(int roundNumber)
@@ -107,9 +160,53 @@ namespace Trivia.Scoring
             GoToRoundRequested(new RoundScoringParams(GameState, roundToScoreIndex));
         }
 
+        private bool CanScoreNewBonusRound()
+        {
+            CheckNumberOfRoundsScored();
+            return NumberOfRoundsScored == GameState.NumRounds && (NumberOfCompleteBonusRounds == 0 || DoesTieExist());
+        }
+
+        private void OnScoreNewBonusRound()
+        {
+            int bonusRoundIndex = NumberOfCompleteBonusRounds;
+            GoToBonusRoundRequested(new RoundScoringParams(GameState, bonusRoundIndex));
+        }
+
+        private bool CanFinishGame()
+        {
+            return NumberOfRoundsScored == GameState.NumRounds && NumberOfCompleteBonusRounds > 0 && !DoesTieExist();
+        }
+
+        private void OnFinishGame()
+        {
+            FinishGameRequested(GameState);
+        }
+
+        private bool DoesTieExist()
+        {
+            var scores = GameState.GetAllScores().OrderBy(s => (-1 * s.Score)).ToList();
+            _topScore = scores[0].Score;
+            var tiedTeams = scores.TakeWhile(x => x.Score == _topScore).ToList();
+            if (tiedTeams.Count == 1)
+            {
+                TeamsTied = new ObservableCollection<string>();
+                return false;
+            }
+            else
+            {
+                TeamsTied = new ObservableCollection<string>();
+                foreach (var t in tiedTeams) TeamsTied.Add(t.TeamName);
+                return true;
+            }
+        }
+
         public RelayCommand GoToRoundCommand { get; private set; }
         public RelayCommand AutoScoreNextRoundCommand { get; private set; }
+        public RelayCommand ScoreNewBonusRoundCommand { get; private set; }
+        public RelayCommand FinishGameCommand { get; private set; }
 
         public event Action<RoundScoringParams> GoToRoundRequested = delegate { };
+        public event Action<RoundScoringParams> GoToBonusRoundRequested = delegate { };
+        public event Action<GameState> FinishGameRequested = delegate { };
     }
 }

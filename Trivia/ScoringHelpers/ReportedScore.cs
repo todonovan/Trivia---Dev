@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Trivia.Scoreboard
+namespace Trivia.ScoringHelpers
 {
-    public class ScoreboardScore : BindableBase
+    public class ReportedScore : BindableBase
     {
-        public string Name { get; set; }
+        public string TeamName { get; set; }
         public int Score { get; set; }
     }
 }

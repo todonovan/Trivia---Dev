@@ -13,6 +13,7 @@ namespace Trivia.ScoringHelpers
         public Team Team { get; private set; }
         public int Score { get; private set; }
         public AnswerSet AnswerSet { get; private set; }
+        public List<BonusRoundAnswer> BonusRoundAnswers { get; private set; }
         public bool ScoreNeedsUpdated { get; private set; }
         private int _pointsPerQuestion;
 
@@ -22,6 +23,7 @@ namespace Trivia.ScoringHelpers
             Score = 0;
             AnswerSet = new AnswerSet(numRounds, numQuestions);
             ScoreNeedsUpdated = false;
+            BonusRoundAnswers = new List<BonusRoundAnswer>();
             _pointsPerQuestion = pointsPerQuestion;
         }
 
@@ -33,19 +35,48 @@ namespace Trivia.ScoringHelpers
             }
             ScoreNeedsUpdated = true;
         }
+
+        public void SetBonusRoundAnswer(BonusRoundAnswer ans)
+        {
+            if (ans.BonusRoundNumber == BonusRoundAnswers.Count)
+            {
+                BonusRoundAnswers.Add(ans);
+            }
+            else if (ans.BonusRoundNumber < BonusRoundAnswers.Count)
+            {
+                BonusRoundAnswers[ans.BonusRoundNumber] = ans;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("BonusRoundAnswers", "Round number higher than expected");
+            }
+            ScoreNeedsUpdated = true;
+        }
         
-        public List<Question> GetRoundAnswers(int roundNumber)
+        public List<Question> GetNonBonusRoundAnswers(int roundNumber)
         {
             List<Question> answers = AnswerSet.GetAnswersForRound(roundNumber);
             return answers;
         }
 
+        public BonusRoundAnswer GetBonusRoundAnswer(int bonusRoundNumber)
+        {
+            if (BonusRoundAnswers.Count <= bonusRoundNumber) return new BonusRoundAnswer(0, Question.NotJudged, bonusRoundNumber);
+            else return BonusRoundAnswers[bonusRoundNumber];
+        }
+
         public int GetScore()
+        {
+            UpdateScore();
+            return Score;
+        }
+
+        public void UpdateScore()
         {
             if (ScoreNeedsUpdated)
             {
                 int score = 0;
-                var answers = AnswerSet.GetAllAnswers();
+                var answers = AnswerSet.GetNonBonusAnswers();
                 for (int i = 0; i < answers.Count; i++)
                 {
                     for (int j = 0; j < answers[i].Count; j++)
@@ -54,11 +85,15 @@ namespace Trivia.ScoringHelpers
                         else if (answers[i][j] == Question.NotAnswered) score += (_pointsPerQuestion / 2);
                     }
                 }
+                foreach (var bonus in BonusRoundAnswers)
+                {
+                    if (bonus.Answer == Question.Correct) score += bonus.Wager;
+                    else if (bonus.Answer == Question.Incorrect) score -= bonus.Wager;
+                }
                 Score = score;
                 ScoreNeedsUpdated = false;
-                return score;
             }
-            else return Score;
+            else return;
         }
 
         public bool HasRoundBeenScored(int roundNumber)

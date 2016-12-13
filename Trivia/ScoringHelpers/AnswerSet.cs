@@ -36,7 +36,7 @@ namespace Trivia.ScoringHelpers
             _answers[round][questionNum] = val;
         }
 
-        public List<List<Question>> GetAllAnswers()
+        public List<List<Question>> GetNonBonusAnswers()
         {
             List<List<Question>> allAnswers = new List<List<Question>>(_answers.Count);
             for (int i = 0; i < _answers.Count; i++)
@@ -52,5 +52,6 @@ namespace Trivia.ScoringHelpers
             for (int i = 0; i < roundAnswers.Capacity; i++) roundAnswers.Add(_answers[roundNumber][i]);
             return roundAnswers;
         }
+
     }
 }
