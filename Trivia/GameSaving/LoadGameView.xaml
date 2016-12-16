@@ -4,10 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Trivia.GameSaving"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="700">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction MethodName="PopulateFileList" TargetObject="{Binding}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        <TextBox Text="{Binding FileName, Mode=TwoWay}" Width="100" Height="30" />
-        <Button Command="{Binding LoadGameCommand}" Width="30" Height="30" Content="Load" VerticalAlignment="Bottom"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="275"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="75,25,0,0"
+                   Text="Load a saved game." FontSize="36" FontWeight="Bold" />
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" FontSize="18" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" Text="Pick a saved game:" Margin="0,0,5,0"/>
+            <ListBox Grid.Column="1"
+                     ItemsSource="{Binding SavedGameNames}"
+                     SelectedItem="{Binding SelectedGameName, Mode=TwoWay}"
+                     Width="400" MinHeight="200" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" />
+        </Grid>
+        <Button Grid.Row="2" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}" Height="30" Width="100" Margin="40,0,0,0"  Background="Red" Foreground="White" FontWeight="Bold"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Load" Command="{Binding LoadGameCommand}"  HorizontalAlignment="Left" Height="30" Width="100" Margin="40,10,0,10" Background="Green" Foreground="White" FontWeight="Bold"/>
     </Grid>
 </UserControl>

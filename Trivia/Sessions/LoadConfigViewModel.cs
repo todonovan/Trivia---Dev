@@ -17,8 +17,8 @@ namespace Trivia.Sessions
     {
         private IScorerRepository _scorerRepo;
 
-        private List<string> _savedConfigNames;
-        public List<string> SavedConfigNames
+        private ObservableCollection<string> _savedConfigNames;
+        public ObservableCollection<string> SavedConfigNames
         {
             get { return _savedConfigNames; }
             set { SetProperty(ref _savedConfigNames, value); }
@@ -83,7 +83,7 @@ namespace Trivia.Sessions
                 string[] splitFileName = s.Split('\\');
                 configNames.Add(splitFileName[splitFileName.Length - 1]);
             }
-            SavedConfigNames = configNames;
+            SavedConfigNames = new ObservableCollection<string>(configNames);
         }
 
         private void OnCancel()
