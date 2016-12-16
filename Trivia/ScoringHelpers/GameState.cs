@@ -13,19 +13,21 @@ namespace Trivia.ScoringHelpers
         public int PointsPerQuestion { get; set; }
         public List<ActiveScorer> ActiveScorers { get; set; }
         public int NumberOfCompleteBonusRounds { get; set; }
+        public string FileName { get; set; }
 
         public GameState()
         {
             ActiveScorers = new List<ActiveScorer>();
         }
 
-        public GameState(int numRounds, int numQuestionsPerRound, int pointsPerQuestion, List<ActiveScorer> scorers, int numBonusRounds)
+        public GameState(int numRounds, int numQuestionsPerRound, int pointsPerQuestion, List<ActiveScorer> scorers, int numBonusRounds, string fileName)
         {
             NumRounds = numRounds;
             NumQuestionsPerRound = numQuestionsPerRound;
             PointsPerQuestion = pointsPerQuestion;
             ActiveScorers = scorers;
             NumberOfCompleteBonusRounds = numBonusRounds;
+            FileName = fileName;
         }
 
         public List<ReportedScore> GetAllScores()

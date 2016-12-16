@@ -77,7 +77,7 @@ namespace Trivia.Sessions
 
         private void OnSave()
         {
-            SessionSerialization.SaveConfig(SessionConfigParams, ConfigName);
+            SessionSerialization.SaveConfig(SessionConfigParams);
             ConfigName = "Save successful!";
             System.Threading.Thread.Sleep(1000);
             Done();

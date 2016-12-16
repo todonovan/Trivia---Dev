@@ -83,6 +83,17 @@ namespace Trivia.Sessions
             }
         }
 
+        private string _fileName;
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                SetProperty(ref _fileName, value);
+                SaveConfigCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         public StartSessionViewModel(ITeamRepository teamRepo, IScorerRepository scorerRepo)
         {
             _teamRepo = teamRepo;
@@ -120,23 +131,24 @@ namespace Trivia.Sessions
             UserNumRounds = 0;
             UserNumQuestions = 0;
             UserPointsPerQuestion = string.Empty;
+            FileName = string.Empty;
             NumTeams = 0;
         }
 
         private void OnStart()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList());
+            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList(), FileName);
             StartSessionRequested(sessionConfig);
         }
 
         private bool CanSaveConfig()
         {
-            return UserPointsPerQuestion != string.Empty && UserNumRounds != 0 && UserNumQuestions != 0 && SelectedScorers.Count != 0;
+            return UserPointsPerQuestion != string.Empty && UserNumRounds != 0 && UserNumQuestions != 0 && SelectedScorers.Count != 0 && FileName != string.Empty;
         }
 
         private void OnSaveConfig()
         {
-            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList());
+            SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList(), FileName);
             SaveConfigRequested(sessionConfig);
         }
 

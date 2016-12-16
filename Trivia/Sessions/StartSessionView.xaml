@@ -32,6 +32,7 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*" />
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="How many rounds?"
@@ -83,11 +84,13 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Grid.Row="3" Grid.Column="1" Content="Reset" Command="{Binding ResetCommand}"
+            <Label Grid.Column="0" Grid.Row="3" Content="Filename for save: " HorizontalAlignment="Right" Margin="0,10,10,0" FontSize="18" VerticalAlignment="Center" FontWeight="Bold"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding FileName, Mode=TwoWay}" Height="30" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" FontSize="18" />
+            <Button Grid.Row="4" Grid.Column="1" Content="Reset" Command="{Binding ResetCommand}"
                     Height="30" Width="100" FontSize="18" HorizontalAlignment="Left"
                     Margin="50,0,0,0" FontWeight="Bold"
                     Foreground="White" BorderBrush="Black" Background="#FFC93333"/>
-            <Button Grid.Row="3" Grid.Column="1" Content="Start!" Command="{Binding StartCommand}"
+            <Button Grid.Row="4" Grid.Column="1" Content="Start!" Command="{Binding StartCommand}"
                     Height="30" Width="100" FontSize="18" HorizontalAlignment="Right" Margin="0,0,50,0"
                     FontWeight="Bold" Background="#FF46AA3C" BorderBrush="Black" Foreground="White"/>
         </Grid>

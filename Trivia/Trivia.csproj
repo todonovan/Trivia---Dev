@@ -52,6 +52,10 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -84,6 +88,12 @@
     </ApplicationDefinition>
     <Compile Include="BindableBase.cs" />
     <Compile Include="ContainerHelper.cs" />
+    <Compile Include="GameSaving\GameSaveParams.cs" />
+    <Compile Include="GameSaving\GameStateSaveHandler.cs" />
+    <Compile Include="GameSaving\LoadGameView.xaml.cs">
+      <DependentUpon>LoadGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GameSaving\LoadGameViewModel.cs" />
     <Compile Include="Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -192,6 +202,10 @@
     </Compile>
     <Compile Include="ValidatableBindableBase.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Page Include="GameSaving\LoadGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Login\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

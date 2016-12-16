@@ -36,6 +36,19 @@ namespace Trivia.ScoringHelpers
             ScoreNeedsUpdated = true;
         }
 
+        public void SetAllAnswers(List<List<Question>> answers)
+        {
+            for (int i = 0; i < answers.Count; i++)
+            {
+                SetRoundAnswers(answers[i], i);
+            }
+        }
+
+        public List<List<Question>> GetAllNonBonusAnswers()
+        {
+            return AnswerSet.GetNonBonusAnswers();
+        }
+
         public void SetBonusRoundAnswer(BonusRoundAnswer ans)
         {
             if (ans.BonusRoundNumber == BonusRoundAnswers.Count)

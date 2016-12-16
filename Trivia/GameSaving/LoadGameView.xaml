@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="Trivia.GameSaving.LoadGameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Trivia.GameSaving"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="700">
+    <Grid>
+        <TextBox Text="{Binding FileName, Mode=TwoWay}" Width="100" Height="30" />
+        <Button Command="{Binding LoadGameCommand}" Width="30" Height="30" Content="Load" VerticalAlignment="Bottom"/>
+    </Grid>
+</UserControl>

@@ -16,6 +16,7 @@ using Trivia.Scoring;
 using Trivia.Sessions;
 using System.Windows;
 using Trivia.ScoringHelpers;
+using Trivia.GameSaving;
 
 namespace Trivia
 {
@@ -31,6 +32,7 @@ namespace Trivia
         private SaveSessionConfigViewModel _saveSessionConfigViewModel;
         private LoadConfigViewModel _loadConfigViewModel;
         private SessionStartConfirmViewModel _sessionStartConfirmViewModel;
+        private LoadGameViewModel _loadGameViewModel;
 
         private BindableBase _currentViewModel;
         private UserSession _currentUserSession;
@@ -47,6 +49,7 @@ namespace Trivia
             _saveSessionConfigViewModel = ContainerHelper.Container.Resolve<SaveSessionConfigViewModel>();
             _loadConfigViewModel = ContainerHelper.Container.Resolve<LoadConfigViewModel>();
             _sessionStartConfirmViewModel = ContainerHelper.Container.Resolve<SessionStartConfirmViewModel>();
+            _loadGameViewModel = ContainerHelper.Container.Resolve<LoadGameViewModel>();
             _currentViewModel = _loginViewModel;
 
             NavCommand = new RelayCommand<string>(OnNav);
@@ -75,6 +78,8 @@ namespace Trivia
 
             _sessionStartConfirmViewModel.Done += NavToLogin;
             _sessionStartConfirmViewModel.StartSessionRequested += OpenScoringWindow;
+
+            _loadGameViewModel.StartGameRequested += LoadScoringWindow;
         }
 
         public BindableBase CurrentViewModel
@@ -109,6 +114,9 @@ namespace Trivia
                 case "startSession":
                     NavToStartSession();
                     break;
+                case "loadGame":
+                    NavToLoadGame();
+                    break;
                 default:
                     CurrentViewModel = _loginViewModel;
                     break;
@@ -121,6 +129,11 @@ namespace Trivia
             _startSessionViewModel.UserNumRounds = 0;
             _startSessionViewModel.UserPointsPerQuestion = string.Empty;
             CurrentViewModel = _startSessionViewModel;
+        }
+
+        private void NavToLoadGame()
+        {
+            CurrentViewModel = _loadGameViewModel;
         }
 
         private void NavToLogin()
@@ -199,6 +212,16 @@ namespace Trivia
             Window w = new ScoringWindow();
             ScoringWindowViewModel vm = ContainerHelper.Container.Resolve<ScoringWindowViewModel>();
             GameState gs = GameStateFactory.GetNewGameState(configParams);
+            vm.SetCurrentGameState(gs);
+            w.DataContext = vm;
+            w.Show();
+            NavToStartSession();
+        }
+
+        private void LoadScoringWindow(GameState gs)
+        {
+            Window w = new ScoringWindow();
+            ScoringWindowViewModel vm = ContainerHelper.Container.Resolve<ScoringWindowViewModel>();
             vm.SetCurrentGameState(gs);
             w.DataContext = vm;
             w.Show();

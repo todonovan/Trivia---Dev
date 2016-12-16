@@ -26,6 +26,11 @@ namespace Trivia.ScoringHelpers
             }
         }
 
+        public AnswerSet(List<List<Question>> answers)
+        {
+            _answers = answers;
+        }
+
         public Question GetAnswer(int round, int questionNum)
         {
             return _answers[round][questionNum];

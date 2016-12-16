@@ -48,6 +48,7 @@ namespace Trivia.Sessions
 
         private void OnStart()
         {
+            SessionSerialization.SaveConfig(_sessionConfigParams);
             StartSessionRequested(_sessionConfigParams);
         }
 

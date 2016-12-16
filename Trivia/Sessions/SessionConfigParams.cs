@@ -17,13 +17,15 @@ namespace Trivia.Sessions
         public int NumberOfQuestions { get; set; }
         public int PointsPerQuestion { get; set; }
         public List<Scorer> Scorers { get; set; }
+        public string FileName { get; set; }
 
-        public SessionConfigParams(int numRounds, int numQuestions, string userPointsPerRoundString, List<Scorer> scorers)
+        public SessionConfigParams(int numRounds, int numQuestions, string userPointsPerRoundString, List<Scorer> scorers, string fileName)
         {
             NumberOfRounds = numRounds;
             NumberOfQuestions = numQuestions;
             PointsPerQuestion = int.Parse(userPointsPerRoundString);
             Scorers = scorers;
+            FileName = fileName;
         }
     }
 }

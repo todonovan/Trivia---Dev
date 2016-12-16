@@ -29,7 +29,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FF79B8CB">
+        <StackPanel MinWidth="700" Grid.Row="0" Orientation="Horizontal" Background="#FF79B8CB">
             <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
             <Label Grid.Row="0" FontSize="35"  HorizontalAlignment="Right" FontWeight="Bold" Foreground="White" Margin="200,0,0,0">
                 <Label.Content>

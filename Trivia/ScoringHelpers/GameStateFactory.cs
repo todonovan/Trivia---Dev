@@ -10,6 +10,7 @@ namespace Trivia.ScoringHelpers
             GameState gs = new GameState();
             gs.NumRounds = config.NumberOfRounds;
             gs.NumQuestionsPerRound = config.NumberOfQuestions;
+            gs.FileName = config.FileName;
             List<ActiveScorer> activeScorers = new List<ActiveScorer>();
             foreach (var s in config.Scorers)
             {

@@ -9,6 +9,7 @@ using Trivia.Scoreboard;
 using Microsoft.Practices.Unity;
 using System.Windows;
 using Trivia.ScoringHelpers;
+using Trivia.GameSaving;
 
 namespace Trivia.Scoring
 {
@@ -18,6 +19,7 @@ namespace Trivia.Scoring
         private ScorerRoundScorecardViewModel _scorerRoundScorecardViewModel;
         private ScoringRoundMasterViewModel _scoringRoundMasterViewModel;
         private BonusScoringRoundMasterViewModel _bonusScoringRoundMasterViewModel;
+        private GameStateSaveHandler _saveHandler;
 
         private string _serializationName;
 
@@ -41,6 +43,7 @@ namespace Trivia.Scoring
             _scorerRoundScorecardViewModel = ContainerHelper.Container.Resolve<ScorerRoundScorecardViewModel>();
             _scoringRoundMasterViewModel = ContainerHelper.Container.Resolve<ScoringRoundMasterViewModel>();
             _bonusScoringRoundMasterViewModel = ContainerHelper.Container.Resolve<BonusScoringRoundMasterViewModel>();
+            _saveHandler = ContainerHelper.Container.Resolve<GameStateSaveHandler>();
 
             CurrentViewModel = _scoringOverviewViewModel;
 
@@ -97,6 +100,7 @@ namespace Trivia.Scoring
 
         private void OnRoundComplete(GameState gs)
         {
+            _saveHandler.SaveGame(gs);
             SetCurrentGameState(gs);
             CurrentViewModel = _scoringOverviewViewModel;            
         }
@@ -104,6 +108,7 @@ namespace Trivia.Scoring
         private void OnBonusRoundComplete(GameState gs)
         {
             gs.NumberOfCompleteBonusRounds += 1;
+            _saveHandler.SaveGame(gs);
             SetCurrentGameState(gs);
             CurrentViewModel = _scoringOverviewViewModel;
         }
