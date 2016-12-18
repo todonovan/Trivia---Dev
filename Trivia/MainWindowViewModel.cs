@@ -17,6 +17,7 @@ using Trivia.Sessions;
 using System.Windows;
 using Trivia.ScoringHelpers;
 using Trivia.GameSaving;
+using Trivia.Reports;
 
 namespace Trivia
 {
@@ -33,6 +34,7 @@ namespace Trivia
         private LoadConfigViewModel _loadConfigViewModel;
         private SessionStartConfirmViewModel _sessionStartConfirmViewModel;
         private LoadGameViewModel _loadGameViewModel;
+        private ReportsListViewModel _reportsListViewModel;
 
         private BindableBase _currentViewModel;
         private UserSession _currentUserSession;
@@ -50,6 +52,7 @@ namespace Trivia
             _loadConfigViewModel = ContainerHelper.Container.Resolve<LoadConfigViewModel>();
             _sessionStartConfirmViewModel = ContainerHelper.Container.Resolve<SessionStartConfirmViewModel>();
             _loadGameViewModel = ContainerHelper.Container.Resolve<LoadGameViewModel>();
+            _reportsListViewModel = ContainerHelper.Container.Resolve<ReportsListViewModel>();
             _currentViewModel = _loginViewModel;
 
             NavCommand = new RelayCommand<string>(OnNav);
@@ -80,6 +83,9 @@ namespace Trivia
             _sessionStartConfirmViewModel.StartSessionRequested += OpenScoringWindow;
 
             _loadGameViewModel.StartGameRequested += LoadScoringWindow;
+            _loadGameViewModel.Done += NavToLogin;
+
+            _reportsListViewModel.Done += NavToLogin;
         }
 
         public BindableBase CurrentViewModel
@@ -116,6 +122,9 @@ namespace Trivia
                     break;
                 case "loadGame":
                     NavToLoadGame();
+                    break;
+                case "viewReport":
+                    CurrentViewModel = _reportsListViewModel;
                     break;
                 default:
                     CurrentViewModel = _loginViewModel;

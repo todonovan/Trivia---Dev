@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Trivia.Reports.ReportsListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Trivia.Reports"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="700">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction MethodName="PopulateFileList" TargetObject="{Binding}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="275"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition />
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="75,25,0,0"
+                   Text="View a report." FontSize="36" FontWeight="Bold" />
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" FontSize="18" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" Text="Pick a generated report:" Margin="0,0,5,0"/>
+            <ListBox Grid.Column="1"
+                     ItemsSource="{Binding SavedReportNames}"
+                     SelectedItem="{Binding SelectedReportName, Mode=TwoWay}"
+                     Width="400" MinHeight="200" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" />
+        </Grid>
+        <Button Grid.Row="2" Grid.Column="0" Content="Undo" Command="{Binding UndoDeleteCommand}" Height="30" Width="100" Margin="0,0,150,0"  Background="Yellow" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Button Grid.Row="2" Grid.Column="0" Content="Delete" Command="{Binding DeleteReportCommand}" Height="30" Width="100" HorizontalAlignment="Right"  Background="Red" Foreground="White" FontWeight="Bold"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Open" Command="{Binding LoadGameCommand}"  HorizontalAlignment="Left" Height="30" Width="100" Margin="40,0,0,0" Background="Green" Foreground="White" FontWeight="Bold"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Return to Home" Command="{Binding ReturnToMainCommand}" Background="Navy" Foreground="White" Height="30" Width="100" FontWeight="Bold" HorizontalAlignment="Left" Margin="180,0,0,0"/>
+    </Grid>
+</UserControl>
