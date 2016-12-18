@@ -38,7 +38,7 @@
         </Grid>
         <Button Grid.Row="2" Grid.Column="0" Content="Undo" Command="{Binding UndoDeleteCommand}" Height="30" Width="100" Margin="0,0,150,0"  Background="Yellow" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Right"/>
         <Button Grid.Row="2" Grid.Column="0" Content="Delete" Command="{Binding DeleteReportCommand}" Height="30" Width="100" HorizontalAlignment="Right"  Background="Red" Foreground="White" FontWeight="Bold"/>
-        <Button Grid.Row="2" Grid.Column="1" Content="Open" Command="{Binding LoadGameCommand}"  HorizontalAlignment="Left" Height="30" Width="100" Margin="40,0,0,0" Background="Green" Foreground="White" FontWeight="Bold"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Open" Command="{Binding OpenReportCommand}"  HorizontalAlignment="Left" Height="30" Width="100" Margin="40,0,0,0" Background="Green" Foreground="White" FontWeight="Bold"/>
         <Button Grid.Row="2" Grid.Column="1" Content="Return to Home" Command="{Binding ReturnToMainCommand}" Background="Navy" Foreground="White" Height="30" Width="100" FontWeight="Bold" HorizontalAlignment="Left" Margin="180,0,0,0"/>
     </Grid>
 </UserControl>
