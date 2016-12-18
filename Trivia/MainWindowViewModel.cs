@@ -18,6 +18,7 @@ using System.Windows;
 using Trivia.ScoringHelpers;
 using Trivia.GameSaving;
 using Trivia.Reports;
+using CsvHelper;
 
 namespace Trivia
 {
@@ -86,6 +87,8 @@ namespace Trivia
             _loadGameViewModel.Done += NavToLogin;
 
             _reportsListViewModel.Done += NavToLogin;
+
+            
         }
 
         public BindableBase CurrentViewModel

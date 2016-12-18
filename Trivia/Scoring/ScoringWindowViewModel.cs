@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using System.Windows;
 using Trivia.ScoringHelpers;
 using Trivia.GameSaving;
+using Trivia.Reports;
 
 namespace Trivia.Scoring
 {
@@ -49,6 +50,7 @@ namespace Trivia.Scoring
 
             _scoringOverviewViewModel.GoToRoundRequested += OnScoreRound;
             _scoringOverviewViewModel.GoToBonusRoundRequested += OnScoreBonusRound;
+            _scoringOverviewViewModel.FinishGameRequested += OnFinishGame;
             _scoringRoundMasterViewModel.RoundComplete += OnRoundComplete;
             _scoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
             _bonusScoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
@@ -116,6 +118,13 @@ namespace Trivia.Scoring
         private void OnRoundCanceled()
         {
             CurrentViewModel = _scoringOverviewViewModel;
+        }
+
+        private void OnFinishGame(GameState gs)
+        {
+            ReportFileHandler fileHandler = new ReportFileHandler();
+            fileHandler.CreateReport(gs);
+            
         }
 
         public RelayCommand BeginRoundCommand { get; private set; }
