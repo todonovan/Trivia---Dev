@@ -67,6 +67,15 @@ namespace Trivia.Reports
             }
         }
 
+        public void CreateBetterReport(GameState gs)
+        {
+            string fullName = ConfigurationManager.AppSettings["report_save_config"].ToString() + gs.FileName + ".csv";
+            using (var file = File.CreateText(fullName))
+            {
+
+            }
+        }
+
         public void OpenReport(string fileName)
         {
             _excelApp = new Excel.Application();

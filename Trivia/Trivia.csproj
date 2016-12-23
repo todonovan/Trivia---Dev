@@ -207,6 +207,14 @@
       <DependentUpon>TeamListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Teams\TeamListViewModel.cs" />
+    <Compile Include="Thermometer\AdminPanelView.xaml.cs">
+      <DependentUpon>AdminPanelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Thermometer\AdminPanelViewModel.cs" />
+    <Compile Include="Thermometer\ThermometerWindow.xaml.cs">
+      <DependentUpon>ThermometerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Thermometer\ThermometerWindowViewModel.cs" />
     <Compile Include="Timer\TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
@@ -305,6 +313,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Teams\TeamListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Thermometer\AdminPanelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Thermometer\ThermometerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
