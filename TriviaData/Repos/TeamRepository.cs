@@ -14,7 +14,7 @@ namespace TriviaData.Repos
         public void Add()
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (name, year, company, created_at) VALUES (\'\', 0, \'\', {dateString})";
+            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'\', 0, \'\', 0, {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -28,7 +28,8 @@ namespace TriviaData.Repos
         public void Add(Team team)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (name, year, company, created_at) VALUES (\'{team.Name}\', {team.Year}, \'{team.Company}\', {dateString})";
+            string scorerIds = " ";
+            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{team.Name}\', {team.Year}, \'{team.Company}\', \'{team.NumScorers}\', {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -42,7 +43,7 @@ namespace TriviaData.Repos
         public void Add(string name)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (name, year, company, created_at) VALUES (\'{name}\', 0, \'\', {dateString})";
+            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{name}\', 0, \'\', 0, {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -67,6 +68,17 @@ namespace TriviaData.Repos
                 t.Name = (string)reader["name"];
                 t.Year = (long)reader["year"];
                 t.Company = (string)reader["company"];
+                t.NumScorers = (long)reader["num_scorers"];
+
+                if (t.NumScorers > 0)
+                {
+                    t.HasScorer = true;
+                }
+                else
+                {
+                    t.HasScorer = false;
+                }
+
                 t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
                 command.Dispose();
                 _dbConn.Close();
@@ -87,6 +99,15 @@ namespace TriviaData.Repos
                 t.Name = (string)reader["name"];
                 t.Year = (long)reader["year"];
                 t.Company = (string)reader["company"];
+                t.NumScorers = (long)reader["num_scorers"];
+                if (t.NumScorers > 0)
+                {
+                    t.HasScorer = true;
+                }
+                else
+                {
+                    t.HasScorer = false;
+                }
                 t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
                 command.Dispose();
                 _dbConn.Close();
@@ -106,6 +127,15 @@ namespace TriviaData.Repos
                 t.Id = (long)reader["id"];
                 t.Name = (string)reader["name"];
                 t.Company = companyName;
+                t.NumScorers = (long)reader["num_scorers"];
+                if (t.NumScorers > 0)
+                {
+                    t.HasScorer = true;
+                }
+                else
+                {
+                    t.HasScorer = false;
+                }
                 t.Year = (long)reader["year"];
                 string dateString = (string)reader["created_at"];
                 t.CreatedAt = new DateTime(long.Parse(dateString));
@@ -132,6 +162,15 @@ namespace TriviaData.Repos
                     t.Name = (string)reader["name"];
                     t.Year = (long)reader["year"];
                     t.Company = (string)reader["company"];
+                    t.NumScorers = (long)reader["num_scorers"];
+                    if (t.NumScorers > 0)
+                    {
+                        t.HasScorer = true;
+                    }
+                    else
+                    {
+                        t.HasScorer = false;
+                    }
                     t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
                     teamsList.Add(t);
                 }
@@ -162,6 +201,21 @@ namespace TriviaData.Repos
 
         public void Remove(Team team)
         {
+            if (team.HasScorer)
+            {
+                ScorerRepository scorerRepo = new ScorerRepository();
+                var scorers = scorerRepo.GetAllScorers();
+                List<Scorer> scorersToUpdate = new List<Scorer>();
+                foreach (var s in scorers)
+                {
+                    if (s.Teams.Contains(team))
+                    {
+                        s.Teams.Remove(team);
+                        scorersToUpdate.Add(s);
+                    }
+                }
+                foreach (var toUpdate in scorersToUpdate) scorerRepo.Update(toUpdate);
+            }
             long id = team.Id;
             string sql = $"DELETE FROM Teams WHERE id={id}";
             using (var _dbConn = new TriviaDbContext())
@@ -177,7 +231,7 @@ namespace TriviaData.Repos
         public void Update(Team team)
         {
             string dateString = team.CreatedAt.Ticks.ToString();
-            string sql = $"UPDATE Teams SET name=\'{team.Name}\', year={team.Year}, company=\'{team.Company}\', created_at={dateString} WHERE id={team.Id}";
+            string sql = $"UPDATE Teams SET name=\'{team.Name}\', year={team.Year}, company=\'{team.Company}\', num_scorers=\'{team.NumScorers}\', created_at={dateString} WHERE id={team.Id}";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();

@@ -38,9 +38,10 @@ namespace Trivia.Reports
             using (var file = File.CreateText(fullName))
             {
                 var csv = new CsvWriter(file);
+                csv.WriteField($"GPLC Trivia -- {DateTime.Now.Date.ToShortDateString()}");
+                csv.NextRecord();
                 foreach (var s in gs.ActiveScorers)
                 {
-                    csv.WriteField(s.Name);
                     foreach (var t in s.ScoringTeams)
                     {
                         csv.WriteField(t.Team.Name);
@@ -61,8 +62,8 @@ namespace Trivia.Reports
                             csv.WriteField(b.Wager);
                             csv.WriteField(b.Answer.ToString());
                         }
+                        csv.NextRecord();
                     }
-                    csv.NextRecord();
                 }
             }
         }

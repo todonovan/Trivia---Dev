@@ -70,6 +70,17 @@ namespace Trivia.Scorers
             }
         }
 
+        private bool _filterHasScorer;
+        public bool FilterHasScorer
+        {
+            get { return _filterHasScorer; }
+            set
+            {
+                SetProperty(ref _filterHasScorer, value);
+                FilterHasScorers();
+            }
+        }
+
         public ScorerSetTeamsViewModel(ITeamRepository teamRepo, IScorerRepository scorerRepo)
         {
             _teamRepo = teamRepo;
@@ -79,20 +90,7 @@ namespace Trivia.Scorers
             RemoveTeamCommand = new RelayCommand(OnRemoveTeam, CanRemoveTeam);
             CancelCommand = new RelayCommand(OnCancel);
             ClearSearchCommand = new RelayCommand(OnClear);
-        }
-
-        private void FilterCustomers(string searchInput)
-        {
-            if (string.IsNullOrWhiteSpace(searchInput))
-            {
-                Teams = new ObservableCollection<Team>(_allTeams);
-                return;
-            }
-            else
-            {
-                Teams = new ObservableCollection<Team>(_allTeams.Where(c => c.Year.ToString().Contains(searchInput)));
-            }
-        }        
+        }               
 
         public void SetScorer(Scorer scorer)
         {
@@ -118,6 +116,7 @@ namespace Trivia.Scorers
             }
             TeamsToAssociate = new ObservableCollection<Team>(_scorerToAssociate.Teams);
             _allTeams = Teams;
+            FilterHasScorer = false;
         }
 
         private bool CanAssociateTeams()
@@ -128,7 +127,10 @@ namespace Trivia.Scorers
         private void OnAssociateTeams()
         {
             _scorerToAssociate.Teams = TeamsToAssociate.ToList();
-            _scorerRepo.Update(_scorerToAssociate);
+            foreach (var t in _scorerToAssociate.Teams)
+            {
+                _scorerRepo.AddTeamToScorer(_scorerToAssociate, t);
+            }
             Done();
         }
 
@@ -164,6 +166,30 @@ namespace Trivia.Scorers
         private void OnClear()
         {
             SearchInput = null;
+        }
+
+        private void FilterCustomers(string searchInput)
+        {
+            if (string.IsNullOrWhiteSpace(searchInput))
+            {
+                Teams = new ObservableCollection<Team>(_allTeams);
+            }
+            else
+            {
+                Teams = new ObservableCollection<Team>(_allTeams.Where(c => c.Year.ToString().Contains(searchInput)));
+            }
+        }
+
+        private void FilterHasScorers()
+        {
+            if (FilterHasScorer)
+            {
+                Teams = new ObservableCollection<Team>(_allTeams.Where(t => !t.HasScorer));
+            }
+            else
+            {
+                Teams = new ObservableCollection<Team>(_allTeams);
+            }
         }
 
         public RelayCommand AssociateTeamsCommand { get; private set; }

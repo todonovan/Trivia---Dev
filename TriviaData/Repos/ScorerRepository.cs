@@ -116,6 +116,17 @@ namespace TriviaData.Repos
 
         public void Remove(Scorer scorer)
         {
+            if (scorer.Teams.Count > 0)
+            {
+                TeamRepository teamRepo = new TeamRepository();
+                foreach (var t in scorer.Teams)
+                {
+                    Team team = teamRepo.GetTeamById(t.Id);
+                    team.NumScorers -= 1;
+                    if (team.NumScorers == 0) team.HasScorer = false;
+                    teamRepo.Update(team);
+                }
+            }
             long id = scorer.Id;
             string sql = $"DELETE FROM Scorers WHERE id={id}";
             using (var _dbConn = new TriviaDbContext())
@@ -150,6 +161,15 @@ namespace TriviaData.Repos
                 command.Dispose();
                 _dbConn.Close();
             }
+        }
+
+        public void AddTeamToScorer(Scorer scorer, Team team)
+        {
+            team.NumScorers += 1;
+            team.HasScorer = true;
+            TeamRepository teamRepo = new TeamRepository();
+            teamRepo.Update(team);
+            Update(scorer);
         }
     }
 }

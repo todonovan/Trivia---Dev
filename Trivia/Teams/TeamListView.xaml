@@ -50,6 +50,15 @@
                                     Binding="{Binding Year}"
                                     Header="Year Played"
                                     Width="*" />
+                <DataGridTemplateColumn x:Name="scorersColumn" Width="Auto" Header="Scorers">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Scorers}"
+                                      DisplayMemberPath="Name"
+                                      SelectedItem="{Binding Scorers[0]}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

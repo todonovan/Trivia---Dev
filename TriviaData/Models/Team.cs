@@ -13,6 +13,8 @@ namespace TriviaData.Models
         public string Name { get; set; }
         public long Year { get; set; }
         public string Company { get; set; }
+        public bool HasScorer { get; set; }
+        public long NumScorers { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public override string ToString()
