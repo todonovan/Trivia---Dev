@@ -47,6 +47,9 @@
         <DataTemplate DataType="{x:Type Sessions:LoadConfigViewModel}">
             <Sessions:LoadSessionView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type Sessions:DeleteBadSessionViewModel}">
+            <Sessions:DeleteBadSessionView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type Sessions:SessionStartConfirmViewModel}">
             <Sessions:SessionStartConfirmView />
         </DataTemplate>

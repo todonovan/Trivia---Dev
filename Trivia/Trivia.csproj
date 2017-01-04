@@ -169,6 +169,10 @@
       <DependentUpon>TeamRoundScoringView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scoring\TeamRoundScoringViewModel.cs" />
+    <Compile Include="Sessions\DeleteBadSessionView.xaml.cs">
+      <DependentUpon>DeleteBadSessionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Sessions\DeleteBadSessionViewModel.cs" />
     <Compile Include="Sessions\GameStateSerializer.cs" />
     <Compile Include="Sessions\LoadConfigView.xaml.cs">
       <DependentUpon>LoadConfigView.xaml</DependentUpon>
@@ -281,6 +285,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Scoring\TeamRoundScoringView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Sessions\DeleteBadSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

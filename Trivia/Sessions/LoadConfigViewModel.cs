@@ -99,11 +99,18 @@ namespace Trivia.Sessions
         private void OnLoad()
         {
             LoadedNumTeams = 0;
-            _loadedSession = SessionSerialization.LoadSession(_scorerRepo, SelectedConfigName);
-            LoadedConfigName = SelectedConfigName;
-            LoadedScorers = new ObservableCollection<Scorer>(_loadedSession.Scorers);
-            foreach (var s in LoadedScorers) LoadedNumTeams += s.Teams.Count;
-            UseConfigCommand.RaiseCanExecuteChanged();
+            try
+            {
+                _loadedSession = SessionSerialization.LoadSession(_scorerRepo, SelectedConfigName);
+                LoadedConfigName = SelectedConfigName;
+                LoadedScorers = new ObservableCollection<Scorer>(_loadedSession.Scorers);
+                foreach (var s in LoadedScorers) LoadedNumTeams += s.Teams.Count;
+                UseConfigCommand.RaiseCanExecuteChanged();
+            }
+            catch (InvalidCastException)
+            {
+                FailedLoadError(SelectedConfigName);
+            }            
         }
 
         private bool CanUseConfig()
@@ -121,6 +128,7 @@ namespace Trivia.Sessions
         public RelayCommand UseConfigCommand { get; private set; }
 
         public event Action<SessionConfigParams> UseConfigRequested = delegate { };
+        public event Action<string> FailedLoadError = delegate { };
         public event Action Done = delegate { };
     }
 }

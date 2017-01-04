@@ -55,7 +55,7 @@ namespace Trivia.Sessions
             {
                 Scorer scorer = scorerRepo.GetScorerById(long.Parse(scorerStrings[i]));
                 scorers.Add(scorer);
-            }
+            }      
 
             int numRounds = int.Parse(roundString);
             int numQuestions = int.Parse(numQuestionString);

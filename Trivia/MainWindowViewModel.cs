@@ -33,6 +33,7 @@ namespace Trivia
         private StartSessionViewModel _startSessionViewModel;
         private SaveSessionConfigViewModel _saveSessionConfigViewModel;
         private LoadConfigViewModel _loadConfigViewModel;
+        private DeleteBadSessionViewModel _deleteBadSessionViewModel;
         private SessionStartConfirmViewModel _sessionStartConfirmViewModel;
         private LoadGameViewModel _loadGameViewModel;
         private ReportsListViewModel _reportsListViewModel;
@@ -51,6 +52,7 @@ namespace Trivia
             _startSessionViewModel = ContainerHelper.Container.Resolve<StartSessionViewModel>();
             _saveSessionConfigViewModel = ContainerHelper.Container.Resolve<SaveSessionConfigViewModel>();
             _loadConfigViewModel = ContainerHelper.Container.Resolve<LoadConfigViewModel>();
+            _deleteBadSessionViewModel = ContainerHelper.Container.Resolve<DeleteBadSessionViewModel>();
             _sessionStartConfirmViewModel = ContainerHelper.Container.Resolve<SessionStartConfirmViewModel>();
             _loadGameViewModel = ContainerHelper.Container.Resolve<LoadGameViewModel>();
             _reportsListViewModel = ContainerHelper.Container.Resolve<ReportsListViewModel>();
@@ -79,11 +81,15 @@ namespace Trivia
 
             _loadConfigViewModel.Done += NavToLogin;
             _loadConfigViewModel.UseConfigRequested += NavToConfirmSession;
+            _loadConfigViewModel.FailedLoadError += NavToBadSession;
+
+            _deleteBadSessionViewModel.Done += NavToLogin;
 
             _sessionStartConfirmViewModel.Done += NavToLogin;
             _sessionStartConfirmViewModel.StartSessionRequested += OpenScoringWindow;
 
             _loadGameViewModel.StartGameRequested += LoadScoringWindow;
+            _loadGameViewModel.FailedLoadError += NavToBadSession;
             _loadGameViewModel.Done += NavToLogin;
 
             _reportsListViewModel.Done += NavToLogin;
@@ -141,6 +147,12 @@ namespace Trivia
             _startSessionViewModel.UserNumRounds = 0;
             _startSessionViewModel.UserPointsPerQuestion = string.Empty;
             CurrentViewModel = _startSessionViewModel;
+        }
+
+        private void NavToBadSession(string sessionName)
+        {
+            _deleteBadSessionViewModel.SetSessionName(sessionName);
+            CurrentViewModel = _deleteBadSessionViewModel;
         }
 
         private void NavToLoadGame()

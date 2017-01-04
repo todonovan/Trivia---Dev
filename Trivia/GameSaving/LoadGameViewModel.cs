@@ -65,8 +65,15 @@ namespace Trivia.GameSaving
 
         private void OnLoadGame()
         {
-            GameState gs = _saveHandler.LoadGame(SelectedGameName);
-            StartGameRequested(gs);
+            try
+            {
+                GameState gs = _saveHandler.LoadGame(SelectedGameName);
+                StartGameRequested(gs);
+            }
+            catch (InvalidCastException)
+            {
+                FailedLoadError(SelectedGameName);
+            }
         }
 
         private void OnCancel()
@@ -78,6 +85,7 @@ namespace Trivia.GameSaving
         public RelayCommand CancelCommand { get; private set; }
 
         public Action<GameState> StartGameRequested = delegate { };
+        public Action<string> FailedLoadError = delegate { };
         public Action Done = delegate { };
     }
 }
