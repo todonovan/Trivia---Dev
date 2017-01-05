@@ -32,6 +32,7 @@ namespace Trivia.GameSaving
             {
                 SetProperty(ref _selectedGameName, value);
                 LoadGameCommand.RaiseCanExecuteChanged();
+                DeleteGameCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -40,6 +41,7 @@ namespace Trivia.GameSaving
             _scorerRepo = scorerRepo;
             _saveHandler = new GameStateSaveHandler(_scorerRepo);
             LoadGameCommand = new RelayCommand(OnLoadGame, CanLoadGame);
+            DeleteGameCommand = new RelayCommand(OnDeleteGame, CanDeleteGame);
             CancelCommand = new RelayCommand(OnCancel);
             SelectedGameName = string.Empty;
         }
@@ -76,12 +78,25 @@ namespace Trivia.GameSaving
             }
         }
 
+        private bool CanDeleteGame()
+        {
+            return SelectedGameName != string.Empty;
+        }
+
+        private void OnDeleteGame()
+        {
+            File.Delete(ConfigurationManager.AppSettings["game_save_config"].ToString() + SelectedGameName);
+            PopulateFileList();
+            SelectedGameName = string.Empty;
+        }
+
         private void OnCancel()
         {
             Done();
         }
 
         public RelayCommand LoadGameCommand { get; private set; }
+        public RelayCommand DeleteGameCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
         public Action<GameState> StartGameRequested = delegate { };

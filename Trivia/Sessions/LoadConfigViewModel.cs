@@ -32,6 +32,7 @@ namespace Trivia.Sessions
             {
                 SetProperty(ref _selectedConfigName, value);
                 LoadCommand.RaiseCanExecuteChanged();
+                DeleteConfigCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -64,7 +65,7 @@ namespace Trivia.Sessions
             CancelCommand = new RelayCommand(OnCancel);
             LoadCommand = new RelayCommand(OnLoad, CanLoad);
             UseConfigCommand = new RelayCommand(OnUseConfig, CanUseConfig);
-
+            DeleteConfigCommand = new RelayCommand(OnDeleteConfig, CanDeleteConfig);
             _loadedSession = null;
             SelectedConfigName = string.Empty;
             LoadedNumTeams = 0;
@@ -123,9 +124,27 @@ namespace Trivia.Sessions
             UseConfigRequested(_loadedSession);
         }
 
+        private bool CanDeleteConfig()
+        {
+            return SelectedConfigName != string.Empty;
+        }
+
+        private void OnDeleteConfig()
+        {
+            var confirmResult = System.Windows.MessageBox.Show("Are you sure? This will cause any saved games using this config to become unusable.", "Confirm Delete", System.Windows.MessageBoxButton.OKCancel);
+            if (confirmResult == System.Windows.MessageBoxResult.OK)
+            {
+                File.Delete(ConfigurationManager.AppSettings["session_config"].ToString() + SelectedConfigName);
+                LoadedConfigName = string.Empty;
+                PopulateFileList();
+            }
+            else return;
+        }
+
         public RelayCommand CancelCommand { get; private set; }
         public RelayCommand LoadCommand { get; private set; }
         public RelayCommand UseConfigCommand { get; private set; }
+        public RelayCommand DeleteConfigCommand { get; private set; }
 
         public event Action<SessionConfigParams> UseConfigRequested = delegate { };
         public event Action<string> FailedLoadError = delegate { };
