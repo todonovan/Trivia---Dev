@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 using Trivia.ScoringHelpers;
-using static Trivia.Scoring.TeamRoundScoringViewModel;
 
 namespace Trivia.Scoring
 {

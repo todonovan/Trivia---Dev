@@ -37,7 +37,7 @@
                      SelectedItem="{Binding SelectedGameName, Mode=TwoWay}"
                      Width="400" MinHeight="200" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" />
         </Grid>
-        <Button Grid.Row="2" Grid.Column="0" Content="Cancel" Command="{Binding CancelCommand}" Height="30" Width="100" Margin="40,0,0,0"  Background="SlateBlue" Foreground="White" FontWeight="Bold"/>
+        <Button Grid.Row="2" Grid.Column="0" Content="Return to Home" Command="{Binding CancelCommand}" Height="30" Width="100" Margin="40,0,0,0"  Background="Navy" Foreground="White" FontWeight="Bold"/>
         <Button Grid.Row="2" Grid.Column="1" Content="Load" Command="{Binding LoadGameCommand}"  HorizontalAlignment="Left" Height="30" Width="100" Margin="40,10,0,10" Background="Green" Foreground="White" FontWeight="Bold"/>
         <Button Grid.Row="2" Grid.Column="2" Content="Delete" Command="{Binding DeleteGameCommand}"  HorizontalAlignment="Left" Height="30" Width="100" Margin="40,10,0,10" Background="Red" Foreground="White" FontWeight="Bold"/>
     </Grid>

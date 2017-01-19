@@ -104,7 +104,6 @@ namespace Trivia.Sessions
             StartCommand = new RelayCommand(OnStart);
             SaveConfigCommand = new RelayCommand(OnSaveConfig, CanSaveConfig);
             LoadConfigCommand = new RelayCommand(OnLoadConfig);
-            LoadSavedSessionCommand = new RelayCommand(OnLoadSavedSession);
             CancelCommand = new RelayCommand(OnCancel);
         }
 
@@ -157,11 +156,6 @@ namespace Trivia.Sessions
             LoadConfigRequested();
         }
 
-        private void OnLoadSavedSession()
-        {
-            LoadSavedSessionRequested();
-        }
-
         private void OnCancel()
         {
             Done();
@@ -170,7 +164,6 @@ namespace Trivia.Sessions
         public RelayCommand SelectScorerCommand { get; private set; }
         public RelayCommand SaveConfigCommand { get; private set; }
         public RelayCommand LoadConfigCommand { get; private set; }
-        public RelayCommand LoadSavedSessionCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
         public RelayCommand ResetCommand { get; private set; }
         public RelayCommand StartCommand { get; private set; }

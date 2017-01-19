@@ -9,7 +9,7 @@
              xmlns:local="clr-namespace:Trivia"
              xmlns:data="clr-namespace:TriviaData.Models;assembly=TriviaData"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="700">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type data:Team}">
             <StackPanel>
@@ -50,15 +50,6 @@
                                     Binding="{Binding Year}"
                                     Header="Year Played"
                                     Width="*" />
-                <DataGridTemplateColumn x:Name="scorersColumn" Width="Auto" Header="Scorers">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding Scorers}"
-                                      DisplayMemberPath="Name"
-                                      SelectedItem="{Binding Scorers[0]}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -74,12 +65,12 @@
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button x:Name="addTeamButton" Content="Add New Team"
-                    Command="{Binding AddTeamCommand}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                    Command="{Binding AddTeamCommand}" VerticalAlignment="Center" Margin="50,0,0,0" HorizontalAlignment="Left" Height="30" Width="100" Background="Navy" Foreground="White" FontWeight="Bold"/>
             <Button x:Name="saveChangesButton" Content="Save Changes"
                     Command="{Binding UpdateDBCommand}"
-                    HorizontalAlignment="Right" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                    HorizontalAlignment="Right" Margin="50,0,0,0" VerticalAlignment="Center" Height="30" Width="100" Background="Yellow" Foreground="Black" FontWeight="Bold"/>
             <Button Content="Delete Team"
-                    Command="{Binding DeleteCommand}" Margin="20,0,0,0" VerticalAlignment="Center" />
+                    Command="{Binding DeleteCommand}" Margin="50,0,0,0" VerticalAlignment="Center" Height="30" Width="100" Background="Red" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </UserControl>

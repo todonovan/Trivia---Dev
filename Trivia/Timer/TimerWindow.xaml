@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Trivia.Timer"
         mc:Ignorable="d"
-        Title="Timer" Height="600" Width="800">
+        Title="Timer" Height="600" Width="800"
+        WindowStyle="ThreeDBorderWindow"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
     <Window.DataContext>
-        <local:TimerWindow />
+        <local:TimerWindowViewModel />
     </Window.DataContext>
     <Window.InputBindings>
-        <KeyBinding Key="Space" Command="{Binding StartTimerCommand}" />
+        <KeyBinding Key="Space" Command="{Binding PauseUnpauseTimerCommand}" />
         <KeyBinding Key="Backspace" Command="{Binding ResetTimerCommand}" />
     </Window.InputBindings>
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock FontSize="100" Text="60:00"/>
+        <TextBlock x:Name="timerBlock" FontSize="300" Text="{Binding TimeString}"/>
     </StackPanel>
 </Window>

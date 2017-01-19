@@ -96,13 +96,11 @@
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <Button Content="Save As New Config" Command="{Binding SaveConfigCommand}"
-                    Height="30" Width="125" Margin="50,0,0,0" />
+                    Height="30" Width="125" Margin="50,0,0,0" Background="Green" Foreground="White" FontWeight="Bold"/>
             <Button Content="Load Config" Command="{Binding LoadConfigCommand}"
-                    Height="30" Width="100" Margin="50,0,0,0"/>
-            <Button Content="Load Saved Session" Command="{Binding LoadSavedSessionCommand}"
-                    Height="30" Width="125" Margin="50,0,0,0"/>
+                    Height="30" Width="100" Margin="50,0,0,0" Background="Navy" Foreground="White" FontWeight="Bold"/>
             <Button Content="Cancel" Command="{Binding CancelCommand}"
-                    Height="30" Width="100" Margin="66,0,0,0"/>
+                    Height="30" Width="100" Margin="66,0,0,0" Background="Red" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -63,10 +63,10 @@
                      Width="200" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" />
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-            <Button Content="Cancel" Command="{Binding CancelCommand}" Height="30" Width="100" Margin="20,0,0,0" />
-            <Button Content="Load and Preview" Command="{Binding LoadCommand}" Height="30" Width="100" Margin="20,10,0,10" />
-            <Button Content="Use Config" Command="{Binding UseConfigCommand}" Height="30" Width="100" Margin="20,10,0,10" />
-            <Button Content="Delete Config" Command="{Binding DeleteConfigCommand}" Height="30" Width="100" Margin="20,10,0,10" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Height="30" Width="100" Margin="20,0,0,0" Background="Red" Foreground="White" FontWeight="Bold" />
+            <Button Content="Load and Preview" Command="{Binding LoadCommand}" Height="30" Width="100" Background="Navy" Margin="20,10,0,10" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Use Config" Command="{Binding UseConfigCommand}" Height="30" Width="100" Margin="20,10,0,10" Background="Green" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Delete Config" Command="{Binding DeleteConfigCommand}" Height="30" Width="100" Margin="20,10,0,10" Background="Red" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </UserControl>

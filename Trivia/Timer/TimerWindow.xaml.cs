@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Trivia.Timer
 {
@@ -22,22 +23,6 @@ namespace Trivia.Timer
         public TimerWindow()
         {
             InitializeComponent();
-
-            StartTimerCommand = new RelayCommand(OnStartTimer);
-            ResetTimerCommand = new RelayCommand(OnResetTimer);
         }
-
-        private void OnStartTimer()
-        {
-
-        }
-
-        private void OnResetTimer()
-        {
-
-        }
-
-        public RelayCommand StartTimerCommand { get; private set; }
-        public RelayCommand ResetTimerCommand { get; private set; }
     }
 }

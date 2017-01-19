@@ -9,7 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">    
+             d:DesignHeight="600" d:DesignWidth="700">    
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadScorers" />
@@ -52,12 +52,10 @@
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button x:Name="addScorerButton" Content="Add New Scorer"
-                    Command="{Binding AddScorerCommand}" VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                    Command="{Binding AddScorerCommand}" VerticalAlignment="Center" Margin="50,0,0,0" Height="30" Width="100" HorizontalAlignment="Left" Background="Green" Foreground="White" FontWeight="Bold"/>
             <Button x:Name="saveChangesButton" Content="Save Changes"
-                    Command="{Binding UpdateDBCommand}"
-                    HorizontalAlignment="Right" Margin="20,0,0,0" VerticalAlignment="Center"/>
-            <Button Content="Delete Scorer"
-                    Command="{Binding DeleteCommand}" Margin="20,0,0,0" VerticalAlignment="Center" />
+                    Command="{Binding UpdateDBCommand}" Height="30" Width="100" Background="Yellow" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Right" Margin="50,0,0,0" VerticalAlignment="Center"/>
+            <Button Content="Delete Scorer" Command="{Binding DeleteCommand}" Margin="50,0,0,0" VerticalAlignment="Center" Height="30" Width="100" Background="Red" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -11,6 +11,7 @@ using System.Windows;
 using Trivia.ScoringHelpers;
 using Trivia.GameSaving;
 using Trivia.Reports;
+using Trivia.Timer;
 
 namespace Trivia.Scoring
 {
@@ -21,8 +22,6 @@ namespace Trivia.Scoring
         private ScoringRoundMasterViewModel _scoringRoundMasterViewModel;
         private BonusScoringRoundMasterViewModel _bonusScoringRoundMasterViewModel;
         private GameStateSaveHandler _saveHandler;
-
-        private string _serializationName;
 
         private GameState _currentGameState;
         public GameState CurrentGameState
@@ -70,7 +69,10 @@ namespace Trivia.Scoring
 
         private void OnStartTimer()
         {
-
+            Window w = new TimerWindow();
+            TimerWindowViewModel vm = ContainerHelper.Container.Resolve<TimerWindowViewModel>();
+            w.DataContext = vm;
+            w.Show();
         }
 
         private void OnOpenScoreboard()

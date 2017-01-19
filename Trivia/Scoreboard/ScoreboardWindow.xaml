@@ -20,7 +20,8 @@
               CanUserAddRows="False"
               HeadersVisibility="None"
               Focusable="False"
-              GridLinesVisibility="Vertical"
+              GridLinesVisibility="None"
+              Background="#FFFFF6EA"
               FontSize="24"
               FontWeight="Bold">
         <DataGrid.Columns>

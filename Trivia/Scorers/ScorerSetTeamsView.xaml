@@ -75,9 +75,9 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="2" Grid.Column="1" Margin="10">
-            <Button Content="Add Selected Team" Command="{Binding AddTeamCommand}" Width="150" Margin="0,10,0,0"/>
-            <Button Content="Remove Selected Team" Command="{Binding RemoveTeamCommand}" Width="150" Margin="0,10,0,0"/>
-            <Button Content="Save" Command="{Binding AssociateTeamsCommand}" Width="150" Margin="0,10,0,0"/>
+            <Button Content="Add Selected Team" Command="{Binding AddTeamCommand}" Width="150" Margin="0,10,0,0" Background="Navy" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Remove Selected Team" Command="{Binding RemoveTeamCommand}" Width="150" Margin="0,10,0,0" Background="Red" Foreground="White" FontWeight="Bold"/>
+            <Button Content="Save" Command="{Binding AssociateTeamsCommand}" Width="150" Margin="0,10,0,0" Background="Green" Foreground="White" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <Label Content="Filter by year:" />
                 <TextBox Text="{Binding SearchInput, UpdateSourceTrigger=PropertyChanged}"
@@ -89,7 +89,7 @@
                 <Label Content="Only teams with no scorer:" />
                 <CheckBox IsChecked="{Binding FilterHasScorer, Mode=TwoWay}" Margin="2,5,2,5"/>
             </StackPanel>
-            <Button Content="Cancel" Command="{Binding CancelCommand}" Width="75" Margin="0,50,0,0" />
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Height="30" Width="100" Margin="0,50,0,0" Background="Navy" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </UserControl>

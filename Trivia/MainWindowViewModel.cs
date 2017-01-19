@@ -73,7 +73,6 @@ namespace Trivia
 
             _startSessionViewModel.Done += NavToLogin;
             _startSessionViewModel.LoadConfigRequested += NavToLoadConfig;
-            _startSessionViewModel.LoadSavedSessionRequested += NavToLoadSavedSession;
             _startSessionViewModel.SaveConfigRequested += NavToSaveConfig;
             _startSessionViewModel.StartSessionRequested += NavToConfirmSession;
 
@@ -212,11 +211,6 @@ namespace Trivia
         private void NavToLoadConfig()
         {
             CurrentViewModel = _loadConfigViewModel;
-        }
-
-        private void NavToLoadSavedSession()
-        {
-
         }
 
         private void NavToSaveConfig(SessionConfigParams configParams)
