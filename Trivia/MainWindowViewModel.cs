@@ -39,7 +39,6 @@ namespace Trivia
         private ReportsListViewModel _reportsListViewModel;
 
         private BindableBase _currentViewModel;
-        private UserSession _currentUserSession;
         
         public MainWindowViewModel()
         {

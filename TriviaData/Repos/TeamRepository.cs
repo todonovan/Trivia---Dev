@@ -18,25 +18,24 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (var command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
         public void Add(Team team)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string scorerIds = " ";
             string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{team.Name}\', {team.Year}, \'{team.Company}\', \'{team.NumScorers}\', {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (var command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -47,10 +46,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (var command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -61,27 +60,30 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-
-                t.Id = id;
-                t.Name = (string)reader["name"];
-                t.Year = (long)reader["year"];
-                t.Company = (string)reader["company"];
-                t.NumScorers = (long)reader["num_scorers"];
-
-                if (t.NumScorers > 0)
+                using (var command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    t.HasScorer = true;
-                }
-                else
-                {
-                    t.HasScorer = false;
-                }
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        reader.Read();
 
-                t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-                command.Dispose();
-                _dbConn.Close();
+                        t.Id = id;
+                        t.Name = (string)reader["name"];
+                        t.Year = (long)reader["year"];
+                        t.Company = (string)reader["company"];
+                        t.NumScorers = (long)reader["num_scorers"];
+
+                        if (t.NumScorers > 0)
+                        {
+                            t.HasScorer = true;
+                        }
+                        else
+                        {
+                            t.HasScorer = false;
+                        }
+
+                        t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                    }                        
+                }
             }
             return t;
         }
@@ -89,58 +91,66 @@ namespace TriviaData.Repos
         public Team GetTeamByName(string name)
         {
             Team t = new Team();
+            string sql = $"SELECT * FROM Teams WHERE name={name}";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                string sql = $"SELECT * FROM Teams WHERE name={name}";
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                t.Id = (long)reader["id"];
-                t.Name = (string)reader["name"];
-                t.Year = (long)reader["year"];
-                t.Company = (string)reader["company"];
-                t.NumScorers = (long)reader["num_scorers"];
-                if (t.NumScorers > 0)
+                using (var command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    t.HasScorer = true;
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        t.Id = (long)reader["id"];
+                        t.Name = (string)reader["name"];
+                        t.Year = (long)reader["year"];
+                        t.Company = (string)reader["company"];
+                        t.NumScorers = (long)reader["num_scorers"];
+                        if (t.NumScorers > 0)
+                        {
+                            t.HasScorer = true;
+                        }
+                        else
+                        {
+                            t.HasScorer = false;
+                        }
+                        t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                    }                        
                 }
-                else
-                {
-                    t.HasScorer = false;
-                }
-                t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-                command.Dispose();
-                _dbConn.Close();
             }
             return t;
         }
 
         public Team GetTeamByCompany(string companyName)
         {
-            string sql = $"SELECT * FROM Teams WHERE company={companyName}";
             Team t = new Team();
+            string sql = $"SELECT * FROM Teams WHERE company={companyName}";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                t.Id = (long)reader["id"];
-                t.Name = (string)reader["name"];
-                t.Company = companyName;
-                t.NumScorers = (long)reader["num_scorers"];
-                if (t.NumScorers > 0)
+                using (var command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    t.HasScorer = true;
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        reader.Read();
+
+                        t.Id = (long)reader["id"];
+                        t.Name = (string)reader["name"];
+                        t.Company = companyName;
+                        t.NumScorers = (long)reader["num_scorers"];
+                        if (t.NumScorers > 0)
+                        {
+                            t.HasScorer = true;
+                        }
+                        else
+                        {
+                            t.HasScorer = false;
+                        }
+                        t.Year = (long)reader["year"];
+                        string dateString = (string)reader["created_at"];
+                        t.CreatedAt = new DateTime(long.Parse(dateString));
+                    }                        
                 }
-                else
-                {
-                    t.HasScorer = false;
-                }
-                t.Year = (long)reader["year"];
-                string dateString = (string)reader["created_at"];
-                t.CreatedAt = new DateTime(long.Parse(dateString));
-                command.Dispose();
-                _dbConn.Close();
             }
             return t;
         }
@@ -152,30 +162,31 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    Team t = new Team();
-                    t.Id = (long)reader["id"];
-                    t.Name = (string)reader["name"];
-                    t.Year = (long)reader["year"];
-                    t.Company = (string)reader["company"];
-                    t.NumScorers = (long)reader["num_scorers"];
-                    if (t.NumScorers > 0)
+                    using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        t.HasScorer = true;
-                    }
-                    else
-                    {
-                        t.HasScorer = false;
-                    }
-                    t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-                    teamsList.Add(t);
-                }
-                command.Dispose();
-                _dbConn.Close();
+                        while (reader.Read())
+                        {
+                            Team t = new Team();
+                            t.Id = (long)reader["id"];
+                            t.Name = (string)reader["name"];
+                            t.Year = (long)reader["year"];
+                            t.Company = (string)reader["company"];
+                            t.NumScorers = (long)reader["num_scorers"];
+                            if (t.NumScorers > 0)
+                            {
+                                t.HasScorer = true;
+                            }
+                            else
+                            {
+                                t.HasScorer = false;
+                            }
+                            t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                            teamsList.Add(t);
+                        }
+                    }                        
+                } 
             }
             return teamsList;
         }
@@ -187,14 +198,16 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                while (reader.Read())
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    teamsByYear.Add(GetTeamById((long)reader["id"]));
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            teamsByYear.Add(GetTeamById((long)reader["id"]));
+                        }
+                    }                        
                 }
-                command.Dispose();
-                _dbConn.Close();
             }
             return teamsByYear;
         }
@@ -221,10 +234,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -235,10 +248,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
     }

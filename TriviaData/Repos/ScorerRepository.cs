@@ -17,10 +17,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -41,10 +41,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -55,25 +55,29 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                s.Id = id;
-                s.Name = (string)reader["name"];
-                s.Teams = new List<Team>();
-                string teamIdsString = (string)reader["team_id_list"];
-                if (teamIdsString != " ")
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    TeamRepository teamRepo = new TeamRepository();
-                    long[] teamIds = Array.ConvertAll(teamIdsString.Split(','), x => long.Parse(x));
-                    foreach (var t in teamIds)
+                    using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        Team team = teamRepo.GetTeamById(t);
-                        s.Teams.Add(team);
-                    }
+                        reader.Read();
+
+                        s.Id = id;
+                        s.Name = (string)reader["name"];
+                        s.Teams = new List<Team>();
+                        string teamIdsString = (string)reader["team_id_list"];
+                        if (teamIdsString != " ")
+                        {
+                            TeamRepository teamRepo = new TeamRepository();
+                            long[] teamIds = Array.ConvertAll(teamIdsString.Split(','), x => long.Parse(x));
+                            foreach (var t in teamIds)
+                            {
+                                Team team = teamRepo.GetTeamById(t);
+                                s.Teams.Add(team);
+                            }
+                        }
+                        s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                    }                        
                 }
-                s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-                command.Dispose();
-                _dbConn.Close();
             }
             return s;
         }
@@ -85,31 +89,33 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                TeamRepository teamRepo = new TeamRepository();
-
-                while (reader.Read())
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
                 {
-                    Scorer s = new Scorer();
-                    s.Id = (long)reader["id"];
-                    s.Name = (string)reader["name"];
-                    s.Teams = new List<Team>();
-                    string teamIdsString = (string)reader["team_id_list"];
-                    if (teamIdsString != " ")
+                    using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        long[] teamIds = Array.ConvertAll(teamIdsString.Split(','), x => long.Parse(x));
-                        foreach (var t in teamIds)
+                        TeamRepository teamRepo = new TeamRepository();
+
+                        while (reader.Read())
                         {
-                            Team team = teamRepo.GetTeamById(t);
-                            s.Teams.Add(team);
+                            Scorer s = new Scorer();
+                            s.Id = (long)reader["id"];
+                            s.Name = (string)reader["name"];
+                            s.Teams = new List<Team>();
+                            string teamIdsString = (string)reader["team_id_list"];
+                            if (teamIdsString != " ")
+                            {
+                                long[] teamIds = Array.ConvertAll(teamIdsString.Split(','), x => long.Parse(x));
+                                foreach (var t in teamIds)
+                                {
+                                    Team team = teamRepo.GetTeamById(t);
+                                    s.Teams.Add(team);
+                                }
+                            }
+                            s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                            scorerList.Add(s);
                         }
-                    }
-                    s.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
-                    scorerList.Add(s);
+                    }                        
                 }
-                command.Dispose();
-                _dbConn.Close();
             }
             return scorerList;
         }
@@ -132,10 +138,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -156,10 +162,10 @@ namespace TriviaData.Repos
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
-                SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection);
-                command.ExecuteNonQuery();
-                command.Dispose();
-                _dbConn.Close();
+                using (SQLiteCommand command = new SQLiteCommand(sql, _dbConn.Connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
@@ -169,6 +175,16 @@ namespace TriviaData.Repos
             team.HasScorer = true;
             TeamRepository teamRepo = new TeamRepository();
             teamRepo.Update(team);
+            Update(scorer);
+        }
+
+        public void RemoveTeamFromScorer(Scorer scorer, Team team)
+        {
+            team.NumScorers -= 1;
+            if (team.NumScorers == 0) team.HasScorer = false;
+            TeamRepository teamRepo = new TeamRepository();
+            teamRepo.Update(team);
+            scorer.Teams.Remove(team);
             Update(scorer);
         }
     }

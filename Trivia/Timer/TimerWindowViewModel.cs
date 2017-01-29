@@ -10,7 +10,7 @@ using System.Configuration;
 
 namespace Trivia.Timer
 {
-    public class TimerWindowViewModel : BindableBase
+    public sealed class TimerWindowViewModel : BindableBase, IDisposable
     {
         private string _timeString;
         public string TimeString
@@ -68,6 +68,14 @@ namespace Trivia.Timer
                 _time = _time.Add(TimeSpan.FromSeconds(-1));
             }, Application.Current.Dispatcher);
             _timer.Stop();
+        }
+
+        public void Dispose()
+        {
+            if (_soundPlayer != null)
+            {
+                _soundPlayer.Dispose();
+            }
         }
 
         public RelayCommand PauseUnpauseTimerCommand { get; private set; }

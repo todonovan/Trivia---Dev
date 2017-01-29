@@ -21,7 +21,7 @@ namespace Trivia.Scorers
             set { SetProperty(ref _scorers, value); }
         }
 
-        private List<Scorer> _scorersToDelete = new List<Scorer>();
+        private List<Scorer> _scorersToDelete;
 
         private Scorer _selectedScorer;
         public Scorer SelectedScorer
@@ -37,6 +37,7 @@ namespace Trivia.Scorers
         public ScorerListViewModel(IScorerRepository repo)
         {
             _repo = repo;
+            _scorersToDelete = new List<Scorer>();
             DeleteCommand = new RelayCommand(OnDelete, CanDelete);
             UpdateDBCommand = new RelayCommand(OnUpdate, CanUpdate);
             EditScorerCommand = new RelayCommand<Scorer>(OnEditScorer);
@@ -49,6 +50,8 @@ namespace Trivia.Scorers
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
             Scorers = new ObservableCollection<Scorer>(_repo.GetAllScorers());
+            _scorersToDelete = new List<Scorer>();
+            UpdateDBCommand.RaiseCanExecuteChanged();
         }
 
         public void OnAddScorer()
@@ -81,6 +84,8 @@ namespace Trivia.Scorers
         private void OnUpdate()
         {
             foreach (var s in _scorersToDelete) { _repo.Remove(s); }
+            _scorersToDelete = new List<Scorer>();
+            UpdateDBCommand.RaiseCanExecuteChanged();
         }
 
         private void OnAssociateTeams(Scorer scorer)

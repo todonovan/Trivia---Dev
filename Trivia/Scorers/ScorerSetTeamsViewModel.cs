@@ -59,6 +59,8 @@ namespace Trivia.Scorers
             }
         }
 
+        private List<Team> _teamsToRemove;
+
         private string _searchInput;
         public string SearchInput
         {
@@ -115,13 +117,14 @@ namespace Trivia.Scorers
                 Teams.Remove(t);
             }
             TeamsToAssociate = new ObservableCollection<Team>(_scorerToAssociate.Teams);
+            _teamsToRemove = new List<Team>();
             _allTeams = Teams;
             FilterHasScorer = false;
         }
 
         private bool CanAssociateTeams()
         {
-            return TeamsToAssociate.Count != 0;
+            return TeamsToAssociate.Count != 0 || _teamsToRemove.Count != 0;
         }
 
         private void OnAssociateTeams()
@@ -131,6 +134,11 @@ namespace Trivia.Scorers
             {
                 _scorerRepo.AddTeamToScorer(_scorerToAssociate, t);
             }
+            foreach (var t in _teamsToRemove)
+            {
+                _scorerRepo.RemoveTeamFromScorer(_scorerToAssociate, t);
+            }
+            AssociateTeamsCommand.RaiseCanExecuteChanged();
             Done();
         }
 
@@ -154,6 +162,8 @@ namespace Trivia.Scorers
         private void OnRemoveTeam()
         {
             Teams.Add(SelectedTeamToRemove);
+            _allTeams.Add(SelectedTeamToRemove);
+            _teamsToRemove.Add(SelectedTeamToRemove);
             TeamsToAssociate.Remove(SelectedTeamToRemove);
             SelectedTeamToRemove = null;
         }

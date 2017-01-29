@@ -24,7 +24,7 @@ namespace Trivia.Teams
             set { SetProperty(ref _teams, value); }
         }
 
-        private List<Team> _teamsToDelete = new List<Team>();
+        private List<Team> _teamsToDelete;
 
         private Team _selectedTeam;
         public Team SelectedTeam
@@ -42,6 +42,7 @@ namespace Trivia.Teams
 
         public TeamListViewModel(ITeamRepository repo)
         {
+            _teamsToDelete = new List<Team>();
             DeleteCommand = new RelayCommand(OnDelete, CanDelete);
             UpdateDBCommand = new RelayCommand(OnUpdate, CanUpdate);
             EditTeamCommand = new RelayCommand<Team>(OnEditTeam);
@@ -60,6 +61,8 @@ namespace Trivia.Teams
             {
                 _repo.Remove(t);
             }
+            _teamsToDelete = new List<Team>();
+            UpdateDBCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanDelete()
@@ -79,6 +82,8 @@ namespace Trivia.Teams
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
             Teams = new ObservableCollection<Team>(_repo.GetAllTeams());
+            _teamsToDelete = new List<Team>();
+            UpdateDBCommand.RaiseCanExecuteChanged();
         }
 
         public void OnAddTeam()
