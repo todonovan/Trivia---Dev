@@ -19,6 +19,9 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+        <Style x:Key="DataGridRowContainerStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="local:DataGridRowBehavior.IsBroughtIntoViewWhenSelected" Value="True"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -40,20 +43,20 @@
                 </Label.ContentStringFormat>
             </Label>
         </StackPanel>
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams, Mode=TwoWay}" SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None">
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams, Mode=TwoWay}" ItemContainerStyle="{StaticResource DataGridRowContainerStyle}" SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None">
             <DataGrid.InputBindings>
                 <KeyBinding Key="Right" Command="{Binding NextQuestionCommand}"/>
                 <KeyBinding Key="Left" Command="{Binding PrevQuestionCommand}"/>
                 <KeyBinding Key="Up" Command="{Binding IncrementQuestionCommand}"/>
+                <KeyBinding Key="G"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='g' />
                 <KeyBinding Key="R"
                             Command="{Binding IncrementAndAdvanceCommand}"
                             CommandParameter='r' />
-                <KeyBinding Key="W"
+                <KeyBinding Key="Y"
                             Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='w' />
-                <KeyBinding Key="N"
-                            Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='n' />
+                            CommandParameter='y' />
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="nameColumn" Binding="{Binding TeamName}" FontSize="18" IsReadOnly="True" />

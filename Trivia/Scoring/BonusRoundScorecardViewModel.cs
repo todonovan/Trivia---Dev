@@ -117,10 +117,21 @@ namespace Trivia.Scoring
 
         private void OnIncrementAndAdvance(string input)
         {
-            if (input == "r") SelectedTeam.RoundAnswer = Question.Correct;
-            else if (input == "w") SelectedTeam.RoundAnswer = Question.Incorrect;
-            else if (input == "n") SelectedTeam.RoundAnswer = Question.NotAnswered;
-            OnNextQuestion();
+            if (input == "r")
+            {
+                SelectedTeam.RoundAnswer = Question.Correct;
+                OnNextQuestion();
+            }
+            else if (input == "w")
+            {
+                SelectedTeam.RoundAnswer = Question.Incorrect;
+                OnNextQuestion();
+            }
+            else if (input == "n")
+            {
+                SelectedTeam.RoundAnswer = Question.NotAnswered;
+                OnNextQuestion();
+            }            
         }
 
         private void OnNextQuestion()

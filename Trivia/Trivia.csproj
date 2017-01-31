@@ -146,6 +146,7 @@
     <Compile Include="Scoring\BonusScoringRoundMasterViewModel.cs" />
     <Compile Include="Scoring\BoolToColorConverter.cs" />
     <Compile Include="Scoring\BoolToYesNoConverter.cs" />
+    <Compile Include="Scoring\DataGridRowBehavior.cs" />
     <Compile Include="Scoring\RoundToHumanIndexConverter.cs" />
     <Compile Include="Scoring\QuestionToVisibilityConverter.cs" />
     <Compile Include="Scoring\ScoringOverviewView.xaml.cs">

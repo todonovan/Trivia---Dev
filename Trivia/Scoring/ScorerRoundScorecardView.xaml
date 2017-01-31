@@ -18,6 +18,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="DataGridRowContainerStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="local:DataGridRowBehavior.IsBroughtIntoViewWhenSelected" Value="True"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -32,7 +35,7 @@
             <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
             <TextBlock Text="{Binding RoundNumber, Converter={StaticResource indexConverter}}" HorizontalAlignment="Right" Margin="500,0,0,0" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams}"
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams}" ItemContainerStyle="{StaticResource DataGridRowContainerStyle}"
                   SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None" KeyboardNavigation.DirectionalNavigation="None" IsReadOnly="True">
             <DataGrid.InputBindings>
                 <KeyBinding Key="Right"
@@ -41,15 +44,15 @@
                     Command="{Binding PrevQuestionCommand}" />
                 <KeyBinding Key="Up"
                     Command="{Binding IncrementQuestionCommand}" />
+                <KeyBinding Key="G"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='g' />
                 <KeyBinding Key="R"
                             Command="{Binding IncrementAndAdvanceCommand}"
                             CommandParameter='r' />
-                <KeyBinding Key="W"
+                <KeyBinding Key="Y"
                             Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='w' />
-                <KeyBinding Key="N"
-                            Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='n' />
+                            CommandParameter='y' />
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="nameColumn" Binding="{Binding TeamName}" FontSize="18" />

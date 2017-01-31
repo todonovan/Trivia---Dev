@@ -105,21 +105,49 @@ namespace Trivia.Scoring
         {
             int curIndex = SelectedQuestionIndex;
             Question q = SelectedTeam.RoundAnswers[SelectedQuestionIndex];
-            if (q == Question.NotJudged) SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
-            else if (q == Question.Correct) SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Incorrect;
-            else if (q == Question.Incorrect) SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.NotAnswered;
-            else if (q == Question.NotAnswered) SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
-            SelectedQuestionIndex = curIndex;
+            if (q == Question.NotJudged)
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
+                SelectedQuestionIndex = curIndex;
+            }
+            else if (q == Question.Correct)
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Incorrect;
+                SelectedQuestionIndex = curIndex;
+            }
+            else if (q == Question.Incorrect)
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.NotAnswered;
+                SelectedQuestionIndex = curIndex;
+            }
+            else if (q == Question.NotAnswered)
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
+                SelectedQuestionIndex = curIndex;
+            }            
         }
 
         private void OnIncrementAndAdvance(string input)
         {
             int curIndex = SelectedQuestionIndex;
-            if (input == "r") SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
-            else if (input == "w") SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Incorrect;
-            else if (input == "n") SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.NotAnswered;
-            SelectedQuestionIndex = curIndex;
-            OnNextQuestion();
+            if (input == "g")
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Correct;
+                SelectedQuestionIndex = curIndex;
+                OnNextQuestion();
+            }
+            else if (input == "r")
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.Incorrect;
+                SelectedQuestionIndex = curIndex;
+                OnNextQuestion();
+            }
+            else if (input == "y")
+            {
+                SelectedTeam.RoundAnswers[SelectedQuestionIndex] = Question.NotAnswered;
+                SelectedQuestionIndex = curIndex;
+                OnNextQuestion();
+            }            
         }
 
         private void OnNextQuestion()
