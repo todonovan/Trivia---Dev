@@ -72,7 +72,7 @@ namespace Trivia.GameSaving
                 GameState gs = _saveHandler.LoadGame(SelectedGameName);
                 StartGameRequested(gs);
             }
-            catch (InvalidCastException)
+            catch
             {
                 FailedLoadError(SelectedGameName);
             }

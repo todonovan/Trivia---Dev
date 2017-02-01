@@ -101,6 +101,8 @@ namespace Trivia.Reports
         private void OnReturnToMain()
         {
             foreach (var r in _filesToDelete) _fileHandler.DeleteReport(r);
+            _filesToDelete = new List<string>();
+            UndoDeleteCommand.RaiseCanExecuteChanged();
             Done();
         }
 
