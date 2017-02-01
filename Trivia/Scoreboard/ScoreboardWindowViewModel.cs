@@ -24,7 +24,7 @@ namespace Trivia.Scoreboard
 
         public void SetScores(List<ReportedScore> scores)
         {
-            Scores = new ObservableCollection<ReportedScore>(scores.OrderBy(s => (-1 * s.Score)).ToList());
+            Scores = new ObservableCollection<ReportedScore>(scores.OrderBy(x => x.TeamName).OrderBy(s => (-1 * s.Score)).ToList());
         }
     }
 }

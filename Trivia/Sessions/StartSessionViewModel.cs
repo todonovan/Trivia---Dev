@@ -26,6 +26,7 @@ namespace Trivia.Sessions
             {
                 SetProperty(ref _userNumRounds, value);
                 SaveConfigCommand.RaiseCanExecuteChanged();
+                StartCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -37,6 +38,7 @@ namespace Trivia.Sessions
             {
                 SetProperty(ref _userNumQuestions, value);
                 SaveConfigCommand.RaiseCanExecuteChanged();
+                StartCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -69,7 +71,11 @@ namespace Trivia.Sessions
         public int NumTeams
         {
             get { return _numTeams; }
-            set { SetProperty(ref _numTeams, value); }
+            set
+            {
+                SetProperty(ref _numTeams, value);
+                StartCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private string _userPointsPerQuestion;
@@ -80,6 +86,7 @@ namespace Trivia.Sessions
             {
                 SetProperty(ref _userPointsPerQuestion, value);
                 SaveConfigCommand.RaiseCanExecuteChanged();
+                StartCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -91,6 +98,7 @@ namespace Trivia.Sessions
             {
                 SetProperty(ref _fileName, value);
                 SaveConfigCommand.RaiseCanExecuteChanged();
+                StartCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -101,7 +109,7 @@ namespace Trivia.Sessions
             _userPointsPerQuestion = string.Empty;
             SelectScorerCommand = new RelayCommand(OnSelectScorer);
             ResetCommand = new RelayCommand(OnReset);
-            StartCommand = new RelayCommand(OnStart);
+            StartCommand = new RelayCommand(OnStart, CanStart);
             SaveConfigCommand = new RelayCommand(OnSaveConfig, CanSaveConfig);
             LoadConfigCommand = new RelayCommand(OnLoadConfig);
             CancelCommand = new RelayCommand(OnCancel);
@@ -112,6 +120,7 @@ namespace Trivia.Sessions
             if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject())) return;
             Scorers = new ObservableCollection<Scorer>(_scorerRepo.GetAllScorers());
             SelectedScorers = new ObservableCollection<Scorer>();
+            FileName = string.Empty;
         }
 
         private void OnSelectScorer()
@@ -137,7 +146,50 @@ namespace Trivia.Sessions
         private void OnStart()
         {
             SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList(), FileName);
-            StartSessionRequested(sessionConfig);
+            List<string> doubledTeams = VerifyNoDoubleTeams();
+            if (doubledTeams.Count == 0) StartSessionRequested(sessionConfig);
+            else HandleDoubleTeams(doubledTeams);
+        }
+
+        private List<string> VerifyNoDoubleTeams()
+        {
+            List<Scorer> scorers = SelectedScorers.ToList();
+            List<string> teams = new List<string>();
+            List<string> doubledTeams = new List<string>();
+            foreach (var s in scorers)
+            {
+                foreach (var t in s.Teams)
+                {
+                    if (teams.Contains(t.Name) && !doubledTeams.Contains(t.Name)) doubledTeams.Add(t.Name);
+                    teams.Add(t.Name);
+                }
+            }
+            return doubledTeams;
+        }
+
+        private void HandleDoubleTeams(List<string> doubledTeams)
+        {
+            string userMessageString = "Warning! This config contains some teams that are included more than once. Please return and set a new configuration.\n\nTeams affected: ";
+            foreach (var t in doubledTeams)
+            {
+                userMessageString += t + "; ";
+            }
+            userMessageString = userMessageString.Substring(0, userMessageString.Length - 2);
+            var messageBox = System.Windows.MessageBox.Show(userMessageString, "Some teams included more than once!", System.Windows.MessageBoxButton.OK);
+            if (messageBox == System.Windows.MessageBoxResult.OK) OnReset();
+        }
+
+        private bool CanStart()
+        {
+            if (UserPointsPerQuestion == string.Empty) return false;
+            try
+            {
+                return UserNumQuestions > 0 && UserNumRounds > 0 && Convert.ToInt32(UserPointsPerQuestion) > 0 && NumTeams > 0 && FileName != string.Empty;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private bool CanSaveConfig()
@@ -148,7 +200,9 @@ namespace Trivia.Sessions
         private void OnSaveConfig()
         {
             SessionConfigParams sessionConfig = new SessionConfigParams(UserNumRounds, UserNumQuestions, _userPointsPerQuestion, SelectedScorers.ToList(), FileName);
-            SaveConfigRequested(sessionConfig);
+            List<string> doubledTeams = VerifyNoDoubleTeams();
+            if (doubledTeams.Count == 0) SaveConfigRequested(sessionConfig);
+            else HandleDoubleTeams(doubledTeams);
         }
 
         private void OnLoadConfig()
