@@ -218,16 +218,16 @@ namespace TriviaData.Repos
             {
                 ScorerRepository scorerRepo = new ScorerRepository();
                 var scorers = scorerRepo.GetAllScorers();
-                List<Scorer> scorersToUpdate = new List<Scorer>();
                 foreach (var s in scorers)
                 {
-                    if (s.Teams.Contains(team))
+                    if (s.Teams.Select(t => t.Id).Contains(team.Id))
                     {
-                        s.Teams.Remove(team);
-                        scorersToUpdate.Add(s);
+                        Team teamToRemove = s.Teams.Where(t => t.Id == team.Id).First();
+                        s.Teams.Remove(teamToRemove);
+                        RemoveTeamFromScorer(s, team);
+                        scorerRepo.Update(s);
                     }
                 }
-                foreach (var toUpdate in scorersToUpdate) scorerRepo.Update(toUpdate);
             }
             long id = team.Id;
             string sql = $"DELETE FROM Teams WHERE id={id}";
@@ -253,6 +253,20 @@ namespace TriviaData.Repos
                     command.ExecuteNonQuery();
                 }
             }
+        }
+
+        public void AddTeamToScorer(Scorer scorer, Team team)
+        {
+            team.NumScorers += 1;
+            team.HasScorer = true;
+            Update(team);
+        }
+
+        public void RemoveTeamFromScorer(Scorer scorer, Team team)
+        {
+            team.NumScorers -= 1;
+            if (team.NumScorers == 0) team.HasScorer = false;
+            Update(team);
         }
     }
 }

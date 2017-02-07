@@ -129,15 +129,23 @@ namespace Trivia.Scorers
 
         private void OnAssociateTeams()
         {
-            _scorerToAssociate.Teams = TeamsToAssociate.ToList();
-            foreach (var t in _scorerToAssociate.Teams)
+            List<Team> teamsToAssociate = TeamsToAssociate.ToList();
+            foreach (var t in teamsToAssociate)
             {
-                _scorerRepo.AddTeamToScorer(_scorerToAssociate, t);
+                if (!_scorerToAssociate.Teams.Select(x => x.Id).Contains(t.Id))
+                {
+                    _teamRepo.AddTeamToScorer(_scorerToAssociate, t);
+                }                
             }
             foreach (var t in _teamsToRemove)
             {
-                _scorerRepo.RemoveTeamFromScorer(_scorerToAssociate, t);
+                if (_scorerToAssociate.Teams.Select(x => x.Id).Contains(t.Id))
+                {
+                    _teamRepo.RemoveTeamFromScorer(_scorerToAssociate, t);
+                }
             }
+            _scorerToAssociate.Teams = teamsToAssociate;
+            _scorerRepo.Update(_scorerToAssociate);
             AssociateTeamsCommand.RaiseCanExecuteChanged();
             Done();
         }

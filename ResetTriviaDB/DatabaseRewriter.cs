@@ -50,9 +50,6 @@ namespace ResetTriviaDB
 
             dbConn.Close();
             command.Dispose();
-
-            Console.WriteLine("\nDone! Any key to continue...");
-            Console.ReadLine();
         }
 
         private SQLiteConnection StartNewDatabaseFile()

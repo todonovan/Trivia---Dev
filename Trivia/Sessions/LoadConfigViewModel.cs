@@ -108,7 +108,7 @@ namespace Trivia.Sessions
                 foreach (var s in LoadedScorers) LoadedNumTeams += s.Teams.Count;
                 UseConfigCommand.RaiseCanExecuteChanged();
             }
-            catch (InvalidCastException)
+            catch
             {
                 FailedLoadError(SelectedConfigName);
             }            

@@ -168,24 +168,5 @@ namespace TriviaData.Repos
                 }
             }
         }
-
-        public void AddTeamToScorer(Scorer scorer, Team team)
-        {
-            team.NumScorers += 1;
-            team.HasScorer = true;
-            TeamRepository teamRepo = new TeamRepository();
-            teamRepo.Update(team);
-            Update(scorer);
-        }
-
-        public void RemoveTeamFromScorer(Scorer scorer, Team team)
-        {
-            team.NumScorers -= 1;
-            if (team.NumScorers == 0) team.HasScorer = false;
-            TeamRepository teamRepo = new TeamRepository();
-            teamRepo.Update(team);
-            scorer.Teams.Remove(team);
-            Update(scorer);
-        }
     }
 }

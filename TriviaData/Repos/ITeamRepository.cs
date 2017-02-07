@@ -20,5 +20,7 @@ namespace TriviaData.Repos
         List<Team> GetAllTeams();
         Team GetTeamByName(string name);
         List<Team> FindTeamsByYear(long year);
+        void AddTeamToScorer(Scorer scorer, Team team);
+        void RemoveTeamFromScorer(Scorer scorer, Team team);
     }
 }
