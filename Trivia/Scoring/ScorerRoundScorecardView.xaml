@@ -29,14 +29,21 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FF79B8CB">
-            <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
-            <TextBlock Text="{Binding RoundNumber, Converter={StaticResource indexConverter}}" HorizontalAlignment="Right" Margin="500,0,0,0" Width="100" FontSize="35" Foreground="White" FontWeight="Bold"/>
+            <TextBlock Text="{Binding ScorerName}" HorizontalAlignment="Left" Width="200" FontSize="35" Foreground="White" FontWeight="Bold"/>
+            <Label HorizontalAlignment="Right" Margin="400,0,0,0" Width="200" FontSize="35" Foreground="White" FontWeight="Bold">
+                <Label.Content>
+                        <Binding Path="RoundNumber" Converter="{StaticResource indexConverter}" />
+                    </Label.Content>
+                    <Label.ContentStringFormat>
+                        Round #{0}
+                    </Label.ContentStringFormat>
+                </Label>
         </StackPanel>
         <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams}" ItemContainerStyle="{StaticResource DataGridRowContainerStyle}"
-                  SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None" KeyboardNavigation.DirectionalNavigation="None" IsReadOnly="True">
+                  SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None" KeyboardNavigation.DirectionalNavigation="None" IsReadOnly="True" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
             <DataGrid.InputBindings>
                 <KeyBinding Key="Right"
                     Command="{Binding NextQuestionCommand}" />
@@ -60,6 +67,11 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ListBox ItemsSource="{Binding RoundAnswers, Mode=TwoWay}" SelectedIndex="{Binding DataContext.SelectedQuestionIndex, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                                <ListBox.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                                </ListBox.Resources>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel Margin="5" Orientation="Horizontal" IsItemsHost="True" Background="FloralWhite" />
