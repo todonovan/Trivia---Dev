@@ -14,7 +14,14 @@
     <Window.DataContext>
         <local:ScoreboardWindowViewModel />
     </Window.DataContext>
-    <DataGrid ItemsSource="{Binding Scores}"
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DataGrid
+              Grid.Column="0"
+              ItemsSource="{Binding ScoresFirst}"
               AutoGenerateColumns="False"
               IsReadOnly="True"
               CanUserAddRows="False"
@@ -24,9 +31,27 @@
               Background="#FFFFF6EA"
               FontSize="24"
               FontWeight="Bold">
-        <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding TeamName}" Width="*" />
-            <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
-        </DataGrid.Columns>
-    </DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" />
+                <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid
+              Grid.Column="1"
+              ItemsSource="{Binding ScoresSecond}"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
+              CanUserAddRows="False"
+              HeadersVisibility="None"
+              Focusable="False"
+              GridLinesVisibility="None"
+              Background="#FFFFF6EA"
+              FontSize="24"
+              FontWeight="Bold">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" />
+                <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>    
 </Window>

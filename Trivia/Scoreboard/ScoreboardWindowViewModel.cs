@@ -10,21 +10,36 @@ namespace Trivia.Scoreboard
 {
     public class ScoreboardWindowViewModel : BindableBase
     {
-        private ObservableCollection<ReportedScore> _scores;
-        public ObservableCollection<ReportedScore> Scores
+        private ObservableCollection<ReportedScore> _scoresFirst;
+        public ObservableCollection<ReportedScore> ScoresFirst
         {
-            get { return _scores; }
-            set { SetProperty(ref _scores, value); }
+            get { return _scoresFirst; }
+            set { SetProperty(ref _scoresFirst, value); }
+        }
+
+        private ObservableCollection<ReportedScore> _scoresSecond;
+        public ObservableCollection<ReportedScore> ScoresSecond
+        {
+            get { return _scoresSecond; }
+            set { SetProperty(ref _scoresSecond, value); }
         }
 
         public ScoreboardWindowViewModel()
         {
-            Scores = new ObservableCollection<ReportedScore>();
+            ScoresFirst = new ObservableCollection<ReportedScore>();
+            ScoresSecond = new ObservableCollection<ReportedScore>();
         }
 
         public void SetScores(List<ReportedScore> scores)
         {
-            Scores = new ObservableCollection<ReportedScore>(scores.OrderBy(x => x.TeamName).OrderBy(s => (-1 * s.Score)).ToList());
+            ScoresFirst = new ObservableCollection<ReportedScore>();
+            ScoresSecond = new ObservableCollection<ReportedScore>();
+            var scoresQuery = scores.OrderByDescending(s => s.Score).ThenBy(x => x.TeamName).ToList();
+            for (int i = 0; i < scoresQuery.Count; i++)
+            {
+                if (i % 2 == 0) ScoresFirst.Add(scoresQuery[i]);
+                else ScoresSecond.Add(scoresQuery[i]);
+            }
         }
     }
 }

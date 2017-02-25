@@ -5,16 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Thermometer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="GPLC Thermometer" Height="720" Width="1280">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
-        <ProgressBar Name="Thermo" HorizontalAlignment="Left" Height="40" Margin="80,140,0,0" VerticalAlignment="Top" Width="340" IsIndeterminate="False" Minimum="0" Maximum="10000" BorderBrush="#FF040404" MouseDoubleClick="Thermo_MouseDoubleClick" >
-            <ProgressBar.Foreground>
-                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                    <GradientStop Color="#FFD1A52F" Offset="0"/>
-                    <GradientStop Color="#FFFF0505" Offset="1"/>
-                </LinearGradientBrush>
-            </ProgressBar.Foreground>
-        </ProgressBar>
-
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Background="DarkSlateBlue">
+            <Button Content="Display" Command="{Binding DisplayThermometerCommand}"  Height="40" Width="150" FontSize="18" Margin="0,80,0,80"/>
+        </StackPanel>
     </Grid>
 </Window>

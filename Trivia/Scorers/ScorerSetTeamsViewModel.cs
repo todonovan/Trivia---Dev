@@ -104,18 +104,13 @@ namespace Trivia.Scorers
             if (DesignerProperties.GetIsInDesignMode(
                 new System.Windows.DependencyObject())) return;
             Teams = new ObservableCollection<Team>(_teamRepo.GetAllTeams());
-            var teamsToHandle = new List<Team>();
-            foreach (var t in Teams)
-            {
-                if (_scorerToAssociate.Teams.Select(y => y.Id).Contains(t.Id))
-                {
-                    teamsToHandle.Add(t);
-                }
-            }
+            var teamsToHandle = new List<Team>(Teams.Where(t => _scorerToAssociate.Teams.Select(x => x.Id).Contains(t.Id)));
+
             foreach (var t in teamsToHandle)
             {
                 Teams.Remove(t);
             }
+
             TeamsToAssociate = new ObservableCollection<Team>(_scorerToAssociate.Teams);
             _teamsToRemove = new List<Team>();
             _allTeams = Teams;
