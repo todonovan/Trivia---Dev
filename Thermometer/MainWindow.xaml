@@ -18,9 +18,26 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250" />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Background="DarkSlateBlue">
             <Button Content="Display" Command="{Binding DisplayThermometerCommand}"  Height="40" Width="150" FontSize="18" Margin="0,80,0,80"/>
+            <Button Content="Reset" Command="{Binding ResetCommand}"  Height="40" Width="150" FontSize="18" />
         </StackPanel>
+        <Label Grid.Row="0" Grid.Column="1" FontFamily="SegoeUI" FontSize="36" FontWeight="Bold" Content="GPLC Trivia Thermometer" Margin="50,50,0,0" />
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" FontFamily="SegoeUI" FontSize="20" FontWeight="Bold" Content="Current Target:" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Margin="0,0,10,10"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding MaxValue, Mode=TwoWay}" Height="40" Width="70" FontFamily="SegoeUI" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10" />
+            <Label Grid.Row="1" Grid.Column="0" FontFamily="SegoeUI" FontSize="20" FontWeight="Bold" Content="Current Value:" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Margin="0,0,10,10"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CurrentValue, Mode=TwoWay}" Height="40" Width="70" FontFamily="SegoeUI" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10" />
+        </Grid>
     </Grid>
 </Window>

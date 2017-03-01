@@ -59,6 +59,7 @@
     <Compile Include="ThermometerWindow.xaml.cs">
       <DependentUpon>ThermometerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ThermometerWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
