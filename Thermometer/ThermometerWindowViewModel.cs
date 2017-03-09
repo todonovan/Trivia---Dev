@@ -22,13 +22,10 @@ namespace Thermometer
             set { SetProperty(ref _currentValue, value); }
         }
 
-
-
         public void InitializeParameters(int maxValue, int currentValue)
         {
             MaxValue = maxValue;
             CurrentValue = currentValue;
-
         }
     }
 }
