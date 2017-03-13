@@ -8,6 +8,23 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" 
              d:DesignHeight="625" d:DesignWidth="700">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Right"
+                    Command="{Binding NextQuestionCommand}" />
+        <KeyBinding Key="Left"
+                    Command="{Binding PrevQuestionCommand}" />
+        <KeyBinding Key="Up"
+                    Command="{Binding IncrementQuestionCommand}" />
+        <KeyBinding Key="G"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='g' />
+        <KeyBinding Key="R"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='r' />
+        <KeyBinding Key="Y"
+                            Command="{Binding IncrementAndAdvanceCommand}"
+                            CommandParameter='y' />
+    </UserControl.InputBindings>
     <UserControl.Resources>
         <local:QuestionToVisibilityConverter x:Key="questionConverter" />
         <local:RoundToHumanIndexConverter x:Key="indexConverter" />
@@ -37,23 +54,6 @@
         </StackPanel>
         <DataGrid Grid.Row="1" AutoGenerateColumns="False" HeadersVisibility="None" ItemsSource="{Binding Teams}" ItemContainerStyle="{StaticResource DataGridRowContainerStyle}"
                   SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" RowDetailsVisibilityMode="Visible" CanUserAddRows="False" GridLinesVisibility="None" KeyboardNavigation.DirectionalNavigation="None" IsReadOnly="True">
-            <DataGrid.InputBindings>
-                <KeyBinding Key="Right"
-                    Command="{Binding NextQuestionCommand}" />
-                <KeyBinding Key="Left"
-                    Command="{Binding PrevQuestionCommand}" />
-                <KeyBinding Key="Up"
-                    Command="{Binding IncrementQuestionCommand}" />
-                <KeyBinding Key="G"
-                            Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='g' />
-                <KeyBinding Key="R"
-                            Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='r' />
-                <KeyBinding Key="Y"
-                            Command="{Binding IncrementAndAdvanceCommand}"
-                            CommandParameter='y' />
-            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="nameColumn" Binding="{Binding TeamName}" FontSize="18" />
                 <DataGridTemplateColumn x:Name="questionsColumn">

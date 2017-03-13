@@ -1,0 +1,62 @@
+﻿<Window x:Class="Thermometer.SuccessWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Thermometer"
+        mc:Ignorable="d"
+        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen" >
+    <Window.Resources>
+        <local:CurrencyConverter x:Key="currencyConverter" />
+        <local:PartialAmountConverter x:Key="partialAmtConverter" />
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="confetti.png"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="240"/>
+        </Grid.ColumnDefinitions>
+        <Ellipse Grid.Row="0" Grid.Column="0" Fill="#FFB61D1D" HorizontalAlignment="Left" Height="142" Stroke="#FF272727" StrokeThickness="3" VerticalAlignment="Top" Width="142" Margin="149,598,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.479,0.965"/>
+        <ProgressBar Grid.Row="0" Grid.Column="0" Minimum="0" Maximum="{Binding MaxValue}" Value="{Binding CurrentValue}" Orientation="Vertical" HorizontalAlignment="Left" Height="532" VerticalAlignment="Top" Width="80" Margin="179,80,0,0" Foreground="#FFB61D1D"/>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="100">
+            <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding CurrentValue, Converter={StaticResource currencyConverter}}" FontSize="50" FontWeight="Bold" Background="#FFF5F5F7" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="100" BorderBrush="#FF272727" VerticalAlignment="Top" Width="235" BorderThickness="5" />
+            <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="SegoeUI" FontWeight="Bold" FontSize="40" Foreground="#FF0E3CB6" Margin="0,20,0,0" Content="{Binding MaxValue, Converter={StaticResource currencyConverter}}">
+                <Label.ContentStringFormat>Goal: {0}</Label.ContentStringFormat>
+            </Label>
+        </StackPanel>
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="180" Y1="80" Y2="612" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="258" Y1="80" Y2="80" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="258" X2="258" Y1="80" Y2="612" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="80" Y2="80" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="134" Y2="134" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="187" Y2="187" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="240" Y2="240" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="293" Y2="293" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="346" Y2="346" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="399" Y2="399" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="452" Y2="452" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="505" Y2="505" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="558" Y2="558" StrokeThickness="2" Stroke="#FF151515" />
+        <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="610" Y2="610" StrokeThickness="2" Stroke="#FF151515" />
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="80,45,0,0">
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=10}" FontSize="25" Margin="0,10,0,0" />
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=9}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=8}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=7}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=6}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=5}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=4}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=3}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=2}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=1}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="$0" FontSize="25" />
+        </StackPanel>
+    </Grid>
+</Window>

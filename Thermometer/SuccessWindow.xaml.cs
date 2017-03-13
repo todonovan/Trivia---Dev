@@ -10,20 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Trivia.Scoring
+namespace Thermometer
 {
     /// <summary>
-    /// Interaction logic for ScorerRoundScorecardView.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class ScorerRoundScorecardView : UserControl
+    public partial class SuccessWindow : Window
     {
-        public ScorerRoundScorecardView()
+        public SuccessWindow()
         {
             InitializeComponent();
-            Loaded += (sender, e) => MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
         }
     }
 }

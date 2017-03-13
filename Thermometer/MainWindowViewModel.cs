@@ -32,7 +32,15 @@ namespace Thermometer
         private void OnDisplayThermometer()
         {
             ThermometerWindowViewModel thermViewModel = new ThermometerWindowViewModel();
-            Window thermWindow = new ThermometerWindow();
+            Window thermWindow;
+            if (CurrentValue >= MaxValue)
+            {
+                thermWindow = new SuccessWindow();
+            }
+            else
+            {
+                thermWindow = new ThermometerWindow();
+            }
 
             thermViewModel.InitializeParameters(MaxValue, CurrentValue);
 

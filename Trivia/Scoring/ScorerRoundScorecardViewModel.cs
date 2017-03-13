@@ -42,11 +42,7 @@ namespace Trivia.Scoring
         public ScorecardTeam SelectedTeam
         {
             get { return _selectedTeam; }
-            set
-            {
-                SelectedQuestionIndex = 0;
-                SetProperty(ref _selectedTeam, value);
-            }
+            set { SetProperty(ref _selectedTeam, value); }
         }
 
         private int _selectedQuestionIndex;
