@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Thermometer"
         mc:Ignorable="d"
-        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize">
+        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Window.Resources>
         <local:CurrencyConverter x:Key="currencyConverter" />
         <local:PartialAmountConverter x:Key="partialAmtConverter" />
@@ -54,6 +54,7 @@
             <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=2}" FontSize="25" Margin="0,10,0,0"/>
             <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=1}" FontSize="25" Margin="0,10,0,0"/>
             <Label Content="$0" FontSize="25" />
-        </StackPanel>    
+        </StackPanel>
+        <Image x:Name="image" Height="150" Source="be_the_answer.jpg" Margin="600, 400, 0, 0"/>
     </Grid>
 </Window>
