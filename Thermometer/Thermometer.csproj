@@ -62,9 +62,6 @@
       <DependentUpon>ThermometerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ThermometerWindowViewModel.cs" />
-    <Compile Include="SuccessWindow.xaml.cs">
-      <DependentUpon>SuccessWindow.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,10 +76,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ThermometerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SuccessWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="be_the_answer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="banner only 10th.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

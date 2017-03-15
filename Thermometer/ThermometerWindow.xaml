@@ -5,10 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Thermometer"
         mc:Ignorable="d"
-        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:CurrencyConverter x:Key="currencyConverter" />
         <local:PartialAmountConverter x:Key="partialAmtConverter" />
+        <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025"/>
+        <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="ProgressBar.Border" Color="#FFBCBCBC"/>
+        <Style x:Key="ThermProgressBar" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="{StaticResource ProgressBar.Progress}"/>
+            <Setter Property="Background" Value="{StaticResource ProgressBar.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ProgressBar.Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid x:Name="TemplateRoot">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Determinate"/>
+                                    <VisualState x:Name="Indeterminate">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="Animation">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0.25"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25"/>
+                                                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.25"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <PointAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)" Storyboard.TargetName="Animation">
+                                                <EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5"/>
+                                                <EasingPointKeyFrame KeyTime="0:0:1" Value="0.5,0.5"/>
+                                                <EasingPointKeyFrame KeyTime="0:0:2" Value="1.5,0.5"/>
+                                            </PointAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"/>
+                            <Rectangle x:Name="PART_Track"/>
+                            <Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
+                                <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}"/>
+                                <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="TemplateRoot">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -19,13 +82,11 @@
             <ColumnDefinition />
             <ColumnDefinition Width="240"/>
         </Grid.ColumnDefinitions>
+        <Image Width="800" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  VerticalAlignment="Bottom" Source="banner only 10th.jpg" Margin="0,0,0,50"/>
         <Ellipse Grid.Row="0" Grid.Column="0" Fill="#FFB61D1D" HorizontalAlignment="Left" Height="142" Stroke="#FF272727" StrokeThickness="3" VerticalAlignment="Top" Width="142" Margin="149,598,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.479,0.965"/>
-        <ProgressBar Grid.Row="0" Grid.Column="0" Minimum="0" Maximum="{Binding MaxValue}" Value="{Binding CurrentValue}" Orientation="Vertical" HorizontalAlignment="Left" Height="532" VerticalAlignment="Top" Width="80" Margin="179,80,0,0" Foreground="#FFB61D1D"/>
+        <ProgressBar Grid.Row="0" Grid.Column="0" Minimum="0" Maximum="{Binding MaxValue}" Value="{Binding CurrentValue}" Orientation="Vertical" HorizontalAlignment="Left" Height="532" VerticalAlignment="Top" Width="80" Margin="179,80,0,0" Foreground="#FFB61D1D" Style="{DynamicResource ThermProgressBar}"/>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="100">
             <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding CurrentValue, Converter={StaticResource currencyConverter}}" FontSize="50" FontWeight="Bold" Background="#FFF5F5F7" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="100" BorderBrush="#FF272727" VerticalAlignment="Top" Width="235" BorderThickness="5" />
-            <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontFamily="SegoeUI" FontWeight="Bold" FontSize="40" Foreground="#FF0E3CB6" Margin="0,20,0,0" Content="{Binding MaxValue, Converter={StaticResource currencyConverter}}">
-                <Label.ContentStringFormat>Goal: {0}</Label.ContentStringFormat>
-            </Label>
         </StackPanel>
         <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="180" Y1="80" Y2="612" StrokeThickness="2" Stroke="#FF151515" />
         <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="258" Y1="80" Y2="80" StrokeThickness="2" Stroke="#FF151515" />
@@ -43,18 +104,18 @@
         <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="610" Y2="610" StrokeThickness="2" Stroke="#FF151515" />
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="80,45,0,0">
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=10}" FontSize="25" Margin="0,10,0,0" />
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=9}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=8}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=7}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=6}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=5}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=4}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=3}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=2}" FontSize="25" Margin="0,10,0,0"/>
-            <Label Content="{Binding MaxValue, Converter={StaticResource partialAmtConverter}, ConverterParameter=1}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=10, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0" />
+            <Label Content="{Binding MaxValue, ConverterParameter=9, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=8, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=7, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=6, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=5, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=4, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=3, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=2, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
+            <Label Content="{Binding MaxValue, ConverterParameter=1, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
             <Label Content="$0" FontSize="25" />
         </StackPanel>
-        <Image x:Name="image" Height="150" Source="be_the_answer.jpg" Margin="600, 400, 0, 0"/>
+        <Image Height="350" Source="be_the_answer.jpg" Margin="600, 200, 0, 0"/>
     </Grid>
 </Window>
