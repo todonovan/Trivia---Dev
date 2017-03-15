@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Thermometer"
         mc:Ignorable="d"
-        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="ThermometerWindow" Height="800" Width="1280" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Window.Resources>
         <local:CurrencyConverter x:Key="currencyConverter" />
         <local:PartialAmountConverter x:Key="partialAmtConverter" />
