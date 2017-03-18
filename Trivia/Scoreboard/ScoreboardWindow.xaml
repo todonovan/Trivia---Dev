@@ -19,8 +19,14 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="/Trivia;component/banner only 10th.jpg"  />
         <DataGrid
               Grid.Column="0"
+              Grid.Row="1"
               ItemsSource="{Binding ScoresFirst}"
               AutoGenerateColumns="False"
               IsReadOnly="True"
@@ -28,16 +34,20 @@
               HeadersVisibility="None"
               Focusable="False"
               GridLinesVisibility="None"
-              Background="#FFFFF6EA"
-              FontSize="24"
-              FontWeight="Bold">
+              HorizontalAlignment="Center"
+              HorizontalContentAlignment="Center"
+              Background="White"
+              FontSize="30"
+              FontWeight="Bold" BorderBrush="White"
+              Margin="50,50,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" />
-                <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
+                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Binding="{Binding Score}" Width="*" TextBlock.TextAlignment="Center"/>
             </DataGrid.Columns>
         </DataGrid>
         <DataGrid
               Grid.Column="1"
+              Grid.Row="1"
               ItemsSource="{Binding ScoresSecond}"
               AutoGenerateColumns="False"
               IsReadOnly="True"
@@ -45,12 +55,13 @@
               HeadersVisibility="None"
               Focusable="False"
               GridLinesVisibility="None"
-              Background="#FFFFF6EA"
-              FontSize="24"
-              FontWeight="Bold">
+              Background="White"
+              FontSize="30"
+              FontWeight="Bold" BorderBrush="White"
+              Margin="50,50,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" />
-                <DataGridTextColumn Binding="{Binding Score}" Width="*"/>
+                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Binding="{Binding Score}" Width="*" TextBlock.TextAlignment="Center"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>    

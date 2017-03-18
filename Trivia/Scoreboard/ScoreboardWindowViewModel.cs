@@ -35,10 +35,18 @@ namespace Trivia.Scoreboard
             ScoresFirst = new ObservableCollection<ReportedScore>();
             ScoresSecond = new ObservableCollection<ReportedScore>();
             var scoresQuery = scores.OrderByDescending(s => s.Score).ThenBy(x => x.TeamName).ToList();
-            for (int i = 0; i < scoresQuery.Count; i++)
+            int i = 0;
+            while (i < scoresQuery.Count/2)
             {
-                if (i % 2 == 0) ScoresFirst.Add(scoresQuery[i]);
-                else ScoresSecond.Add(scoresQuery[i]);
+                ScoresFirst.Add(scoresQuery[i++]);
+            }
+            if (scoresQuery.Count % 2 == 1)
+            {
+                ScoresFirst.Add(scoresQuery[i++]);
+            }
+            while (i < scoresQuery.Count)
+            {
+                ScoresSecond.Add(scoresQuery[i++]);
             }
         }
     }
