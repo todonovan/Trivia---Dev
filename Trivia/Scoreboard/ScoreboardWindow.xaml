@@ -8,9 +8,10 @@
         xmlns:local="clr-namespace:Trivia.Scoreboard"
         mc:Ignorable="d"
         Title="GPLC Trivia Scoreboard" Height="768" Width="1024"
-        WindowStyle="ThreeDBorderWindow"
+        WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResize">
+        WindowState="Maximized"
+        ResizeMode="NoResize">
     <Window.DataContext>
         <local:ScoreboardWindowViewModel />
     </Window.DataContext>
@@ -20,7 +21,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
+            <RowDefinition Height="100" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Source="/Trivia;component/banner only 10th.jpg"  />
@@ -41,7 +42,7 @@
               FontWeight="Bold" BorderBrush="White"
               Margin="50,50,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Binding="{Binding TeamName}" Width="3*" TextBlock.TextAlignment="Center"/>
                 <DataGridTextColumn Binding="{Binding Score}" Width="*" TextBlock.TextAlignment="Center"/>
             </DataGrid.Columns>
         </DataGrid>
@@ -60,7 +61,7 @@
               FontWeight="Bold" BorderBrush="White"
               Margin="50,50,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding TeamName}" Width="*" TextBlock.TextAlignment="Center"/>
+                <DataGridTextColumn Binding="{Binding TeamName}" Width="3*" TextBlock.TextAlignment="Center"/>
                 <DataGridTextColumn Binding="{Binding Score}" Width="*" TextBlock.TextAlignment="Center"/>
             </DataGrid.Columns>
         </DataGrid>

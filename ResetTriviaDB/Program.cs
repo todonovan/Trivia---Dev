@@ -28,7 +28,7 @@ namespace ResetTriviaDB
 
                 try
                 {
-                    DatabaseRewriter rw = new DatabaseRewriter("C:\\Users\\Terrence\\Documents\\TriviaDev\\Trivia");
+                    DatabaseRewriter rw = new DatabaseRewriter("C:\\Program Files\\GPLC\\Trivia Scoring");
                     rw.RewriteDatabase();
                 }
                 catch (DirectoryNotFoundException dnf_e)

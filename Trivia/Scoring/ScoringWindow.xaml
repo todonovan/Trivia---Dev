@@ -1,8 +1,11 @@
 ﻿<Window x:Class="Trivia.Scoring.ScoringWindow"
+        x:Name="ScoreWin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:Trivia.Scoring"
         mc:Ignorable="d"
         Title="Session Scoring" Height="768" Width="1024"
@@ -29,6 +32,11 @@
             <local:ScorerRoundScorecardView />
         </DataTemplate>
     </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding StoreWindowCommand}" CommandParameter="{Binding ElementName=ScoreWin}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
@@ -36,9 +44,8 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Vertical" Background="#FF79B8CB">
             <TextBlock Text="Scoring Screen" FontSize="36" TextAlignment="Center" FontWeight="Bold" Foreground="White" />
-            <Button Command="{Binding TimerCommand}" Content="Timer" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
             <Button Content="Scoreboard" Command="{Binding ScoreboardCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
-            <Button Content="Save and Exit" Command="{Binding ExitCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
+            <Button Content="Exit" Command="{Binding ExitCommand}"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="57,40,0,0" Background="White" FontSize="20" FontWeight="Bold" Width="200" Height="40"/>
         </StackPanel>
         <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
     </Grid>

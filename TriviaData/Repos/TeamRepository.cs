@@ -28,7 +28,8 @@ namespace TriviaData.Repos
         public void Add(Team team)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{team.Name}\', {team.Year}, \'{team.Company}\', \'{team.NumScorers}\', {dateString})";
+            string modifiedName = team.Name.Replace("\'", "\'\'");
+            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{modifiedName}\', {team.Year}, \'{team.Company}\', \'{team.NumScorers}\', {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -42,7 +43,8 @@ namespace TriviaData.Repos
         public void Add(string name)
         {
             string dateString = DateTime.Now.Ticks.ToString();
-            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{name}\', 0, \'\', 0, {dateString})";
+            string modifiedName = name.Replace("\'", "\'\'");
+            string sql = $"INSERT INTO Teams (name, year, company, num_scorers, created_at) VALUES (\'{modifiedName}\', 0, \'\', 0, {dateString})";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -85,13 +87,15 @@ namespace TriviaData.Repos
                     }                        
                 }
             }
+            t.Name = t.Name.Replace("\'\'", "\'");
             return t;
         }
 
         public Team GetTeamByName(string name)
         {
             Team t = new Team();
-            string sql = $"SELECT * FROM Teams WHERE name={name}";
+            string modifiedName = name.Replace("\'", "\'\'");
+            string sql = $"SELECT * FROM Teams WHERE name={modifiedName}";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();
@@ -102,7 +106,7 @@ namespace TriviaData.Repos
                         reader.Read();
 
                         t.Id = (long)reader["id"];
-                        t.Name = (string)reader["name"];
+                        t.Name = name;
                         t.Year = (long)reader["year"];
                         t.Company = (string)reader["company"];
                         t.NumScorers = (long)reader["num_scorers"];
@@ -152,6 +156,7 @@ namespace TriviaData.Repos
                     }                        
                 }
             }
+            t.Name = t.Name.Replace("\'\'", "\'");
             return t;
         }
 
@@ -183,6 +188,7 @@ namespace TriviaData.Repos
                                 t.HasScorer = false;
                             }
                             t.CreatedAt = new DateTime(long.Parse((string)reader["created_at"]));
+                            t.Name = t.Name.Replace("\'\'", "\'");
                             teamsList.Add(t);
                         }
                     }                        
@@ -244,7 +250,8 @@ namespace TriviaData.Repos
         public void Update(Team team)
         {
             string dateString = team.CreatedAt.Ticks.ToString();
-            string sql = $"UPDATE Teams SET name=\'{team.Name}\', year={team.Year}, company=\'{team.Company}\', num_scorers=\'{team.NumScorers}\', created_at={dateString} WHERE id={team.Id}";
+            string modifiedName = team.Name.Replace("\'", "\'\'");
+            string sql = $"UPDATE Teams SET name=\'{modifiedName}\', year={team.Year}, company=\'{team.Company}\', num_scorers=\'{team.NumScorers}\', created_at={dateString} WHERE id={team.Id}";
             using (var _dbConn = new TriviaDbContext())
             {
                 _dbConn.Open();

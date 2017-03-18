@@ -11,7 +11,6 @@ using System.Windows;
 using Trivia.ScoringHelpers;
 using Trivia.GameSaving;
 using Trivia.Reports;
-using Trivia.Timer;
 
 namespace Trivia.Scoring
 {
@@ -22,6 +21,8 @@ namespace Trivia.Scoring
         private ScoringRoundMasterViewModel _scoringRoundMasterViewModel;
         private BonusScoringRoundMasterViewModel _bonusScoringRoundMasterViewModel;
         private GameStateSaveHandler _saveHandler;
+
+        private Window _scoringWindow;
 
         private GameState _currentGameState;
         public GameState CurrentGameState
@@ -55,9 +56,9 @@ namespace Trivia.Scoring
             _bonusScoringRoundMasterViewModel.RoundCanceled += OnRoundCanceled;
             _bonusScoringRoundMasterViewModel.BonusRoundComplete += OnBonusRoundComplete;
 
-            TimerCommand = new RelayCommand(OnStartTimer);
             ScoreboardCommand = new RelayCommand(OnOpenScoreboard);
-            ExitCommand = new RelayCommand(OnExit);
+            ExitCommand = new RelayCommand(OnExit, CanExit);
+            StoreWindowCommand = new RelayCommand<Window>(OnStoreWindow);
         }
 
         public void SetCurrentGameState(GameState gs)
@@ -65,14 +66,6 @@ namespace Trivia.Scoring
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) return;
             CurrentGameState = gs;
             _scoringOverviewViewModel.SetGameState(CurrentGameState);
-        }
-
-        private void OnStartTimer()
-        {
-            Window w = new TimerWindow();
-            TimerWindowViewModel vm = ContainerHelper.Container.Resolve<TimerWindowViewModel>();
-            w.DataContext = vm;
-            w.Show();
         }
 
         private void OnOpenScoreboard()
@@ -85,9 +78,20 @@ namespace Trivia.Scoring
             w.Show();
         }
 
+        private void OnStoreWindow(Window w)
+        {
+            _scoringWindow = w;
+            ExitCommand.RaiseCanExecuteChanged();
+        }
+
         private void OnExit()
         {
+            if (_scoringWindow != null) _scoringWindow.Close();
+        }
 
+        private bool CanExit()
+        {
+            return _scoringWindow != null;
         }
 
         private void OnScoreRound(RoundScoringParams rsp)
@@ -126,12 +130,12 @@ namespace Trivia.Scoring
         {
             ReportFileHandler fileHandler = new ReportFileHandler();
             fileHandler.CreateReport(gs);
-            
+            if (_scoringWindow != null) _scoringWindow.Close();
         }
 
         public RelayCommand BeginRoundCommand { get; private set; }
-        public RelayCommand TimerCommand { get; private set; }
         public RelayCommand ScoreboardCommand { get; private set; }
         public RelayCommand ExitCommand { get; private set; }
+        public RelayCommand<Window> StoreWindowCommand { get; private set; }
     }
 }

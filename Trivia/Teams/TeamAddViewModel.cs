@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Interactivity;
-using Microsoft.Expression.Interactivity;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using TriviaData.Repos;
 using TriviaData;
 using TriviaData.Models;
-using System.Windows.Input;
 
 namespace Trivia.Teams
 {

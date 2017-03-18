@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Trivia.ScoringHelpers;
 
 namespace Trivia.Scoring
@@ -117,17 +114,17 @@ namespace Trivia.Scoring
 
         private void OnIncrementAndAdvance(string input)
         {
-            if (input == "r")
+            if (input == "g")
             {
                 SelectedTeam.RoundAnswer = Question.Correct;
                 OnNextQuestion();
             }
-            else if (input == "w")
+            else if (input == "r")
             {
                 SelectedTeam.RoundAnswer = Question.Incorrect;
                 OnNextQuestion();
             }
-            else if (input == "n")
+            else if (input == "y")
             {
                 SelectedTeam.RoundAnswer = Question.NotAnswered;
                 OnNextQuestion();

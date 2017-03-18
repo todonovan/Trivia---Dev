@@ -135,6 +135,6 @@
                 Foreground="White"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="50" />
+                Margin="50"/>
     </Grid>
 </UserControl>
