@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Thermometer"
         mc:Ignorable="d"
-        Title="ThermometerWindow" Height="900" Width="1280" WindowStartupLocation="CenterScreen">
+        Title="ThermometerWindow" WindowStartupLocation="CenterScreen" Height="800" Width="1280">
     <Window.Resources>
         <local:CurrencyConverter x:Key="currencyConverter" />
         <local:PartialAmountConverter x:Key="partialAmtConverter" />
@@ -82,9 +82,9 @@
             <ColumnDefinition />
             <ColumnDefinition Width="240"/>
         </Grid.ColumnDefinitions>
-        <Image Width="800" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  VerticalAlignment="Bottom" Source="banner only 10th.jpg" Margin="0,0,0,50"/>
-        <Ellipse Grid.Row="0" Grid.Column="0" Fill="#FFB61D1D" HorizontalAlignment="Left" Height="142" Stroke="#FF272727" StrokeThickness="3" VerticalAlignment="Top" Width="142" Margin="149,598,0,0" Grid.RowSpan="2" RenderTransformOrigin="0.479,0.965"/>
-        <ProgressBar Grid.Row="0" Grid.Column="0" Minimum="0" Maximum="{Binding MaxValue}" Value="{Binding CurrentValue}" Orientation="Vertical" HorizontalAlignment="Left" Height="532" VerticalAlignment="Top" Width="80" Margin="179,80,0,0" Foreground="#FFB61D1D" Style="{DynamicResource ThermProgressBar}"/>
+        <Image Width="800" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"  VerticalAlignment="Bottom" Source="banner only 10th.jpg" HorizontalAlignment="Left" Margin="300,0,0,10"/>
+        <Ellipse Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Fill="#FFB61D1D" HorizontalAlignment="Left" Height="142" Stroke="#FF272727" StrokeThickness="3" VerticalAlignment="Top" Width="142" Margin="149,598,0,0" RenderTransformOrigin="0.479,0.965"/>
+        <ProgressBar Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Minimum="0" Maximum="{Binding MaxValue}" Value="{Binding CurrentValue}" Orientation="Vertical" HorizontalAlignment="Left" Height="532" VerticalAlignment="Top" Width="80" Margin="179,80,0,0" Foreground="#FFB61D1D" Style="{DynamicResource ThermProgressBar}"/>
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="100">
             <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding CurrentValue, Converter={StaticResource currencyConverter}}" FontSize="50" FontWeight="Bold" Background="#FFF5F5F7" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="100" BorderBrush="#FF272727" VerticalAlignment="Top" Width="235" BorderThickness="5" />
         </StackPanel>
@@ -103,7 +103,7 @@
         <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="558" Y2="558" StrokeThickness="2" Stroke="#FF151515" />
         <Line Grid.Row="0" Grid.RowSpan="2" X1="180" X2="170" Y1="610" Y2="610" StrokeThickness="2" Stroke="#FF151515" />
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="80,45,0,0">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Orientation="Vertical" Margin="80,45,0,0">
             <Label Content="{Binding MaxValue, ConverterParameter=10, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0" />
             <Label Content="{Binding MaxValue, ConverterParameter=9, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
             <Label Content="{Binding MaxValue, ConverterParameter=8, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
@@ -116,6 +116,6 @@
             <Label Content="{Binding MaxValue, ConverterParameter=1, Converter={StaticResource partialAmtConverter}}" FontSize="25" Margin="0,10,0,0"/>
             <Label Content="$0" FontSize="25" />
         </StackPanel>
-        <Image Height="350" Source="be_the_answer.jpg" Margin="600, 200, 0, 0"/>
+        <Image Height="250" Source="be_the_answer.jpg" Margin="600, 200, 0, 0"/>
     </Grid>
 </Window>
