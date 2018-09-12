@@ -24,11 +24,11 @@ namespace ResetTriviaDB
 
             if (input == "rw")
             {
-                Console.WriteLine("The database will be constructed at the default path; see your local friendly admin to change this.");
+                Console.WriteLine("The database will be constructed at the default path.");
 
                 try
                 {
-                    DatabaseRewriter rw = new DatabaseRewriter("C:\\Users\\Terrence\\Documents\\TriviaDev\\Trivia");
+                    DatabaseRewriter rw = new DatabaseRewriter("C:\\Users\\Terry\\Source\\Repos\\Trivia\\Trivia---Dev");
                     rw.RewriteDatabase();
                 }
                 catch (DirectoryNotFoundException dnf_e)

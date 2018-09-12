@@ -6,14 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trivia.ScoringHelpers;
-using Excel = Microsoft.Office.Interop.Excel;
+// using Excel = Microsoft.Office.Interop.Excel;
 using CsvHelper;
+
+/** NOTE:
+ *  Due to experiencing the sort of problems referenced in the class comment below,
+ *  I have in fact decided to remove interop for now.
+ *  */
 
 namespace Trivia.Reports
 {
     public class ReportFileHandler
     {
-        /* Note: Excel interop is a bit of a mess due to COM legacy code 
+        /*Note: Excel interop is a bit of a mess due to COM legacy code 
          * and a moderately confusing API. Against part of my better
          * judgment I've left the interop in for file viewing as it provides
          * a simple (for the user) way to view the reports and edit/transfer
@@ -22,10 +27,10 @@ namespace Trivia.Reports
          * a DataGrid in a new view -- but note that any editing by the user
          * would then break the report view. The simplest of all solutions,
          * of course, would be to generate the reports but offer no way
-         * to manage/view the reports in-app. */
+         * to manage/view the reports in-app.*/
 
 
-        private Excel.Application _excelApp;
+        //private Excel.Application _excelApp;
 
         /// <summary>
         /// Reports are saved as .csv files for increased flexibility.
@@ -68,18 +73,9 @@ namespace Trivia.Reports
             }
         }
 
-        public void CreateBetterReport(GameState gs)
-        {
-            string fullName = ConfigurationManager.AppSettings["report_save_config"].ToString() + gs.FileName + ".csv";
-            using (var file = File.CreateText(fullName))
-            {
-
-            }
-        }
-
         public void OpenReport(string fileName)
         {
-            _excelApp = new Excel.Application();
+            /*_excelApp = new Excel.Application();
             string fullName = ConfigurationManager.AppSettings["report_save_config"].ToString() + fileName;
             try
             {
@@ -89,7 +85,7 @@ namespace Trivia.Reports
             catch
             {
 
-            }
+            }*/
         }
 
         public void DeleteReport(string fileName)
